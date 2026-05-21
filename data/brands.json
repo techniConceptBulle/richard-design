@@ -1,0 +1,48 @@
+[
+  {
+    "id": "bico",
+    "name": "Bico",
+    "slug": "bico",
+    "country": "Suisse",
+    "description": "Marque suisse emblématique, reconnue pour ses matelas et sommiers de très haute qualité.",
+    "logo": "/assets/icons/brand-bico.svg",
+    "website": "https://www.bico.ch"
+  },
+  {
+    "id": "superba",
+    "name": "Superba",
+    "slug": "superba",
+    "country": "Suisse",
+    "description": "Spécialiste du matelas suisse, avec un savoir-faire centenaire.",
+    "logo": "/assets/icons/brand-superba.svg",
+    "website": "https://www.superba.ch"
+  },
+  {
+    "id": "tempur",
+    "name": "Tempur",
+    "slug": "tempur",
+    "country": "Danemark",
+    "description": "Référence mondiale en mousse à mémoire de forme haute densité.",
+    "logo": "/assets/icons/brand-tempur.svg",
+    "website": "https://www.tempur.com"
+  },
+  {
+    "id": "hasena",
+    "name": "Hasena",
+    "slug": "hasena",
+    "country": "Suisse",
+    "description": "Lits et cadres de lit design, personnalisables et durables.",
+    "logo": "/assets/icons/brand-hasena.svg",
+    "website": "https://www.hasenabeds.com"
+  },
+  {
+    "id": "richard-sa",
+    "name": "Richard SA",
+    "slug": "richard-sa",
+    "country": "Suisse",
+    "description": "Sélection exclusive Richard SA : produits développés avec nos partenaires suisses.",
+    "logo": "/assets/icons/brand-richard.svg",
+    "website": "https://www.richard-sa.ch"
+  }
+]
+

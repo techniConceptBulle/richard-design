@@ -1,0 +1,112 @@
+[
+  {
+    "id": "lit",
+    "name": "Lit",
+    "slug": "lit",
+    "description": "Structures de lits haut de gamme pour un confort durable.",
+    "parentId": null,
+    "isLeaf": false,
+    "displayOrder": 1
+  },
+  {
+    "id": "lit-cadre",
+    "name": "Cadre de lit",
+    "slug": "cadre-de-lit",
+    "description": "Cadres de lit design en bois ou métal, compatibles avec sommiers et matelas standards.",
+    "parentId": "lit",
+    "isLeaf": true,
+    "displayOrder": 1
+  },
+  {
+    "id": "lit-boxspring",
+    "name": "Lit boxspring",
+    "slug": "lit-boxspring",
+    "description": "Ensembles boxspring complets, typiquement suisses, avec un confort hôtel 5★.",
+    "parentId": "lit",
+    "isLeaf": true,
+    "displayOrder": 2
+  },
+  {
+    "id": "sommier",
+    "name": "Sommier",
+    "slug": "sommier",
+    "description": "Sommiers fixes ou réglables, compatibles avec la majorité des matelas.",
+    "parentId": null,
+    "isLeaf": true,
+    "displayOrder": 2
+  },
+  {
+    "id": "matelas",
+    "name": "Matelas",
+    "slug": "matelas",
+    "description": "Matelas latex, ressorts ensachés ou mousse à mémoire pour tous les profils.",
+    "parentId": null,
+    "isLeaf": true,
+    "displayOrder": 3
+  },
+  {
+    "id": "literie",
+    "name": "Literie",
+    "slug": "literie",
+    "description": "Tout pour habiller votre lit et optimiser votre confort de sommeil.",
+    "parentId": null,
+    "isLeaf": false,
+    "displayOrder": 4
+  },
+  {
+    "id": "literie-duvets",
+    "name": "Duvets",
+    "slug": "duvets",
+    "description": "Duvets légers ou 4 saisons, en duvet naturel ou fibres techniques.",
+    "parentId": "literie",
+    "isLeaf": true,
+    "displayOrder": 1
+  },
+  {
+    "id": "literie-oreillers",
+    "name": "Oreillers",
+    "slug": "oreillers",
+    "description": "Oreillers ergonomiques, en plumes ou en mousse mémoire.",
+    "parentId": "literie",
+    "isLeaf": true,
+    "displayOrder": 2
+  },
+  {
+    "id": "literie-surmatelas",
+    "name": "Surmatelas",
+    "slug": "surmatelas",
+    "description": "Surmatelas pour ajuster la fermeté et prolonger la durée de vie du matelas.",
+    "parentId": "literie",
+    "isLeaf": true,
+    "displayOrder": 3
+  },
+  {
+    "id": "fauteuil-relax",
+    "name": "Fauteuil relax",
+    "slug": "fauteuil-relax",
+    "description": "Fauteuils relax manuels ou motorisés pour un confort optimal.",
+    "parentId": null,
+    "isLeaf": true,
+    "displayOrder": 5
+  },
+  {
+    "id": "decoration",
+    "name": "Décoration",
+    "slug": "decoration",
+    "description": "Luminaires, coussins, plaids et accessoires pour sublimer votre chambre.",
+    "parentId": null,
+    "isLeaf": true,
+    "displayOrder": 6
+  },
+  {
+    "id": "liquidation",
+    "name": "Liquidation",
+    "slug": "liquidation",
+    "description": "Fin de séries et modèles d’exposition à prix fortement réduits.",
+    "parentId": null,
+    "isLeaf": true,
+    "displayOrder": 7,
+    "isSpecial": true
+  }
+]
+

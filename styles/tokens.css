@@ -1,0 +1,84 @@
+:root {
+  /* Palette Richard Design */
+  --color-bg: #fcfcfa;
+  --color-surface: #f6f7f4;
+  --color-surface-alt: #eff2ee;
+  --color-surface-raised: #ffffff;
+  --color-border-subtle: rgba(23, 63, 73, 0.09);
+  --color-border-strong: rgba(23, 63, 73, 0.16);
+
+  /* Pantone 3145 M / 3025 M / 7485 M / 345 M */
+  --color-primary: #007e9e;
+  --color-primary-soft: #c2cfb0;
+  --color-primary-strong: #005670;
+
+  --color-accent: #8cc8a7;
+  --color-accent-soft: #c2cfb0;
+
+  --color-success: #8cc8a7;
+  --color-danger: #b54747;
+  --color-warning: #c2cfb0;
+
+  --color-text: #173f49;
+  --color-text-soft: #4c6a73;
+  --color-text-muted: #768a8f;
+  --color-text-on-primary: #ffffff;
+
+  /* Typographie */
+  --font-family-base: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", sans-serif;
+  --font-family-heading: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Display",
+    "Segoe UI", sans-serif;
+
+  --font-size-xs: 0.75rem;  /* 12px */
+  --font-size-sm: 0.875rem; /* 14px */
+  --font-size-md: 1rem;     /* 16px */
+  --font-size-lg: 1.125rem; /* 18px */
+  --font-size-xl: 1.375rem; /* 22px */
+  --font-size-2xl: 1.75rem; /* 28px */
+  --font-size-3xl: 2.25rem; /* 36px */
+
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.7;
+
+  /* Espacements (scale 4) */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-14: 3.5rem;
+  --space-16: 4rem;
+
+  /* Rayons et ombres */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 12px 28px rgba(15, 23, 42, 0.05);
+  --shadow-elevated: 0 18px 36px rgba(15, 23, 42, 0.08);
+
+  /* Largeurs */
+  --content-max-width: 1320px;
+  --content-wide-width: 1320px;
+
+  /* Z-index */
+  --z-header: 20;
+  --z-overlay: 30;
+  --z-modal: 40;
+
+  /* Points de rupture (mobile-first) */
+  --bp-sm: 480px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
+}
+

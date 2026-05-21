@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Catégorie | Richard Design</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles/base.css" />
+    <link rel="stylesheet" href="/styles/layout.css" />
+    <link rel="stylesheet" href="/styles/components.css" />
+  </head>
+  <body class="page" data-page="category">
+    <header id="site-header"></header>
+    <main class="page-main layout-main">
+      <div class="container category-page-shell">
+        <section class="category-hero">
+          <nav class="category-breadcrumb" aria-label="Fil d'Ariane">
+            <a href="/">Accueil</a>
+            <span>/</span>
+            <span id="category-breadcrumb-current">Catégorie</span>
+          </nav>
+
+          <div class="category-hero-copy">
+            <h1 id="category-title">Nom de la catégorie</h1>
+            <p id="category-description" class="category-hero-description"></p>
+          </div>
+        </section>
+
+        <section class="category-toolbar content-card content-card--soft">
+          <div class="category-toolbar-copy">
+            <p class="category-toolbar-title">Affiner la sélection</p>
+            <p class="category-toolbar-note">
+              Filtrez par marque, confort, dimensions ou technologie pour trouver plus
+              rapidement le modèle adapté.
+            </p>
+          </div>
+          <div id="category-filters" class="category-filters"></div>
+          <div id="category-active-filters" class="category-active-filters" hidden></div>
+        </section>
+
+        <section class="category-products-section content-card content-card--soft">
+          <div class="category-products-toolbar">
+            <p id="category-results-meta" class="category-results-meta"></p>
+            <div id="category-sort-controls" class="category-sort-controls"></div>
+          </div>
+          <div id="category-products-grid" class="category-products-grid"></div>
+        </section>
+      </div>
+    </main>
+    <footer id="site-footer"></footer>
+    <script type="module" src="/js/app.js"></script>
+  </body>
+  </html>
+
