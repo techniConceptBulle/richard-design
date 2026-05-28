@@ -5,7 +5,7 @@
     "slug": "bico",
     "country": "Suisse",
     "description": "Marque suisse emblématique, reconnue pour ses matelas et sommiers de très haute qualité.",
-    "logo": "/assets/icons/brand-bico.svg",
+    "logo": "/assets/icons/brand-roviva.png",
     "website": "https://www.bico.ch"
   },
   {
@@ -14,7 +14,7 @@
     "slug": "superba",
     "country": "Suisse",
     "description": "Spécialiste du matelas suisse, avec un savoir-faire centenaire.",
-    "logo": "/assets/icons/brand-superba.svg",
+    "logo": "/assets/icons/brand-roviva.png",
     "website": "https://www.superba.ch"
   },
   {
@@ -23,7 +23,7 @@
     "slug": "tempur",
     "country": "Danemark",
     "description": "Référence mondiale en mousse à mémoire de forme haute densité.",
-    "logo": "/assets/icons/brand-tempur.svg",
+    "logo": "/assets/icons/brand-roviva.png",
     "website": "https://www.tempur.com"
   },
   {
@@ -32,8 +32,35 @@
     "slug": "hasena",
     "country": "Suisse",
     "description": "Lits et cadres de lit design, personnalisables et durables.",
-    "logo": "/assets/icons/brand-hasena.svg",
+    "logo": "/assets/icons/brand-roviva.png",
     "website": "https://www.hasenabeds.com"
+  },
+  {
+    "id": "roviva",
+    "name": "Roviva",
+    "slug": "roviva",
+    "country": "Suisse",
+    "description": "Literie suisse premium, reconnue pour son confort et la qualité de fabrication.",
+    "logo": "/assets/icons/brand-roviva.png",
+    "website": "https://www.roviva.ch"
+  },
+  {
+    "id": "dunlopillo",
+    "name": "Dunlopillo",
+    "slug": "dunlopillo",
+    "country": "Suisse",
+    "description": "Matelas techniques reconnus pour l’équilibre entre accueil moelleux et soutien durable.",
+    "logo": "/assets/icons/brand-roviva.png",
+    "website": "https://www.dunlopillo.ch"
+  },
+  {
+    "id": "swissflex",
+    "name": "Swissflex",
+    "slug": "swissflex",
+    "country": "Suisse",
+    "description": "Solutions de sommeil ergonomiques avec technologies de couchage évolutives.",
+    "logo": "/assets/icons/brand-roviva.png",
+    "website": "https://www.swissflex.com"
   },
   {
     "id": "richard-sa",
@@ -41,7 +68,7 @@
     "slug": "richard-sa",
     "country": "Suisse",
     "description": "Sélection exclusive Richard SA : produits développés avec nos partenaires suisses.",
-    "logo": "/assets/icons/brand-richard.svg",
+    "logo": "/assets/icons/brand-roviva.png",
     "website": "https://www.richard-sa.ch"
   }
 ]

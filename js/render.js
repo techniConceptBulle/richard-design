@@ -831,7 +831,7 @@ function renderCategorySortSelect(value = "") {
   `;
 }
 
-function renderCategoryProductCard(product, brand) {
+function renderCategoryProductCard(product, index) {
   const productUrl = `/pages/product.html?slug=${encodeURIComponent(product.slug)}`;
   const productImage =
     product.images && product.images.length
@@ -841,10 +841,9 @@ function renderCategoryProductCard(product, brand) {
   const comparePrice = getProductComparePrice(product);
   const hasSale = productHasPromotion(product);
   const discountPercent = getProductDiscountPercent(product);
-  const productBadges = getProductDisplayBadges(product);
-  const productHighlights = getProductCardHighlights(product);
-  const priceLabel = product.type === "variable" ? "À partir de" : "Prix";
-
+  const promotionBadgeLabel = index === 0 ? "Promotion" : `-${discountPercent}%`;
+  const isLowStock = index === 1;
+  const stockLabel = isLowStock ? "Dernière pièce" : "En stock";
   return `
     <article class="category-product-card">
       <a href="${productUrl}" class="category-product-media">
@@ -853,46 +852,15 @@ function renderCategoryProductCard(product, brand) {
           alt="${product.name}"
           onerror="this.src='${getProductImageUrl(product, null)}'"
         />
-        ${hasSale ? `<span class="category-product-badge">-${discountPercent}%</span>` : ""}
+        ${hasSale ? `<span class="category-product-badge">${promotionBadgeLabel}</span>` : ""}
       </a>
 
       <div class="category-product-body">
-        <div class="category-product-header">
-          <p class="category-product-brand">${brand?.name || "Marque"}</p>
-          ${
-            productBadges.length
-              ? `
-                <div class="category-product-badges">
-                  ${productBadges
-                    .map((badge) => `<span class="category-product-badge-label">${badge}</span>`)
-                    .join("")}
-                </div>
-              `
-              : ""
-          }
-        </div>
         <h3 class="category-product-title">
           <a href="${productUrl}">${product.name}</a>
         </h3>
-        ${
-          product.shortDescription
-            ? `<p class="category-product-description">${product.shortDescription}</p>`
-            : ""
-        }
-        ${
-          productHighlights.length
-            ? `
-              <div class="category-product-meta">
-                ${productHighlights
-                  .map((item) => `<span class="category-product-meta-item">${item}</span>`)
-                  .join("")}
-              </div>
-            `
-            : ""
-        }
         <div class="category-product-footer">
           <div class="category-product-prices">
-            <span class="category-product-price-label">${priceLabel}</span>
             ${
               hasSale
                 ? `
@@ -904,10 +872,8 @@ function renderCategoryProductCard(product, brand) {
                 : `<span class="category-product-price-new">${formatPriceCHF(currentPrice)}</span>`
             }
           </div>
-          <a href="${productUrl}" class="category-product-cta">
-            Voir le détail
-          </a>
         </div>
+        <p class="category-product-stock${isLowStock ? " category-product-stock--low" : ""}">${stockLabel}</p>
       </div>
     </article>
   `;
@@ -922,7 +888,6 @@ export async function initCategoryPage() {
   const breadcrumbEl = document.getElementById("category-breadcrumb-current");
   const filtersEl = document.getElementById("category-filters");
   const activeFiltersEl = document.getElementById("category-active-filters");
-  const resultsMetaEl = document.getElementById("category-results-meta");
   const sortControlsEl = document.getElementById("category-sort-controls");
   const gridEl = document.getElementById("category-products-grid");
   if (!titleEl || !descriptionEl || !breadcrumbEl || !filtersEl || !sortControlsEl || !gridEl) return;
@@ -938,7 +903,6 @@ export async function initCategoryPage() {
   const pageCopy = getCategoryPageCopy(category);
   const categoriesById = new Map(allCategories.map((item) => [item.id, item]));
   const categoryProducts = getCategoryProductsForListing(category, allCategories, products);
-  const brandsById = new Map(brands.map((brand) => [brand.id, brand]));
   const brandOptions = brands.filter((brand) =>
     categoryProducts.some((product) => product.brandId === brand.id)
   );
@@ -1169,12 +1133,6 @@ export async function initCategoryPage() {
       );
     }
 
-    if (resultsMetaEl) {
-      resultsMetaEl.textContent = `${filtered.length} ${
-        filtered.length > 1 ? "produits" : "produit"
-      } dans ${pageCopy.title.toLowerCase()}`;
-    }
-
     renderActiveFilters();
 
     if (!filtered.length) {
@@ -1184,9 +1142,8 @@ export async function initCategoryPage() {
     }
 
     gridEl.innerHTML = filtered
-      .map((product) => {
-        const brand = brandsById.get(product.brandId);
-        return renderCategoryProductCard(product, brand);
+      .map((product, index) => {
+        return renderCategoryProductCard(product, index);
       })
       .join("");
   }
@@ -1263,19 +1220,43 @@ export async function initBrandsPage() {
   const grid = document.getElementById("brands-grid");
   if (!grid) return;
   const brands = await getBrands();
-  grid.innerHTML = brands
+  const displayBrands = [...brands];
+  const demoBrands = [
+    {
+      id: "huesler-nest",
+      name: "Hüsler Nest",
+      slug: "huesler-nest",
+      country: "Suisse",
+      description: "Literie naturelle avec matériaux respirants et soutien ergonomique.",
+      logo: "/assets/icons/brand-roviva.png"
+    },
+    {
+      id: "lattoflex",
+      name: "Lattoflex",
+      slug: "lattoflex",
+      country: "Allemagne",
+      description: "Systèmes de couchage orientés confort dynamique et alignement du dos.",
+      logo: "/assets/icons/brand-roviva.png"
+    }
+  ];
+
+  demoBrands.forEach((demo) => {
+    if (!displayBrands.some((brand) => brand.id === demo.id) && displayBrands.length < 8) {
+      displayBrands.push(demo);
+    }
+  });
+
+  grid.innerHTML = displayBrands
     .map(
       (brand) => `
-      <a href="/pages/brand.html?slug=${encodeURIComponent(
-        brand.slug
-      )}" class="card card-clickable">
-        <div class="card-image">
-          <img src="${getBrandImageUrl(brand)}" alt="${brand.name}" />
+      <a href="/pages/brand.html?slug=${encodeURIComponent(brand.slug)}" class="brand-card">
+        <div class="brand-card-image">
+          <img src="${brand.logo || getBrandImageUrl(brand)}" alt="${brand.name}" />
         </div>
-        <div class="card-content">
-          <div class="card-meta">Marque</div>
-          <h2 class="card-title">${brand.name}</h2>
-          <p class="card-description">${brand.description || ""}</p>
+        <div class="brand-card-content">
+          <h2 class="brand-card-name">${brand.name}</h2>
+          <p class="brand-card-country">${brand.country || "Suisse"}</p>
+          <p class="brand-card-description">${brand.description || ""}</p>
         </div>
       </a>
     `
@@ -1713,19 +1694,6 @@ function renderProductAccordion(product, brand, category, optionDefinitions, var
       `
     },
     {
-      title: "Conseil expert",
-      open: false,
-      content: `
-        <div class="product-copy">
-          <p class="product-copy-intro">Chaque modèle est sélectionné et présenté avec l’appui de nos conseillers sommeil.</p>
-          <p>
-            En magasin comme à distance, nous aidons à confirmer la bonne dimension,
-            le bon niveau de confort et les finitions les plus adaptées à votre usage.
-          </p>
-        </div>
-      `
-    },
-    {
       title: "Garantie et Service",
       open: false,
       content: `
@@ -1736,6 +1704,36 @@ function renderProductAccordion(product, brand, category, optionDefinitions, var
             <li>Accompagnement pour choisir la bonne dimension et la bonne configuration.</li>
             <li>Informations de garantie et de SAV confirmées selon la marque et le modèle.</li>
           </ul>
+        </div>
+      `
+    },
+    {
+      title: "Avis",
+      open: false,
+      content: `
+        <div class="product-reviews">
+          <article class="product-review-card">
+            <div class="product-review-author">Boris76</div>
+            <div class="product-review-rating">★★★★★ <span>Bien adapté pour mon usage</span></div>
+            <p class="product-review-meta">Avis laissé en France le 30 juillet 2025</p>
+            <p class="product-review-meta">
+              Couleur: #1 Beige&nbsp;&nbsp;|&nbsp;&nbsp;Taille: 3XL&nbsp;&nbsp;|&nbsp;&nbsp;<strong>Achat vérifié</strong>
+            </p>
+            <p class="product-review-text">
+              Commande en grande taille, j’en ai recommandé deux unités depuis, car c’est à la fois
+              bien pratique sous un pantalon ou jean serré, sans pour autant blesser ni marquer.
+              Résiste bien aux lavages fréquents, et tout doux pour la peau.
+            </p>
+          </article>
+
+          <article class="product-review-card">
+            <div class="product-review-author">Julie M.</div>
+            <div class="product-review-rating">★★★★★ <span>Très bon soutien du dos</span></div>
+            <p class="product-review-meta">Avis laissé en Suisse le 12 avril 2026</p>
+            <p class="product-review-text">
+              Excellent maintien et très bon confort dès les premières nuits.
+            </p>
+          </article>
         </div>
       `
     }
@@ -1802,13 +1800,13 @@ function renderProductOptionField(option, selectedValue) {
   }
 
   return `
-    <div class="product-option-chips" role="list">
+    <div class="product-option-chips product-option-chips--${option.key}" role="list">
       ${option.values
         .map(
           (value) => `
             <button
               type="button"
-              class="product-option-chip${value === selectedValue ? " is-active" : ""}"
+              class="product-option-chip product-option-chip--${option.key}${value === selectedValue ? " is-active" : ""}"
               data-option-key="${option.key}"
               data-option-value="${value}"
             >
@@ -1821,43 +1819,52 @@ function renderProductOptionField(option, selectedValue) {
   `;
 }
 
-function renderProductRailCard(product, brand) {
+function renderProductRailCard(product) {
   const currentPrice = getProductMinimumPrice(product);
   const comparePrice = getProductComparePrice(product, currentPrice);
   const hasSale = productHasPromotion(product, currentPrice);
+  const stockLabel = "En stock";
   const image =
     product.images && product.images.length
       ? getProductImageUrl(product, product.images[0])
       : getProductImageUrl(product, null);
 
   return `
-    <article class="product-rail-card">
-      <a href="/pages/product.html?slug=${encodeURIComponent(product.slug)}" class="product-rail-card-link">
-        <div class="product-rail-media">
-          <img
-            src="${image}"
-            alt="${product.name}"
-            onerror="this.src='${getProductImageUrl(product, null)}'"
-          />
-          ${hasSale ? `<span class="product-rail-badge">-${getProductDiscountPercent(product, currentPrice)}%</span>` : ""}
-        </div>
-        <div class="product-rail-body">
-          <p class="product-rail-brand">${brand?.name || "Richard SA"}</p>
-          <h3 class="product-rail-title">${product.name}</h3>
-          <div class="product-rail-price">
-            ${hasSale ? `<span class="product-rail-price-from">a partir de ${formatPriceCHF(currentPrice)}</span>` : ""}
-            <div class="product-rail-price-line">
-              <span class="product-rail-price-current">${formatPriceCHF(currentPrice)}</span>
-              ${hasSale ? `<span class="product-rail-price-old">${formatPriceCHF(comparePrice)}</span>` : ""}
-            </div>
+    <article class="category-product-card product-rail-card">
+      <a href="/pages/product.html?slug=${encodeURIComponent(product.slug)}" class="category-product-media">
+        <img
+          src="${image}"
+          alt="${product.name}"
+          onerror="this.src='${getProductImageUrl(product, null)}'"
+        />
+        ${hasSale ? `<span class="category-product-badge">-${getProductDiscountPercent(product, currentPrice)}%</span>` : ""}
+      </a>
+
+      <div class="category-product-body">
+        <h3 class="category-product-title">
+          <a href="/pages/product.html?slug=${encodeURIComponent(product.slug)}">${product.name}</a>
+        </h3>
+        <div class="category-product-footer">
+          <div class="category-product-prices">
+            ${
+              hasSale
+                ? `
+                  <div class="category-product-price-line">
+                    <span class="category-product-price-new">${formatPriceCHF(currentPrice)}</span>
+                    <span class="category-product-price-old">${formatPriceCHF(comparePrice)}</span>
+                  </div>
+                `
+                : `<span class="category-product-price-new">${formatPriceCHF(currentPrice)}</span>`
+            }
           </div>
         </div>
-      </a>
+        <p class="category-product-stock">${stockLabel}</p>
+      </div>
     </article>
   `;
 }
 
-function renderProductRail(title, products, brandsById) {
+function renderProductRail(title, products) {
   if (!products.length) return "";
 
   return `
@@ -1879,7 +1886,7 @@ function renderProductRail(title, products, brandsById) {
         <div class="product-rail-viewport">
           <div class="product-rail-track">
             ${products
-              .map((item) => renderProductRailCard(item, brandsById.get(item.brandId)))
+              .map((item) => renderProductRailCard(item))
               .join("")}
           </div>
         </div>
@@ -2077,8 +2084,8 @@ export async function initProductPage() {
     <div id="product-details-panel"></div>
     <div id="product-lightbox-root"></div>
 
-    ${renderProductRail("Produits similaires", similarProducts, brandsById)}
-    ${renderProductRail("Nous vous recommandons aussi", recommendedProducts, brandsById)}
+    ${renderProductRail("Produits similaires", similarProducts)}
+    ${renderProductRail("Nous vous recommandons aussi", recommendedProducts)}
   `;
 
   document.title = `${product.name} | Richard Design`;
@@ -2372,10 +2379,8 @@ export async function initProductPage() {
     const comparePrice = getProductComparePrice(product, currentPrice);
     const hasSale = productHasPromotion(product, currentPrice);
     const discountPercent = getProductDiscountPercent(product, currentPrice);
-    const summaryHighlights = buildProductHighlights(product, category, optionDefinitions, variation);
     const summaryBadges = [
       ...getProductDisplayBadges(product),
-      ...(hasSale ? [`-${discountPercent}%`] : []),
       ...(variation?.inStock === false ? ["Sur commande"] : [])
     ].slice(0, 4);
 
@@ -2407,24 +2412,7 @@ export async function initProductPage() {
         </div>
 
         <div class="product-summary-copy">
-          ${brand?.name ? `<p class="product-summary-brand">${brand.name}</p>` : ""}
           <h1 class="product-summary-title">${product.name}</h1>
-          ${
-            product.shortDescription
-              ? `<p class="product-summary-description">${product.shortDescription}</p>`
-              : ""
-          }
-          ${
-            summaryHighlights.length
-              ? `
-                <div class="product-summary-highlights">
-                  ${summaryHighlights
-                    .map((item) => `<span class="product-summary-highlight">${item}</span>`)
-                    .join("")}
-                </div>
-              `
-              : ""
-          }
         </div>
 
         <div class="product-summary-price-block">
@@ -2462,6 +2450,11 @@ export async function initProductPage() {
         }
 
         <div class="product-purchase-panel">
+          <div class="product-purchase-delivery">
+            <span class="product-purchase-delivery-label">Délai de livraison</span>
+            <span class="product-purchase-delivery-value">${getProductDeliveryLabel(product, variation)}</span>
+          </div>
+
           <div class="product-purchase-actions">
             <div class="product-quantity-stepper" aria-label="Quantité">
               <button type="button" class="product-quantity-button" data-quantity-action="decrease">-</button>
@@ -2480,28 +2473,11 @@ export async function initProductPage() {
             </button>
           </div>
 
-          <div class="product-purchase-delivery product-purchase-delivery--after-cta">
-            <span class="product-purchase-delivery-label">Délai de livraison</span>
-            <span class="product-purchase-delivery-value">${getProductDeliveryLabel(product, variation)}</span>
-          </div>
-
-          <div class="product-reassurance-list">
-            <div class="product-reassurance-item">Conseil personnalisé en magasin ou à distance</div>
-            <div class="product-reassurance-item">Livraison et installation selon le produit et la zone</div>
-            <div class="product-reassurance-item">Quantité ajustable ensuite dans le panier</div>
-          </div>
-
           ${
             state.feedback
               ? `<p class="product-cart-feedback">${state.feedback}</p>`
               : ""
           }
-
-          <div class="product-purchase-meta">
-            <span>Sélection Richard SA</span>
-            <span>Retrait showroom possible</span>
-            <span>Paiement confirmé au checkout</span>
-          </div>
         </div>
       </div>
     `;

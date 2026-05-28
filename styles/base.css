@@ -105,6 +105,10 @@ small {
   padding-top: 88px;
 }
 
+.page[data-page="home"] .page-main {
+  padding-top: 30px;
+}
+
 .site-footer {
   margin-top: 80px;
 }
