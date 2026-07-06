@@ -1,10 +1,13 @@
 import { defineConfig } from 'vite'
-import { readdirSync, statSync } from 'node:fs'
+import { existsSync, readdirSync, statSync } from 'node:fs'
 import { cp } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const rootDir = dirname(fileURLToPath(import.meta.url))
+
+/** Dossiers statiques copiés dans dist après le build Vite. */
+const STATIC_COPY_DIRS = ['data', 'assets']
 
 /** Collecte index.html et pages/*.html pour le build multi-pages. */
 function collectHtmlInputs(dir) {
@@ -37,8 +40,12 @@ function copyStaticDirsPlugin() {
     name: 'copy-static-dirs',
     async closeBundle() {
       const outDir = resolve(rootDir, 'dist')
-      for (const dir of ['data', 'assets', 'homepage', 'product']) {
-        await cp(resolve(rootDir, dir), resolve(outDir, dir), { recursive: true })
+      for (const dir of STATIC_COPY_DIRS) {
+        const src = resolve(rootDir, dir)
+        if (!existsSync(src)) {
+          continue
+        }
+        await cp(src, resolve(outDir, dir), { recursive: true })
       }
     }
   }
