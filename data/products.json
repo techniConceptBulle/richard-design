@@ -1,17 +1,20 @@
 [
   {
     "id": "matelas-bico-allegra-22",
-    "name": "Matelas Allegra 22",
+    "name": "VALEVÅG matelas à ressorts ensachés",
     "slug": "matelas-bico-allegra-22",
-    "brandId": "bico",
+    "brandId": "ikea",
     "categoryId": "matelas",
     "type": "variable",
-    "shortDescription": "Matelas suisse haut de gamme, zones de confort différenciées, idéal pour couples.",
-    "description": "Le matelas Allegra 22 de Bico offre un soutien précis grâce à plusieurs zones de confort et une mousse haute résilience. Idéal pour les dormeurs sur le dos et le côté. Housse amovible et lavable.",
-    "badges": ["Nouveauté", "Best-seller"],
+    "shortDescription": "VALEVÅG matelas à ressorts ensachés, exemple inspiré du catalogue IKEA Suisse.",
+    "description": "VALEVÅG matelas à ressorts ensachés — matelas de démonstration pour la maquette catégorie, inspiré des produits visibles sur ikea.com/ch/fr/search/?q=matelas.",
+    "badges": [
+      "Nouveauté",
+      "Best-seller"
+    ],
     "liquidation": false,
-    "basePrice": 1590,
-    "compareAtPrice": 1890,
+    "basePrice": 199,
+    "compareAtPrice": 299,
     "cover": "Housse amovible et lavable",
     "variations": [
       {
@@ -19,7 +22,7 @@
         "label": "90 × 200 cm – Medium",
         "size": "90x200",
         "firmness": "medium",
-        "price": 1590,
+        "price": 199,
         "sku": "BI-AL22-90-200-M",
         "inStock": true
       },
@@ -28,7 +31,7 @@
         "label": "160 × 200 cm – Medium",
         "size": "160x200",
         "firmness": "medium",
-        "price": 2390,
+        "price": 299,
         "sku": "BI-AL22-160-200-M",
         "inStock": true
       },
@@ -37,15 +40,13 @@
         "label": "180 × 200 cm – Ferme",
         "size": "180x200",
         "firmness": "firm",
-        "price": 2590,
+        "price": 329,
         "sku": "BI-AL22-180-200-F",
         "inStock": false
       }
     ],
     "images": [
-      "/assets/images/products/bed-1839183_1920.jpg",
-      "/assets/images/products/bedroom-6778193_1920.jpg",
-      "/assets/images/products/minimal-4369856_1920.jpg"
+      "/assets/images/products/ikea/valevag.jpg"
     ]
   },
   {
@@ -57,7 +58,9 @@
     "type": "variable",
     "shortDescription": "Cadre de lit en chêne massif, lignes épurées, fabrication européenne.",
     "description": "La collection Oak Line de Hasena propose un design minimaliste en chêne massif. Plusieurs hauteurs de tête de lit et choix de pieds sont possibles. Compatible avec la plupart des sommiers.",
-    "badges": ["Personnalisable"],
+    "badges": [
+      "Personnalisable"
+    ],
     "liquidation": false,
     "basePrice": 1290,
     "compareAtPrice": 1540,
@@ -94,7 +97,9 @@
     "type": "variable",
     "shortDescription": "Oreiller ergonomique en mousse Tempur pour un parfait alignement cervical.",
     "description": "L'oreiller Tempur Original est conçu pour les dormeurs sur le dos et le côté. Il soutient la nuque et les épaules grâce à sa forme ergonomique et la mousse Tempur haute densité.",
-    "badges": ["Ergonomique"],
+    "badges": [
+      "Ergonomique"
+    ],
     "liquidation": false,
     "basePrice": 189,
     "compareAtPrice": 229,
@@ -129,7 +134,9 @@
     "type": "simple",
     "shortDescription": "Duvet 4 saisons modulable, idéal pour le climat suisse.",
     "description": "Composé de deux duvets reliables, ce modèle 4 saisons permet d'adapter la chaleur selon la période de l'année. Fabrication suisse avec duvet certifié.",
-    "badges": ["Exclusivité Richard SA"],
+    "badges": [
+      "Exclusivité Richard SA"
+    ],
     "liquidation": false,
     "compareAtPrice": 590,
     "price": 490,
@@ -148,7 +155,9 @@
     "type": "simple",
     "shortDescription": "Fauteuil relax motorisé avec relève-jambes – modèle d’exposition en parfait état.",
     "description": "Mécanisme électrique, télécommande simple, position zéro gravité. Tissu gris clair facile d’entretien. Quantité limitée (modèle d’exposition).",
-    "badges": ["En liquidation"],
+    "badges": [
+      "En liquidation"
+    ],
     "liquidation": true,
     "price": 1890,
     "salePrice": 1190,
@@ -166,7 +175,9 @@
     "type": "simple",
     "shortDescription": "Matelas ressorts ensachés, fermeté medium, modèle d’exposition.",
     "description": "Matelas en parfait état, utilisé uniquement en exposition en magasin. Ventilation optimale et accueil souple.",
-    "badges": ["En liquidation"],
+    "badges": [
+      "En liquidation"
+    ],
     "liquidation": true,
     "price": 1590,
     "salePrice": 890,
@@ -183,7 +194,9 @@
     "type": "variable",
     "shortDescription": "Ensemble boxspring complet avec tête de lit et matelas inclus.",
     "description": "Set boxspring développé avec un partenaire suisse, incluant sommier ressorts, matelas et surmatelas. Plusieurs finitions de tissu et hauteurs de pieds disponibles.",
-    "badges": ["Exclusivité Richard SA"],
+    "badges": [
+      "Exclusivité Richard SA"
+    ],
     "liquidation": false,
     "basePrice": 3490,
     "compareAtPrice": 3890,
@@ -220,7 +233,9 @@
     "type": "simple",
     "shortDescription": "Cadre de lit en chêne, fin de série, quantité limitée.",
     "description": "Cadre de lit en chêne massif, fin de série. Design épuré, plusieurs tailles disponibles. Stock limité.",
-    "badges": ["En liquidation"],
+    "badges": [
+      "En liquidation"
+    ],
     "liquidation": true,
     "price": 1290,
     "salePrice": 890,
@@ -230,177 +245,191 @@
   },
   {
     "id": "matelas-bico-liquidation",
-    "name": "Matelas Bico",
+    "name": "VALEVÅG matelas et surmatelas",
     "slug": "matelas-bico-liquidation",
-    "brandId": "bico",
+    "brandId": "ikea",
     "categoryId": "matelas",
     "type": "simple",
-    "shortDescription": "Matelas Bico haut de gamme, modèle d’exposition en excellent état.",
-    "description": "Matelas utilisé uniquement en magasin pour exposition. Zones de confort différenciées, mousse haute résilience. Parfait état.",
-    "badges": ["En liquidation"],
+    "shortDescription": "VALEVÅG matelas et surmatelas, exemple inspiré du catalogue IKEA Suisse.",
+    "description": "VALEVÅG matelas et surmatelas — matelas de démonstration pour la maquette catégorie, inspiré des produits visibles sur ikea.com/ch/fr/search/?q=matelas.",
+    "badges": [
+      "En liquidation"
+    ],
     "liquidation": true,
-    "compareAtPrice": 1990,
-    "price": 1990,
-    "salePrice": 1290,
+    "compareAtPrice": 478,
+    "price": 288,
+    "salePrice": 288,
     "size": "180x200",
     "firmness": "firm",
     "cover": "Housse amovible et lavable",
     "images": [
-      "/assets/images/products/bed-1839183_1920.jpg"
+      "/assets/images/products/ikea/valevag-topper.jpg"
     ]
   },
   {
     "id": "matelas-superba-elegance",
-    "name": "Matelas Superba Élegance",
+    "name": "VESTMARKA matelas à ressorts",
     "slug": "matelas-superba-elegance",
-    "brandId": "superba",
+    "brandId": "ikea",
     "categoryId": "matelas",
     "type": "variable",
-    "shortDescription": "Matelas à ressorts ensachés offrant un accueil équilibré et une excellente ventilation.",
-    "description": "Le modèle Élegance de Superba associe ressorts ensachés et mousse de confort pour un soutien homogène et une bonne indépendance de couchage. Idéal pour les dormeurs recherchant un confort stable et bien ventilé.",
-    "badges": ["Confort ventilé"],
+    "shortDescription": "VESTMARKA matelas à ressorts, exemple inspiré du catalogue IKEA Suisse.",
+    "description": "VESTMARKA matelas à ressorts — matelas de démonstration pour la maquette catégorie, inspiré des produits visibles sur ikea.com/ch/fr/search/?q=matelas.",
+    "badges": [
+      "Confort ventilé"
+    ],
     "liquidation": false,
-    "basePrice": 1290,
-    "compareAtPrice": 1590,
+    "basePrice": 119,
+    "compareAtPrice": 219,
     "variations": [
       {
-        "id": "superba-elegance-90x200-firm-grande-hygiene",
-        "label": "90 × 200 cm – Ferme – Grande Hygiène",
+        "id": "superba-elegance-90x200-firm-removable",
+        "label": "90 × 200 cm – Ferme – Housse amovible et lavable",
         "size": "90x200",
         "firmness": "firm",
-        "cover": "Grande Hygiène",
-        "price": 1290,
-        "sku": "SU-EL-90-200-F-GH",
+        "cover": "Housse amovible et lavable",
+        "price": 119,
+        "sku": "SU-EL-90-200-F-AL",
         "inStock": true
       },
       {
-        "id": "superba-elegance-90x200-firm-hypo-allergen",
-        "label": "90 × 200 cm – Ferme – Hypo Allergene",
+        "id": "superba-elegance-90x200-firm-thermo",
+        "label": "90 × 200 cm – Ferme – Thermorégulée",
         "size": "90x200",
         "firmness": "firm",
-        "cover": "Hypo Allergene",
-        "price": 1290,
-        "sku": "SU-EL-90-200-F-HA",
+        "cover": "Thermorégulée",
+        "price": 119,
+        "sku": "SU-EL-90-200-F-TH",
         "inStock": true
       },
       {
-        "id": "superba-elegance-90x200-medium-grande-hygiene",
-        "label": "90 × 200 cm – Medium – Grande Hygiène",
+        "id": "superba-elegance-90x200-medium-removable",
+        "label": "90 × 200 cm – Medium – Housse amovible et lavable",
         "size": "90x200",
         "firmness": "medium",
-        "cover": "Grande Hygiène",
-        "price": 1390,
-        "sku": "SU-EL-90-200-M-GH",
+        "cover": "Housse amovible et lavable",
+        "price": 129,
+        "sku": "SU-EL-90-200-M-AL",
         "inStock": true
       },
       {
-        "id": "superba-elegance-90x200-medium-hypo-allergen",
-        "label": "90 × 200 cm – Medium – Hypo Allergene",
+        "id": "superba-elegance-90x200-medium-thermo",
+        "label": "90 × 200 cm – Medium – Thermorégulée",
         "size": "90x200",
         "firmness": "medium",
-        "cover": "Hypo Allergene",
-        "price": 1390,
-        "sku": "SU-EL-90-200-M-HA",
+        "cover": "Thermorégulée",
+        "price": 129,
+        "sku": "SU-EL-90-200-M-TH",
         "inStock": true
       },
       {
-        "id": "superba-elegance-90x200-soft-grande-hygiene",
-        "label": "90 × 200 cm – Souple – Grande Hygiène",
+        "id": "superba-elegance-90x200-soft-removable",
+        "label": "90 × 200 cm – Souple – Housse amovible et lavable",
         "size": "90x200",
         "firmness": "soft",
-        "cover": "Grande Hygiène",
-        "price": 1490,
-        "sku": "SU-EL-90-200-S-GH",
+        "cover": "Housse amovible et lavable",
+        "price": 139,
+        "sku": "SU-EL-90-200-S-AL",
         "inStock": true
       },
       {
-        "id": "superba-elegance-90x200-soft-hypo-allergen",
-        "label": "90 × 200 cm – Souple – Hypo Allergene",
+        "id": "superba-elegance-90x200-soft-thermo",
+        "label": "90 × 200 cm – Souple – Thermorégulée",
         "size": "90x200",
         "firmness": "soft",
-        "cover": "Hypo Allergene",
-        "price": 1490,
-        "sku": "SU-EL-90-200-S-HA",
+        "cover": "Thermorégulée",
+        "price": 139,
+        "sku": "SU-EL-90-200-S-TH",
         "inStock": true
       },
       {
-        "id": "superba-elegance-160x200-firm-grande-hygiene",
-        "label": "160 × 200 cm – Ferme – Grande Hygiène",
+        "id": "superba-elegance-160x200-firm-removable",
+        "label": "160 × 200 cm – Ferme – Housse amovible et lavable",
         "size": "160x200",
         "firmness": "firm",
-        "cover": "Grande Hygiène",
-        "price": 1890,
-        "sku": "SU-EL-160-200-F-GH",
+        "cover": "Housse amovible et lavable",
+        "price": 189,
+        "sku": "SU-EL-160-200-F-AL",
         "inStock": true
       },
       {
-        "id": "superba-elegance-160x200-firm-hypo-allergen",
-        "label": "160 × 200 cm – Ferme – Hypo Allergene",
+        "id": "superba-elegance-160x200-firm-thermo",
+        "label": "160 × 200 cm – Ferme – Thermorégulée",
         "size": "160x200",
         "firmness": "firm",
-        "cover": "Hypo Allergene",
-        "price": 1890,
-        "sku": "SU-EL-160-200-F-HA",
+        "cover": "Thermorégulée",
+        "price": 189,
+        "sku": "SU-EL-160-200-F-TH",
         "inStock": true
       },
       {
-        "id": "superba-elegance-160x200-medium-grande-hygiene",
-        "label": "160 × 200 cm – Medium – Grande Hygiène",
+        "id": "superba-elegance-160x200-medium-removable",
+        "label": "160 × 200 cm – Medium – Housse amovible et lavable",
         "size": "160x200",
         "firmness": "medium",
-        "cover": "Grande Hygiène",
-        "price": 1990,
-        "sku": "SU-EL-160-200-M-GH",
+        "cover": "Housse amovible et lavable",
+        "price": 199,
+        "sku": "SU-EL-160-200-M-AL",
         "inStock": true
       },
       {
-        "id": "superba-elegance-160x200-medium-hypo-allergen",
-        "label": "160 × 200 cm – Medium – Hypo Allergene",
+        "id": "superba-elegance-160x200-medium-thermo",
+        "label": "160 × 200 cm – Medium – Thermorégulée",
         "size": "160x200",
         "firmness": "medium",
-        "cover": "Hypo Allergene",
-        "price": 1990,
-        "sku": "SU-EL-160-200-M-HA",
+        "cover": "Thermorégulée",
+        "price": 199,
+        "sku": "SU-EL-160-200-M-TH",
         "inStock": true
       },
       {
-        "id": "superba-elegance-160x200-soft-grande-hygiene",
-        "label": "160 × 200 cm – Souple – Grande Hygiène",
+        "id": "superba-elegance-160x200-soft-removable",
+        "label": "160 × 200 cm – Souple – Housse amovible et lavable",
         "size": "160x200",
         "firmness": "soft",
-        "cover": "Grande Hygiène",
-        "price": 2090,
-        "sku": "SU-EL-160-200-S-GH",
+        "cover": "Housse amovible et lavable",
+        "price": 209,
+        "sku": "SU-EL-160-200-S-AL",
         "inStock": true
       },
       {
-        "id": "superba-elegance-160x200-soft-hypo-allergen",
-        "label": "160 × 200 cm – Souple – Hypo Allergene",
+        "id": "superba-elegance-160x200-soft-thermo",
+        "label": "160 × 200 cm – Souple – Thermorégulée",
         "size": "160x200",
         "firmness": "soft",
-        "cover": "Hypo Allergene",
-        "price": 2090,
-        "sku": "SU-EL-160-200-S-HA",
+        "cover": "Thermorégulée",
+        "price": 209,
+        "sku": "SU-EL-160-200-S-TH",
         "inStock": true
       }
     ],
+    "coverOptions": [
+      "Housse amovible et lavable",
+      "Thermorégulée"
+    ],
     "images": [
-      "/assets/images/products/bed-1839183_1920.jpg"
+      "/assets/images/products/ikea/vestmarka.jpg",
+      "/assets/images/products/ikea/akrehamn.jpg",
+      "/assets/images/products/ikea/haugesund.jpg",
+      "/assets/images/products/ikea/morgedal.jpg",
+      "/assets/images/products/ikea/matrand.jpg"
     ]
   },
   {
     "id": "matelas-tempur-pro-plus",
-    "name": "Matelas Tempur Pro Plus",
+    "name": "ÅKREHAMN matelas en mousse",
     "slug": "matelas-tempur-pro-plus",
-    "brandId": "tempur",
+    "brandId": "ikea",
     "categoryId": "matelas",
     "type": "variable",
-    "shortDescription": "Matelas à mémoire de forme avec accueil enveloppant et excellente réduction des points de pression.",
-    "description": "Le Tempur Pro Plus épouse précisément la morphologie du dormeur grâce à sa mousse à mémoire de forme haute densité. Il convient particulièrement aux personnes qui recherchent un accueil plus enveloppant et une sensation de confort premium.",
-    "badges": ["Mémoire de forme"],
+    "shortDescription": "ÅKREHAMN matelas en mousse, exemple inspiré du catalogue IKEA Suisse.",
+    "description": "ÅKREHAMN matelas en mousse — matelas de démonstration pour la maquette catégorie, inspiré des produits visibles sur ikea.com/ch/fr/search/?q=matelas.",
+    "badges": [
+      "Mémoire de forme"
+    ],
     "liquidation": false,
-    "basePrice": 2190,
-    "compareAtPrice": 2590,
+    "basePrice": 279,
+    "compareAtPrice": 379,
     "cover": "Housse thermorégulée",
     "variations": [
       {
@@ -408,7 +437,7 @@
         "label": "90 × 200 cm – Souple",
         "size": "90x200",
         "firmness": "soft",
-        "price": 2190,
+        "price": 279,
         "sku": "TE-PP-90-200-S",
         "inStock": true
       },
@@ -417,49 +446,53 @@
         "label": "160 × 200 cm – Medium",
         "size": "160x200",
         "firmness": "medium",
-        "price": 3090,
+        "price": 379,
         "sku": "TE-PP-160-200-M",
         "inStock": true
       }
     ],
     "images": [
-      "/assets/images/products/minimal-4369856_1920.jpg"
+      "/assets/images/products/ikea/akrehamn.jpg"
     ]
   },
   {
     "id": "matelas-richard-signature",
-    "name": "Matelas Richard Signature",
+    "name": "MATRAND matelas en mousse polyuréthane",
     "slug": "matelas-richard-signature",
-    "brandId": "richard-sa",
+    "brandId": "ikea",
     "categoryId": "matelas",
     "type": "simple",
-    "shortDescription": "Matelas hybride développé pour Richard SA avec confort équilibré et soutien progressif.",
-    "description": "Le matelas Richard Signature combine mousse haute résilience et soutien progressif pour offrir un confort polyvalent. Sa finition textile premium et sa housse douce au toucher en font un excellent choix pour une chambre principale.",
-    "badges": ["Exclusivité Richard SA"],
+    "shortDescription": "MATRAND matelas en mousse polyuréthane, exemple inspiré du catalogue IKEA Suisse.",
+    "description": "MATRAND matelas en mousse polyuréthane — matelas de démonstration pour la maquette catégorie, inspiré des produits visibles sur ikea.com/ch/fr/search/?q=matelas.",
+    "badges": [
+      "Exclusivité Richard SA"
+    ],
     "liquidation": false,
-    "compareAtPrice": 1990,
-    "price": 1690,
+    "compareAtPrice": 199,
+    "price": 149,
     "salePrice": null,
     "size": "160x200",
     "firmness": "medium",
     "cover": "Housse en coton bio",
     "images": [
-      "/assets/images/products/bedroom-6778193_1920.jpg"
+      "/assets/images/products/ikea/matrand.jpg"
     ]
   },
   {
     "id": "matelas-bico-climaluxe",
-    "name": "Matelas Bico ClimaLuxe",
+    "name": "HAUGESUND matelas à ressorts ensachés",
     "slug": "matelas-bico-climaluxe",
-    "brandId": "bico",
+    "brandId": "ikea",
     "categoryId": "matelas",
     "type": "variable",
-    "shortDescription": "Matelas respirant avec soutien progressif et excellente régulation thermique.",
-    "description": "Le Bico ClimaLuxe combine un coeur de soutien précis avec des matériaux favorisant la circulation de l'air. Il convient aux dormeurs qui recherchent un confort ferme et une sensation de fraîcheur sur toute la nuit.",
-    "badges": ["Ventilation active"],
+    "shortDescription": "HAUGESUND matelas à ressorts ensachés, exemple inspiré du catalogue IKEA Suisse.",
+    "description": "HAUGESUND matelas à ressorts ensachés — matelas de démonstration pour la maquette catégorie, inspiré des produits visibles sur ikea.com/ch/fr/search/?q=matelas.",
+    "badges": [
+      "Ventilation active"
+    ],
     "liquidation": false,
-    "basePrice": 1490,
-    "compareAtPrice": 1790,
+    "basePrice": 229,
+    "compareAtPrice": 299,
     "cover": "Housse climatisée lavable",
     "variations": [
       {
@@ -467,7 +500,7 @@
         "label": "90 × 200 cm – Medium",
         "size": "90x200",
         "firmness": "medium",
-        "price": 1490,
+        "price": 229,
         "sku": "BI-CL-90-200-M",
         "inStock": true
       },
@@ -476,7 +509,7 @@
         "label": "160 × 200 cm – Ferme",
         "size": "160x200",
         "firmness": "firm",
-        "price": 2190,
+        "price": 329,
         "sku": "BI-CL-160-200-F",
         "inStock": true
       },
@@ -485,49 +518,53 @@
         "label": "180 × 200 cm – Ferme",
         "size": "180x200",
         "firmness": "firm",
-        "price": 2390,
+        "price": 349,
         "sku": "BI-CL-180-200-F",
         "inStock": true
       }
     ],
     "images": [
-      "/assets/images/products/bed-1839183_1920.jpg"
+      "/assets/images/products/ikea/haugesund.jpg"
     ]
   },
   {
     "id": "matelas-superba-ortho-support",
-    "name": "Matelas Superba Ortho Support",
+    "name": "MORGEDAL matelas en mousse",
     "slug": "matelas-superba-ortho-support",
-    "brandId": "superba",
+    "brandId": "ikea",
     "categoryId": "matelas",
     "type": "simple",
-    "shortDescription": "Matelas de soutien ferme pensé pour un alignement précis du corps.",
-    "description": "Le Superba Ortho Support propose une sensation ferme et stable, particulièrement adaptée aux dormeurs qui privilégient un maintien tonique. Sa structure multicouche aide à répartir la pression tout en gardant une bonne stabilité.",
-    "badges": ["Soutien ferme"],
+    "shortDescription": "MORGEDAL matelas en mousse, exemple inspiré du catalogue IKEA Suisse.",
+    "description": "MORGEDAL matelas en mousse — matelas de démonstration pour la maquette catégorie, inspiré des produits visibles sur ikea.com/ch/fr/search/?q=matelas.",
+    "badges": [
+      "Soutien ferme"
+    ],
     "liquidation": false,
-    "compareAtPrice": 2290,
-    "price": 1890,
+    "compareAtPrice": 249,
+    "price": 189,
     "salePrice": null,
     "size": "180x200",
     "firmness": "firm",
     "cover": "Housse anti-acariens",
     "images": [
-      "/assets/images/products/bedroom-6778193_1920.jpg"
+      "/assets/images/products/ikea/morgedal.jpg"
     ]
   },
   {
     "id": "matelas-tempur-cloud-elite",
-    "name": "Matelas Tempur Cloud Elite",
+    "name": "ÅNNELAND matelas à ressorts",
     "slug": "matelas-tempur-cloud-elite",
-    "brandId": "tempur",
+    "brandId": "ikea",
     "categoryId": "matelas",
     "type": "variable",
-    "shortDescription": "Matelas mémoire de forme avec accueil souple et sensation enveloppante premium.",
-    "description": "Le Tempur Cloud Elite est conçu pour les dormeurs qui aiment un accueil plus moelleux tout en conservant un bon soutien. Sa mousse à mémoire de forme réduit les points de pression et améliore la sensation de cocon.",
-    "badges": ["Accueil souple"],
+    "shortDescription": "ÅNNELAND matelas à ressorts, exemple inspiré du catalogue IKEA Suisse.",
+    "description": "ÅNNELAND matelas à ressorts — matelas de démonstration pour la maquette catégorie, inspiré des produits visibles sur ikea.com/ch/fr/search/?q=matelas.",
+    "badges": [
+      "Accueil souple"
+    ],
     "liquidation": false,
-    "basePrice": 2490,
-    "compareAtPrice": 2890,
+    "basePrice": 249,
+    "compareAtPrice": 329,
     "cover": "Housse respirante premium",
     "variations": [
       {
@@ -535,7 +572,7 @@
         "label": "90 × 200 cm – Souple",
         "size": "90x200",
         "firmness": "soft",
-        "price": 2490,
+        "price": 249,
         "sku": "TE-CE-90-200-S",
         "inStock": true
       },
@@ -544,13 +581,13 @@
         "label": "160 × 200 cm – Medium",
         "size": "160x200",
         "firmness": "medium",
-        "price": 3390,
+        "price": 339,
         "sku": "TE-CE-160-200-M",
         "inStock": true
       }
     ],
     "images": [
-      "/assets/images/products/minimal-4369856_1920.jpg"
+      "/assets/images/products/ikea/anneland.jpg"
     ]
   },
   {
@@ -562,7 +599,9 @@
     "type": "simple",
     "shortDescription": "Oreiller ergonomique Tempur, fin de série, taille unique.",
     "description": "Oreiller Tempur Original en fin de série. Forme ergonomique pour un parfait alignement cervical. Stock limité.",
-    "badges": ["En liquidation"],
+    "badges": [
+      "En liquidation"
+    ],
     "liquidation": true,
     "price": 189,
     "salePrice": 129,
@@ -579,7 +618,9 @@
     "type": "simple",
     "shortDescription": "Duvet 4 saisons modulable, fin de série, quantité limitée.",
     "description": "Duvet 4 saisons composé de deux duvets reliables. Fabrication suisse avec duvet certifié. Fin de série.",
-    "badges": ["En liquidation"],
+    "badges": [
+      "En liquidation"
+    ],
     "liquidation": true,
     "price": 490,
     "salePrice": 350,
@@ -596,7 +637,9 @@
     "type": "simple",
     "shortDescription": "Sommier électrique réglable, modèle d'exposition en excellent état.",
     "description": "Sommier électrique avec télécommande, utilisé uniquement en magasin pour exposition. Tête et pieds réglables indépendamment. Parfait état.",
-    "badges": ["En liquidation"],
+    "badges": [
+      "En liquidation"
+    ],
     "liquidation": true,
     "price": 1290,
     "salePrice": 890,
@@ -615,7 +658,9 @@
     "type": "simple",
     "shortDescription": "Surmatelas en mousse mémoire de forme, fin de série, quantité limitée.",
     "description": "Surmatelas Tempur en mousse mémoire de forme haute densité. S'adapte à la forme du corps pour un confort optimal. Fin de série.",
-    "badges": ["En liquidation"],
+    "badges": [
+      "En liquidation"
+    ],
     "liquidation": true,
     "price": 590,
     "salePrice": 390,
@@ -633,7 +678,9 @@
     "type": "variable",
     "shortDescription": "Sommier à lattes multiplis avec zones de confort et soutien progressif.",
     "description": "Le sommier Bico Lattes Premium améliore la ventilation du matelas tout en offrant un soutien souple et précis. Il convient parfaitement aux matelas mousse, latex et ressorts de nouvelle génération.",
-    "badges": ["Confort équilibré"],
+    "badges": [
+      "Confort équilibré"
+    ],
     "liquidation": false,
     "basePrice": 690,
     "compareAtPrice": 840,
@@ -669,7 +716,9 @@
     "type": "variable",
     "shortDescription": "Sommier électrique relevable avec télécommande et zones articulées.",
     "description": "Le Superba Relax Motion permet d'ajuster indépendamment la tête et les jambes pour améliorer la lecture, la détente ou la récupération. Sa structure robuste est conçue pour accompagner les matelas premium.",
-    "badges": ["Réglage électrique"],
+    "badges": [
+      "Réglage électrique"
+    ],
     "liquidation": false,
     "basePrice": 1490,
     "compareAtPrice": 1790,
@@ -705,7 +754,9 @@
     "type": "simple",
     "shortDescription": "Sommier fixe robuste pensé pour un soutien simple, durable et efficace.",
     "description": "Le sommier Richard Essentiel est une base fiable pour accompagner un matelas du quotidien. Sa structure fixe assure une bonne stabilité et une circulation d'air adaptée à un usage régulier.",
-    "badges": ["Exclusivité Richard SA"],
+    "badges": [
+      "Exclusivité Richard SA"
+    ],
     "liquidation": false,
     "compareAtPrice": 690,
     "price": 540,
@@ -725,7 +776,9 @@
     "type": "variable",
     "shortDescription": "Oreiller moelleux au gonflant généreux pour un accueil confortable.",
     "description": "L'oreiller Richard Nuage offre un accueil doux et équilibré pour les dormeurs qui recherchent un bon maintien sans rigidité excessive. Il se prête aussi bien à un usage quotidien qu'à une chambre d'amis haut de gamme.",
-    "badges": ["Accueil moelleux"],
+    "badges": [
+      "Accueil moelleux"
+    ],
     "liquidation": false,
     "basePrice": 119,
     "compareAtPrice": 149,
@@ -760,7 +813,9 @@
     "type": "simple",
     "shortDescription": "Surmatelas premium pour adoucir l'accueil et améliorer le confort global du couchage.",
     "description": "Le Tempur Sensation apporte une couche de confort supplémentaire tout en préservant un bon soutien général. Il est idéal pour prolonger la durée de vie du matelas et ajuster la sensation de couchage.",
-    "badges": ["Confort enveloppant"],
+    "badges": [
+      "Confort enveloppant"
+    ],
     "liquidation": false,
     "compareAtPrice": 890,
     "price": 690,
@@ -779,7 +834,9 @@
     "type": "simple",
     "shortDescription": "Duvet haut de gamme à chaleur équilibrée, léger et agréable toute l'année.",
     "description": "Le duvet Premium Richard SA est conçu pour offrir un confort tempéré et une sensation légère, idéale pour une utilisation régulière. Son enveloppe douce et sa finition soignée en font un excellent complément de literie.",
-    "badges": ["Confort 4 saisons"],
+    "badges": [
+      "Confort 4 saisons"
+    ],
     "liquidation": false,
     "compareAtPrice": 690,
     "price": 560,
@@ -790,4 +847,3 @@
     ]
   }
 ]
-

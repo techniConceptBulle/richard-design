@@ -4,10 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <title>Richard Design – Literie & confort</title>
+    <title>Richard La Literie – Literie &amp; confort</title>
     <link rel="stylesheet" href="/styles/base.css" />
     <link rel="stylesheet" href="/styles/layout.css" />
     <link rel="stylesheet" href="/styles/components.css" />
@@ -15,195 +12,187 @@
   <body class="page" data-page="home">
     <header id="site-header"></header>
 
-    <main class="page-main">
-      <!-- Highlights -->
-      <section class="section section-home-highlights">
-        <div class="container">
-          <div class="home-highlights">
-            <a href="/pages/category.html?slug=liquidation" class="home-highlight-card home-highlight-card--hero">
-              <div class="home-highlight-media">
-                <img src="/assets/images/products/bed-1839183_1920.jpg" alt="Matelas en promotion pour le grand déstockage" />
+    <main class="rd-page">
+      <section class="hero-slider-block">
+        <div class="hero-slider__slider" id="home-hero-slider" data-hero-autoplay="true">
+          <div class="hero-slider__grid">
+            <div class="hero-slider__content">
+              <div class="hero-slider__copy" aria-roledescription="carousel" aria-label="Hero">
+                <div class="hero-slider__track" data-hero-copy-track>
+                  <article class="hero-slider__slide" aria-roledescription="slide" aria-label="Le confort commence ici">
+                    <h2 class="hero-slider__title">Le confort commence ici</h2>
+                    <div class="hero-slider__text">
+                      <p>Depuis 1933 à Crissier, nous vous guidons vers la literie idéale, adaptée à vos besoins et à votre budget.</p>
+                      <p>Des marques reconnues, un conseil expert, pour des nuits vraiment réparatrices.</p>
+                    </div>
+                    <a class="hero-slider__cta" href="/pages/brands.html">Découvrir nos produits</a>
+                  </article>
+                  <article class="hero-slider__slide" aria-roledescription="slide" aria-label="Le confort commence ici — slide 2">
+                    <h2 class="hero-slider__title">Le confort commence ici</h2>
+                    <div class="hero-slider__text">
+                      <p>Depuis 1933 à Crissier, nous vous guidons vers la literie idéale, adaptée à vos besoins et à votre budget.</p>
+                      <p>Des marques reconnues, un conseil expert, pour des nuits vraiment réparatrices.</p>
+                    </div>
+                    <a class="hero-slider__cta" href="/pages/categories.html">Découvrir nos produits</a>
+                  </article>
+                </div>
               </div>
-              <div class="home-highlight-overlay"></div>
-              <div class="home-highlight-content">
-                <p class="home-highlight-kicker">Offres spéciales</p>
-                <h2 class="home-highlight-title">Grand déstockage</h2>
-                <p class="home-highlight-subtitle">-30% | -40% | -50%</p>
-                <span class="home-highlight-cta">J&apos;en profite</span>
+              <div class="hero-slider__pagination" role="tablist" aria-label="Navigation du slider hero">
+                <button type="button" class="hero-slider__bullet is-active" data-hero-index="0" role="tab" aria-label="Slide 1" aria-selected="true"></button>
+                <button type="button" class="hero-slider__bullet" data-hero-index="1" role="tab" aria-label="Slide 2" aria-selected="false" tabindex="-1"></button>
               </div>
-            </a>
-
-            <a href="/pages/category.html?slug=liquidation" class="home-highlight-card home-highlight-card--promo">
-              <div class="home-highlight-media">
-                <img src="/assets/images/products/bedroom-6778193_1920.jpg" alt="Matelas Roviva en promotion" />
-                <span class="home-highlight-discount">-15%</span>
-              </div>
-              <div class="home-highlight-panel">
-                <p class="home-highlight-brand">Roviva</p>
-                <h3 class="home-highlight-panel-title">
-                  Profitez dès maintenant de notre sélection d&apos;offres du moment.
-                </h3>
-              </div>
-            </a>
-
-            <a href="/pages/about.html" class="home-highlight-card home-highlight-card--story">
-              <div class="home-highlight-story">
-                <h3 class="home-highlight-story-title">Richard La Literie</h3>
-                <p>
-                  Depuis 1933 à Crissier, nous vous guidons vers la literie idéale,
-                  adaptée à vos besoins et à votre budget.
-                </p>
-                <p>
-                  Des marques reconnues, un conseil expert, pour un confort durable
-                  et des nuits vraiment réparatrices.
-                </p>
-                <p>
-                  Venez comparer en magasin différentes technologies de matelas,
-                  sommiers et oreillers, puis bénéficiez d&apos;un accompagnement
-                  personnalisé jusqu&apos;à votre choix final.
-                </p>
-                <span class="home-highlight-link"><span class="home-highlight-link-prefix">&gt;</span> En savoir plus ...</span>
-              </div>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <!-- Reassurance -->
-      <section class="section section-home-benefits">
-        <div class="container">
-          <div class="home-benefits">
-            <div class="home-benefit-item">
-              <svg class="home-benefit-icon" viewBox="0 0 64 64" aria-hidden="true">
-                <rect x="14" y="16" width="36" height="36" rx="6" />
-                <path d="M22 10v12M42 10v12M14 24h36" />
-                <path d="M24 36l6 6 12-14" />
-              </svg>
-              <p class="home-benefit-text">Essai sommeil à domicile avant achat</p>
             </div>
-
-            <div class="home-benefit-item">
-              <svg class="home-benefit-icon" viewBox="0 0 64 64" aria-hidden="true">
-                <path d="M20 12h24a6 6 0 0 1 6 6v8H14v-8a6 6 0 0 1 6-6Z" />
-                <path d="m22 20 3-4 3 4M31 20l3-4 3 4M40 20l3-4 3 4" />
-                <circle cx="32" cy="35" r="7" />
-                <path d="M20 54c1-8 7-13 12-13s11 5 12 13" />
-              </svg>
-              <p class="home-benefit-text">Accompagnement dédié jusqu&apos;au bon choix</p>
-            </div>
-
-            <div class="home-benefit-item">
-              <svg class="home-benefit-icon" viewBox="0 0 64 64" aria-hidden="true">
-                <path d="M10 40h30V24H28" />
-                <path d="M40 28h8l8 8v4H40" />
-                <circle cx="22" cy="44" r="4" />
-                <circle cx="48" cy="44" r="4" />
-                <path d="M12 20h12M8 26h10M14 32h8" />
-              </svg>
-              <p class="home-benefit-text">Livraison, reprise et installation selon le projet</p>
-            </div>
-
-            <div class="home-benefit-item">
-              <svg class="home-benefit-icon" viewBox="0 0 64 64" aria-hidden="true">
-                <rect x="16" y="10" width="24" height="38" rx="4" />
-                <path d="M22 18h12M22 26h12M22 34h8" />
-                <path d="m18 18 2 2 4-4M18 26l2 2 4-4M18 34l2 2 4-4" />
-                <circle cx="44" cy="42" r="8" />
-                <path d="m50 48 6 6" />
-              </svg>
-              <p class="home-benefit-text">Conseils personnalisés en magasin ou à distance</p>
+            <div class="hero-slider__media" aria-hidden="true">
+              <div class="hero-slider__media-track" data-hero-media-track>
+                <div class="hero-slider__media-slide hero-slider__media-slide--bedroom">
+                  <img class="hero-slider__image" src="/assets/home/hero-slide-bedroom.png" alt="Chambre avec literie haut de gamme" width="1024" height="683" fetchpriority="high">
+                </div>
+                <div class="hero-slider__media-slide hero-slider__media-slide--mattress" aria-hidden="true">
+                  <img class="hero-slider__image" src="/assets/home/hero-slide-wall.png" alt="Chambre moderne avec matelas premium" width="1024" height="576" loading="lazy">
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Promo saisonniere -->
-      <section class="section section-seasonal-story">
-        <div class="container">
-          <a href="/pages/category.html?slug=literie" class="seasonal-story-card">
-            <div class="seasonal-story-media">
-              <img src="/assets/images/products/bedroom-6778193_1920.jpg" alt="Lit complet avec matelas et oreillers dans une chambre chaleureuse" />
-            </div>
-            <div class="seasonal-story-content">
-              <p class="seasonal-story-kicker">Confort de saison</p>
-              <h2 class="seasonal-story-title">
-                Retrouver de la légèreté quand les nuits deviennent plus douces
-              </h2>
-              <p class="seasonal-story-text">
-                Nos couettes naturelles, oreillers et matières respirantes accompagnent la
-                transition de saison avec plus de fraîcheur, plus de souplesse et un
-                confort adapté au climat suisse.
-              </p>
-              <span class="seasonal-story-button">Découvrir</span>
-            </div>
-          </a>
+      <section class="services">
+        <div class="services__inner layout-wide">
+          <ul class="services__grid">
+            <li class="service">
+              <img class="sico" src="/assets/icons/services/bed-double.svg" alt="" width="40" height="40" loading="lazy" decoding="async" aria-hidden="true">
+              <span>Essai à domicile avant achat</span>
+            </li>
+            <li class="service">
+              <img class="sico" src="/assets/icons/services/post-office.svg" alt="" width="40" height="40" loading="lazy" decoding="async" aria-hidden="true">
+              <span>Livraison, installation et recyclage</span>
+            </li>
+            <li class="service">
+              <img class="sico" src="/assets/icons/services/customer-service-woman.svg" alt="" width="40" height="40" loading="lazy" decoding="async" aria-hidden="true">
+              <span>Conseils personnalisés, sur mesure</span>
+            </li>
+            <li class="service">
+              <img class="sico" src="/assets/icons/services/customer-service-help.svg" alt="" width="40" height="40" loading="lazy" decoding="async" aria-hidden="true">
+              <span>Garantie, 100% satisfaction</span>
+            </li>
+          </ul>
         </div>
       </section>
 
-      <!-- Slider marques -->
-      <section class="section section-home-brands-slider">
-        <div class="container">
-          <div class="brands-slider-header">
-            <p class="brands-slider-title">LES MARQUES DE LITERIE</p>
+      <section class="history">
+        <div class="history__inner layout-wide">
+          <div class="history__grid">
+            <div class="history__media">
+              <img src="/assets/home/expert.jpg" alt="Expert literie Richard">
+            </div>
+            <div class="history__content">
+              <p class="history__eyebrow">Depuis 1933 à Crissier</p>
+              <h2>L'expert de la literie, une histoire de famille</h2>
+              <div class="history__underline" aria-hidden="true"></div>
+              <div class="history__text">
+                <p>Trois générations d'experts passionnés vous accompagnent pour trouver la literie qui transformera vos nuits.</p>
+                <p><strong>Jean-Marc Richard et son équipe</strong> vous accueillent dans notre magasin à Crissier pour vous conseiller avec écoute et expertise.</p>
+              </div>
+              <a class="btn-outline" href="/pages/about.html">En savoir plus sur notre histoire</a>
+            </div>
+            <aside class="history__facts" aria-label="Faits clés">
+              <div class="history__fact">
+                <img class="history__fact-icon" src="/assets/icons/services/customer-service-help.svg" alt="" width="24" height="24" loading="lazy" decoding="async" aria-hidden="true">
+                <span>90 ans d'expertise</span>
+              </div>
+              <div class="history__fact">
+                <img class="history__fact-icon" src="/assets/icons/services/post-office.svg" alt="" width="24" height="24" loading="lazy" decoding="async" aria-hidden="true">
+                <span>Entreprise familiale</span>
+              </div>
+              <div class="history__fact">
+                <img class="history__fact-icon" src="/assets/icons/services/bed-double.svg" alt="" width="24" height="24" loading="lazy" decoding="async" aria-hidden="true">
+                <span>Magasin à Crissier</span>
+              </div>
+              <div class="history__fact">
+                <img class="history__fact-icon" src="/assets/icons/services/customer-service-woman.svg" alt="" width="24" height="24" loading="lazy" decoding="async" aria-hidden="true">
+                <span>À deux pas de Lausanne</span>
+              </div>
+            </aside>
           </div>
-          <div id="home-brands-slider" class="brands-slider"></div>
         </div>
       </section>
 
-      <!-- Blog -->
-      <section class="section section-home-blog">
-        <div class="container">
-          <header class="section-header section-header-centered">
-            <div class="section-header-title section-header-title-centered">
-              <h2>Nos conseils pour mieux dormir</h2>
-            </div>
+      <section class="univers">
+        <div class="univers__inner layout-wide">
+          <header class="univers__header">
+            <p class="univers__eyebrow">Trouvez votre confort idéal</p>
+            <h2>Nos univers literie</h2>
           </header>
-
-          <div class="blog-cards">
-            <article class="blog-card">
-              <a href="/pages/advice.html" class="blog-card-media">
-                <img src="/assets/images/products/bed-1839183_1920.jpg" alt="Bien choisir son matelas" />
-              </a>
-              <div class="blog-card-body">
-                <p class="blog-card-date">12 mai 2026</p>
-                <h3 class="blog-card-title">Bien choisir son matelas</h3>
-                <p class="blog-card-excerpt">
-                  Comment trouver le bon niveau de soutien, comprendre les differences
-                  entre mousse, latex et ressorts, et choisir les bonnes dimensions.
-                </p>
-                <a href="/pages/advice.html" class="blog-card-link">Lire la suite <span aria-hidden="true">→</span></a>
+          <div class="univers__cards">
+            <a class="ucard" href="/pages/category.html?slug=matelas">
+              <div class="ucard__media">
+                <img src="/assets/home/cat-matelas.webp" alt="Matelas">
               </div>
-            </article>
-
-            <article class="blog-card">
-              <a href="/pages/advice.html" class="blog-card-media">
-                <img src="/assets/images/products/bedroom-6778193_1920.jpg" alt="Associer matelas et sommier" />
-              </a>
-              <div class="blog-card-body">
-                <p class="blog-card-date">7 mai 2026</p>
-                <h3 class="blog-card-title">Associer matelas et sommier</h3>
-                <p class="blog-card-excerpt">
-                  Pourquoi le support change la sensation de confort, dans quels cas un
-                  sommier releve est utile, et quelles erreurs eviter avant l’achat.
-                </p>
-                <a href="/pages/advice.html" class="blog-card-link">Lire la suite <span aria-hidden="true">→</span></a>
+              <div class="ucard__body">
+                <h3 class="ucard__title">Matelas</h3>
+                <p class="ucard__text">Soutien, accueil, technologies : trouvez le matelas qui vous correspond.</p>
+                <span class="ucard__link">Découvrir <span class="ucard__link-arrow" aria-hidden="true">→</span></span>
               </div>
-            </article>
-
-            <article class="blog-card">
-              <a href="/pages/advice.html" class="blog-card-media">
-                <img src="/assets/images/products/minimal-4369856_1920.jpg" alt="Entretenir couettes et oreillers" />
-              </a>
-              <div class="blog-card-body">
-                <p class="blog-card-date">2 mai 2026</p>
-                <h3 class="blog-card-title">Entretenir couettes et oreillers</h3>
-                <p class="blog-card-excerpt">
-                  Les bons gestes pour prolonger leur durée de vie, savoir quand les
-                  remplacer et choisir des matières faciles à vivre au quotidien.
-                </p>
-                <a href="/pages/advice.html" class="blog-card-link">Lire la suite <span aria-hidden="true">→</span></a>
+            </a>
+            <a class="ucard" href="/pages/category.html?slug=sommier">
+              <div class="ucard__media">
+                <img src="/assets/home/cat-sommiers-ref.jpg" alt="Sommiers">
               </div>
-            </article>
+              <div class="ucard__body">
+                <h3 class="ucard__title">Sommiers</h3>
+                <p class="ucard__text">Soutien, accueil, technologies : trouvez le matelas qui vous correspond.</p>
+                <span class="ucard__link">Découvrir <span class="ucard__link-arrow" aria-hidden="true">→</span></span>
+              </div>
+            </a>
+            <a class="ucard" href="/pages/category.html?slug=lit">
+              <div class="ucard__media">
+                <img src="/assets/home/cat-lits-ref.jpg" alt="Lits">
+              </div>
+              <div class="ucard__body">
+                <h3 class="ucard__title">Lits</h3>
+                <p class="ucard__text">Soutien, accueil, technologies : trouvez le matelas qui vous correspond.</p>
+                <span class="ucard__link">Découvrir <span class="ucard__link-arrow" aria-hidden="true">→</span></span>
+              </div>
+            </a>
+            <a class="ucard" href="/pages/category.html?slug=literie">
+              <div class="ucard__media">
+                <img src="/assets/home/cat-literie-ref.webp" alt="Literie">
+              </div>
+              <div class="ucard__body">
+                <h3 class="ucard__title">Literie</h3>
+                <p class="ucard__text">Soutien, accueil, technologies : trouvez le matelas qui vous correspond.</p>
+                <span class="ucard__link">Découvrir <span class="ucard__link-arrow" aria-hidden="true">→</span></span>
+              </div>
+            </a>
+            <a class="ucard" href="/pages/advice.html">
+              <div class="ucard__media">
+                <img src="/assets/home/cat-conseils-ref.webp" alt="Conseils">
+              </div>
+              <div class="ucard__body">
+                <h3 class="ucard__title">Conseils</h3>
+                <p class="ucard__text">Soutien, accueil, technologies : trouvez le matelas qui vous correspond.</p>
+                <span class="ucard__link">Découvrir <span class="ucard__link-arrow" aria-hidden="true">→</span></span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="brands">
+        <div class="brands__inner layout-wide">
+          <h2>Les plus grandes marques de literie</h2>
+          <div class="brands__slider-wrap">
+            <button type="button" class="arrow left" aria-label="Marques précédentes">‹</button>
+            <button type="button" class="arrow right" aria-label="Marques suivantes">›</button>
+            <div
+              id="home-brand-row"
+              class="brand-row"
+              data-brand-slide-count="9"
+              data-brand-logo="/assets/home/brand-roviva-ref.png"
+              data-brand-href="/pages/brand.html?slug=roviva"
+              aria-roledescription="carousel"
+              aria-label="Les plus grandes marques de literie"
+            ></div>
           </div>
         </div>
       </section>

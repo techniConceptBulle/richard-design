@@ -37,7 +37,7 @@ function copyStaticDirsPlugin() {
     name: 'copy-static-dirs',
     async closeBundle() {
       const outDir = resolve(rootDir, 'dist')
-      for (const dir of ['data', 'assets']) {
+      for (const dir of ['data', 'assets', 'homepage', 'product']) {
         await cp(resolve(rootDir, dir), resolve(outDir, dir), { recursive: true })
       }
     }
@@ -51,6 +51,8 @@ export default defineConfig({
     open: true
   },
   build: {
+    // Conserver les chemins fichiers pour le déploiement staging (pas d'inlining base64)
+    assetsInlineLimit: 0,
     rollupOptions: {
       input: collectHtmlInputs(rootDir)
     }

@@ -1,0 +1,34 @@
+/**
+ * Polices Richard La Literie — alignées sur le thème techniconcept (richard2026).
+ * Pryced Serif : stack CSS (fichiers à ajouter si livrés par le client) ; SuisseIntl embarquée.
+ */
+
+@font-face {
+  font-family: "SuisseIntl";
+  src:
+    url("/assets/fonts/SuisseIntl/SuisseIntl-Regular-WebS.woff2") format("woff2"),
+    url("/assets/fonts/SuisseIntl/SuisseIntl-Regular-WebS.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SuisseIntl";
+  src:
+    url("/assets/fonts/SuisseIntl/SuisseIntl-Bold.woff2") format("woff2"),
+    url("/assets/fonts/SuisseIntl/SuisseIntl-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SuisseIntl";
+  src:
+    url("/assets/fonts/SuisseIntl/SuisseIntl-Bold.woff2") format("woff2"),
+    url("/assets/fonts/SuisseIntl/SuisseIntl-Bold.woff") format("woff");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}

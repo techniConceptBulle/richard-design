@@ -1,3 +1,4 @@
+@import url("./fonts.css");
 @import url("./tokens.css");
 
 /* Reset léger + base typographique */
@@ -20,7 +21,7 @@ body {
   font-size: var(--font-size-md);
   line-height: var(--line-height-normal);
   color: var(--color-text);
-  background-color: var(--color-bg);
+  background-color: var(--color-text-on-primary);
   text-rendering: optimizeLegibility;
 }
 
@@ -106,7 +107,7 @@ small {
 }
 
 .page[data-page="home"] .page-main {
-  padding-top: 30px;
+  padding-top: 0;
 }
 
 .site-footer {
@@ -278,7 +279,7 @@ small {
   min-height: 3.1rem;
   padding: 0.75rem 0.9rem;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border-subtle);
+  border: 1px solid var(--border-outline-subtle);
   background-color: rgba(255, 255, 255, 0.94);
   outline: none;
   transition:
@@ -300,6 +301,10 @@ small {
 }
 
 /* Utilitaires */
+.border-outline-subtle {
+  border-color: rgb(216 216 216 / 1);
+}
+
 .text-muted {
   color: var(--color-text-muted);
 }

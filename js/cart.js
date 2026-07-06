@@ -23,7 +23,7 @@ export function updateCartBadgeCount(items = null) {
   if (!pill) return;
   const list = items || getCartItems();
   const count = list.reduce((acc, item) => acc + (item.quantity || 1), 0);
-  pill.textContent = String(count);
+  pill.textContent = count > 0 ? String(count) : "";
 }
 
 export function initCartBadge() {

@@ -1,5 +1,9 @@
 // Fonctions de rendu pour les listes de produits, catégories, marques et fiches produit.
 
+import { initHeroSlider } from "./hero-slider.js";
+import { initBrandCarousel } from "./brand-carousel.js";
+import { initEnvelopeOffset } from "./envelope-offset.js";
+import { renderFooterHtml } from "./footer-config.js";
 import {
   getMainCategories,
   getBrands,
@@ -12,18 +16,86 @@ import {
 } from "./data.js";
 import { formatPriceCHF, parseQueryParams, getProductImageUrl, getCategoryImageUrl, getBrandImageUrl } from "./utils.js";
 import { addToCart, getCartItems, saveCartItems } from "./cart.js";
+import {
+  getProductListingRating,
+  getProductListingStockLabel,
+  renderCategoryProductSaleBadges,
+  renderProductStarRating
+} from "./category-card.js";
 
-/* HEADER / FOOTER PARTAGÉS */
+/* HEADER / FOOTER PARTAGÉS — structure alignée sur richard2026 (envelope) */
+
+const FLAG_CH_SVG = `<svg class="topbar__flag-icon" width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect width="20" height="20" fill="#FF0000"/><rect x="8" y="3" width="4" height="14" fill="#FFFFFF"/><rect x="3" y="8" width="14" height="4" fill="#FFFFFF"/></svg>`;
+
+const SEARCH_ICON_SVG = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M14 14L18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`;
+
+const CART_ICON_SVG = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 4H5.2L6.4 13.2C6.5 13.9 7.1 14.5 7.8 14.5H15.2C15.9 14.5 16.5 13.9 16.6 13.2L17.4 7.5H6.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="8.5" cy="17" r="1" fill="currentColor"/><circle cx="14.5" cy="17" r="1" fill="currentColor"/></svg>`;
+
+const TOPBAR_LINKS = [
+  { href: "/pages/contact.html", label: "Magasin à Crissier" },
+  { href: "/pages/advice.html", label: "Conseils personnalisés" },
+  { href: "/pages/about.html", label: "Services" }
+];
 
 const PRIMARY_NAV_ITEMS = [
-  { href: "/pages/about.html", label: "À propos" },
+  { href: "/pages/about.html", label: "A propos" },
   { href: "/pages/category.html?slug=matelas", label: "Matelas" },
   { href: "/pages/category.html?slug=sommier", label: "Sommiers" },
+  { href: "/pages/category.html?slug=lit", label: "Lits" },
   { href: "/pages/category.html?slug=literie", label: "Literie" },
-  { href: "/pages/category.html?slug=liquidation", label: "Offres du moment" },
+  { href: "/pages/category.html?slug=liquidation", label: "Offre spéciales %", sale: true },
   { href: "/pages/brands.html", label: "Marques" },
   { href: "/pages/advice.html", label: "Conseils" }
 ];
+
+/**
+ * Active le menu burger mobile de l'enveloppe site.
+ */
+function initSiteEnvelope(headerEl) {
+  const burger = headerEl.querySelector("#nav-burger");
+  const menu = headerEl.querySelector("#nav-menu");
+
+  if (!burger || !menu) return;
+
+  const closeMenu = () => {
+    menu.classList.remove("is-active");
+    burger.classList.remove("is-active");
+    burger.setAttribute("aria-expanded", "false");
+    document.body.classList.remove("nav-open");
+  };
+
+  const mediaQuery = window.matchMedia("(min-width: 768px)");
+
+  const syncMenuAccessibility = () => {
+    if (mediaQuery.matches) {
+      menu.removeAttribute("aria-hidden");
+      closeMenu();
+      return;
+    }
+
+    menu.setAttribute("aria-hidden", menu.classList.contains("is-active") ? "false" : "true");
+  };
+
+  syncMenuAccessibility();
+  mediaQuery.addEventListener("change", syncMenuAccessibility);
+
+  burger.addEventListener("click", () => {
+    const willOpen = !menu.classList.contains("is-active");
+    menu.classList.toggle("is-active", willOpen);
+    burger.classList.toggle("is-active", willOpen);
+    burger.setAttribute("aria-expanded", willOpen ? "true" : "false");
+    menu.setAttribute("aria-hidden", willOpen ? "false" : "true");
+    document.body.classList.toggle("nav-open", willOpen);
+  });
+
+  menu.querySelectorAll(".menu-link").forEach((link) => {
+    link.addEventListener("click", closeMenu);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeMenu();
+  });
+}
 
 export function renderSharedLayout() {
   const headerEl = document.getElementById("site-header");
@@ -31,7 +103,6 @@ export function renderSharedLayout() {
 
   if (headerEl) {
     const currentUrl = new URL(window.location.href);
-    const isCurrentPath = (pathname) => currentUrl.pathname === pathname;
     const isNavItemActive = (href) => {
       const targetUrl = new URL(href, window.location.origin);
       if (currentUrl.pathname !== targetUrl.pathname) return false;
@@ -45,179 +116,119 @@ export function renderSharedLayout() {
 
       return true;
     };
-    const desktopNav = PRIMARY_NAV_ITEMS.map(
-      ({ href, label }) =>
-        `<a href="${href}" class="site-nav-link${isNavItemActive(href) ? " site-nav-link--active" : ""}">${label}</a>`
+
+    const topbarLinks = TOPBAR_LINKS.map(
+      ({ href, label }) => `<li><a class="topbar__link" href="${href}">${label}</a></li>`
     ).join("");
-    const mobileNavLinks = PRIMARY_NAV_ITEMS.map(
-      ({ href, label }) =>
-        `<a href="${href}" class="site-nav-mobile-link${isNavItemActive(href) ? " site-nav-mobile-link--active" : ""}">${label}</a>`
-    ).join("");
-    const renderSearchMarkup = (inputId) => `
-      <form class="site-search" role="search" action="/pages/categories.html" method="get">
-        <label class="sr-only" for="${inputId}">Rechercher un produit</label>
-        <svg class="site-search-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M10.5 4a6.5 6.5 0 1 0 4.1 11.55l4.43 4.42 1.41-1.41-4.42-4.43A6.5 6.5 0 0 0 10.5 4Zm0 2a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9Z" />
-        </svg>
-        <input
-          id="${inputId}"
-          class="site-search-input"
-          type="search"
-          name="q"
-          placeholder="Rechercher un matelas, un sommier ou une marque"
-        />
-      </form>
-    `;
+
+    const mainNav = PRIMARY_NAV_ITEMS.map(({ href, label, sale }) => {
+      const activeClass = isNavItemActive(href) ? " menu-link--active" : "";
+      const promoClass = sale ? " menu-item-promo" : "";
+      return `<li class="${promoClass.trim()}"><a href="${href}" class="menu-link${activeClass}">${label}</a></li>`;
+    }).join("");
+
     headerEl.innerHTML = `
-      <div class="site-header">
-        <div class="container site-header-inner">
-          <div class="site-header-top">
-            <a href="/" class="site-logo">
-              <span class="site-logo-main">Richard SA</span>
-              <span class="site-logo-sub">Literie &amp; confort</span>
+      <div class="site-envelope" id="site-envelope">
+        <div class="topbar">
+          <div class="topbar__inner">
+            <p class="topbar__message">
+              <span class="topbar__message-text">Depuis 1933 à Crissier, l'expertise du sommeil</span>
+              <span class="topbar__flag" aria-hidden="true">${FLAG_CH_SVG}</span>
+            </p>
+            <ul class="topbar__links">${topbarLinks}</ul>
+          </div>
+        </div>
+
+        <div class="header-main">
+          <div class="header-main__inner">
+            <a href="/" class="header-main__brand" aria-label="Richard La Literie — Accueil">
+              <img src="/assets/home/logo.png" alt="Richard La Literie" width="125" height="48">
             </a>
 
-            <div class="site-header-search desktop-only">
-              ${renderSearchMarkup("site-search-input-desktop")}
-            </div>
+            <form class="header-main__search header-main__search--desktop" role="search" action="/pages/categories.html" method="get">
+              <label class="sr-only" for="site-search-input">Rechercher un produit</label>
+              <div class="header-main__search-field">
+                <input
+                  id="site-search-input"
+                  class="header-main__search-input"
+                  type="search"
+                  name="q"
+                  placeholder="Rechercher un matelas, un sommier ou une marque…"
+                  minlength="2"
+                />
+                <button type="submit" class="header-main__search-submit" aria-label="Lancer la recherche">
+                  ${SEARCH_ICON_SVG}
+                </button>
+              </div>
+            </form>
 
-            <div class="site-header-actions">
-              <a href="/pages/account.html" class="header-action-pill${isCurrentPath("/pages/account.html") ? " header-action-pill--active" : ""}" aria-label="Accéder à mon compte">
-                <svg class="header-action-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0 2c-3.33 0-6 1.79-6 4v1h12v-1c0-2.21-2.67-4-6-4Z" />
-                </svg>
-                <span>Mon compte</span>
+            <div class="header-main__actions">
+              <a href="/pages/cart.html" class="header-main__cart" aria-label="Panier">
+                <span class="header-main__cart-icon" aria-hidden="true">${CART_ICON_SVG}</span>
+                <span class="header-main__cart-label">Panier</span>
+                <span id="cart-count-pill" class="header-cart-count" aria-live="polite"></span>
               </a>
-              <a href="/pages/cart.html" class="cart-pill header-action-pill${isCurrentPath("/pages/cart.html") ? " header-action-pill--active" : ""}" aria-label="Accéder au panier">
-                <svg class="header-action-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M7 18a2 2 0 1 0 2 2 2 2 0 0 0-2-2Zm10 0a2 2 0 1 0 2 2 2 2 0 0 0-2-2ZM6.2 6l.34 2H20l-1.6 6.59a1 1 0 0 1-.97.76H8.1a1 1 0 0 1-.98-.8L5 4H2V2h4a1 1 0 0 1 .98.8L7.38 5H21a1 1 0 0 1 .97 1.24l-1.93 8A3 3 0 0 1 17.13 17H8.1a3 3 0 0 1-2.95-2.4L3.28 4H2V2h1.28a2 2 0 0 1 1.96 1.6L5.55 6Z" />
-                </svg>
-                <span>Panier</span>
-                <span id="cart-count-pill" class="cart-pill-count">0</span>
-              </a>
-              <button
-                type="button"
-                class="nav-burger"
-                aria-label="Ouvrir le menu"
-                aria-expanded="false"
-                aria-controls="mobile-nav"
-                id="nav-burger-btn"
-              >
-                <span class="nav-burger-lines" aria-hidden="true">
-                  <span class="nav-burger-line"></span>
-                  <span class="nav-burger-line"></span>
-                </span>
+            </div>
+          </div>
+
+          <form class="header-main__search header-main__search--mobile" role="search" action="/pages/categories.html" method="get">
+            <label class="sr-only" for="site-search-input-mobile">Rechercher un produit</label>
+            <div class="header-main__search-field">
+              <input
+                id="site-search-input-mobile"
+                class="header-main__search-input"
+                type="search"
+                name="q"
+                placeholder="Rechercher un matelas, un sommier ou une marque…"
+                minlength="2"
+              />
+              <button type="submit" class="header-main__search-submit" aria-label="Lancer la recherche">
+                ${SEARCH_ICON_SVG}
               </button>
             </div>
-          </div>
+          </form>
+        </div>
 
-          <nav class="site-nav" aria-label="Navigation principale">
-            <div class="site-nav-links">
-              ${desktopNav}
+        <nav class="nav-primary" aria-label="Navigation catalogue">
+          <div class="nav-primary__inner">
+            <div class="nav-primary__menu menu" id="nav-menu">
+              <ul class="menu-inner">${mainNav}</ul>
             </div>
-          </nav>
-        </div>
-        <div id="mobile-nav" class="site-nav-mobile" hidden>
-          <div class="container site-nav-mobile-inner">
-            <div class="site-header-search mobile-only">
-              ${renderSearchMarkup("site-search-input-mobile")}
-            </div>
-            <div class="site-nav-mobile-links">
-              ${mobileNavLinks}
-            </div>
+            <button
+              type="button"
+              class="burger nav-primary__burger"
+              id="nav-burger"
+              aria-label="Ouvrir le menu"
+              aria-expanded="false"
+              aria-controls="nav-menu"
+            >
+              <span class="burger-line"></span>
+              <span class="burger-line"></span>
+            </button>
           </div>
-        </div>
+        </nav>
       </div>
     `;
 
-    const burgerBtn = document.getElementById("nav-burger-btn");
-    const mobileNav = document.getElementById("mobile-nav");
-    const headerRoot = headerEl.querySelector(".site-header");
-    const searchInputs = headerEl.querySelectorAll(".site-search-input");
     const currentSearchValue = currentUrl.searchParams.get("q") || "";
-
-    searchInputs.forEach((input) => {
+    headerEl.querySelectorAll(".header-main__search-input").forEach((input) => {
       input.value = currentSearchValue;
     });
 
-    const syncHeaderScrollState = () => {
-      if (!headerRoot) return;
-      headerRoot.classList.toggle("site-header--scrolled", window.scrollY > 12);
-    };
-    syncHeaderScrollState();
-    window.addEventListener("scroll", syncHeaderScrollState, { passive: true });
-
-    if (burgerBtn && mobileNav) {
-      burgerBtn.addEventListener("click", () => {
-        const isOpen = mobileNav.classList.toggle("open");
-        burgerBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
-        mobileNav.hidden = !isOpen;
-        headerRoot?.classList.toggle("site-header--menu-open", isOpen);
-      });
-    }
+    initSiteEnvelope(headerEl);
+    initEnvelopeOffset(headerEl);
   }
 
   if (footerEl) {
-    const year = new Date().getFullYear();
-    const footerNav = PRIMARY_NAV_ITEMS.map(
-      ({ href, label }) => `<a href="${href}">${label}</a>`
-    ).join("");
-    footerEl.innerHTML = `
-      <footer class="site-footer">
-        <div class="container site-footer-inner">
-          <div class="site-footer-grid">
-            <div>
-              <p class="site-footer-section-title">Richard SA</p>
-              <p class="text-soft">
-                Depuis 1933, Richard SA sélectionne une literie durable, confortable
-                et adaptée à chaque projet de sommeil.
-              </p>
-            </div>
-            <div>
-              <p class="site-footer-section-title">Navigation</p>
-              <div class="site-footer-links">
-                ${footerNav}
-              </div>
-            </div>
-            <div>
-              <p class="site-footer-section-title">Légal</p>
-              <div class="site-footer-links">
-                <a href="/pages/privacy.html">Politique de confidentialité</a>
-                <a href="/pages/terms.html">Conditions générales</a>
-                <a href="/pages/contact.html">Contact &amp; showroom</a>
-              </div>
-            </div>
-          </div>
-          <div class="site-footer-bottom">
-            <span>© ${year} Richard SA · Crissier, Suisse</span>
-            <span>Conseil, sélection et accompagnement autour du sommeil.</span>
-          </div>
-        </div>
-      </footer>
-    `;
+    footerEl.innerHTML = renderFooterHtml();
   }
 }
 
 /* PAGE ACCUEIL */
 
 export async function initHomePage() {
-  // Ajouter l'image au hero background
-  const heroBgImg = document.getElementById("hero-bg-img");
-  if (heroBgImg) {
-    // Utiliser l'image de la chambre moderne
-    heroBgImg.src = "/assets/images/hero-bedroom.jpg";
-    heroBgImg.onerror = function() {
-      // Fallback si l'image n'existe pas encore
-      const boxspringProduct = {
-        name: "Boxspring Richard SA",
-        images: ["/assets/images/hero-boxspring.jpg"]
-      };
-      this.src = getProductImageUrl(boxspringProduct, "/assets/images/hero-boxspring.jpg");
-    };
-  }
-
-  await renderHomeBrandsSlider();
-
+  initHeroSlider();
+  initBrandCarousel();
 }
 
 async function renderHomeMainCategories() {
@@ -380,6 +391,68 @@ async function renderHomeLiquidation() {
 
 /* PAGE CATÉGORIES (LISTE) */
 
+/**
+ * Carte catégorie principale — pattern univers literie (richard2026).
+ */
+function renderCategoriesListingCard(category) {
+  return `
+    <a class="ucard" href="/pages/category.html?slug=${encodeURIComponent(category.slug)}">
+      <div class="ucard__media">
+        <img src="${getCategoryImageUrl(category)}" alt="${category.name}" loading="lazy" />
+      </div>
+      <div class="ucard__body">
+        <h3 class="ucard__title">${category.name}</h3>
+        <p class="ucard__text">${category.description || ""}</p>
+        <span class="ucard__link">Découvrir <span class="ucard__link-arrow" aria-hidden="true">→</span></span>
+      </div>
+    </a>
+  `;
+}
+
+/**
+ * Carte produit archive — alignée sur la boucle WooCommerce richard2026.
+ */
+function renderArchiveProductCard(product, brand = null) {
+  const productUrl = `/pages/product.html?slug=${encodeURIComponent(product.slug)}`;
+  const productImage =
+    product.images && product.images.length
+      ? getProductImageUrl(product, product.images[0])
+      : getProductImageUrl(product, null);
+  const currentPrice = getProductMinimumPrice(product);
+  const comparePrice = getProductComparePrice(product);
+  const hasSale = productHasPromotion(product);
+
+  return `
+    <article class="category-product-card">
+      <a href="${productUrl}" class="category-product-link">
+        ${hasSale ? `<span class="category-product-onsale">Sale!</span>` : ""}
+        <img
+          src="${productImage}"
+          alt="${product.name}"
+          loading="lazy"
+          onerror="this.src='${getProductImageUrl(product, null)}'"
+        />
+        <h2 class="category-product-loop-title">${product.name}</h2>
+        ${
+          brand
+            ? `<span class="category-product-loop-brand">${brand.name}</span>`
+            : ""
+        }
+        <span class="category-product-price">
+          ${
+            hasSale
+              ? `
+                <del aria-hidden="true">${formatPriceCHF(comparePrice)}</del>
+                <ins aria-hidden="true">${formatPriceCHF(currentPrice)}</ins>
+              `
+              : formatPriceCHF(currentPrice)
+          }
+        </span>
+      </a>
+    </article>
+  `;
+}
+
 export async function initCategoriesPage() {
   const container = document.getElementById("categories-listing");
   const titleEl = document.getElementById("categories-title");
@@ -396,24 +469,9 @@ export async function initCategoriesPage() {
     titleEl.textContent = "Catégories";
     descriptionEl.textContent =
       "Aperçu de toutes les catégories et sous-catégories disponibles dans la boutique.";
-    container.innerHTML = categories
-      .map(
-        (cat) => `
-        <a href="/pages/category.html?slug=${encodeURIComponent(
-          cat.slug
-        )}" class="card card-clickable">
-          <div class="card-image">
-            <img src="${getCategoryImageUrl(cat)}" alt="${cat.name}" />
-          </div>
-          <div class="card-content">
-            <div class="card-meta">Catégorie principale</div>
-            <h2 class="card-title">${cat.name}</h2>
-            <p class="card-description">${cat.description || ""}</p>
-          </div>
-        </a>
-      `
-      )
-      .join("");
+    container.className = "univers__cards";
+    container.innerHTML = categories.map((cat) => renderCategoriesListingCard(cat)).join("");
+    document.title = "Catégories | Richard La Literie";
   };
 
   if (!searchTerm) {
@@ -451,8 +509,9 @@ export async function initCategoriesPage() {
     : "Aucun produit ne correspond a votre recherche pour le moment.";
 
   if (!results.length) {
+    container.className = "categories-search-empty";
     container.innerHTML = `
-      <div class="content-card content-card--soft">
+      <div class="categories-empty-state">
         <h2>Aucun resultat</h2>
         <p>
           Essayez un autre mot-cle comme "matelas", "sommier", "oreiller" ou le nom d'une marque.
@@ -462,41 +521,11 @@ export async function initCategoriesPage() {
     return;
   }
 
+  container.className = "category-products-grid categories-search-results";
   container.innerHTML = results
     .map((product) => {
-      const currentPrice = getProductMinimumPrice(product);
-      const comparePrice = getProductComparePrice(product);
-      const hasSale = productHasPromotion(product);
       const brand = brands.find((item) => item.id === product.brandId);
-      const productImage = product.images && product.images.length
-        ? getProductImageUrl(product, product.images[0])
-        : getProductImageUrl(product, null);
-
-      return `
-        <a href="/pages/product.html?slug=${encodeURIComponent(
-          product.slug
-        )}" class="card card-clickable">
-          <div class="card-image">
-            <img src="${productImage}" alt="${product.name}" />
-            ${hasSale ? `<span class="product-badge-sale">-${getProductDiscountPercent(product)}%</span>` : ""}
-          </div>
-          <div class="card-content">
-            <div class="card-meta">${brand ? `Par ${brand.name}` : "Produit"}</div>
-            <h2 class="card-title">${product.name}</h2>
-            <p class="card-description">${product.shortDescription || ""}</p>
-            <div class="card-price">
-              ${
-                hasSale
-                  ? `
-                      <span class="price price-old">${formatPriceCHF(comparePrice)}</span>
-                      <span class="price price-new">${formatPriceCHF(currentPrice)}</span>
-                    `
-                  : `<span class="price">${formatPriceCHF(currentPrice)}</span>`
-              }
-            </div>
-          </div>
-        </a>
-      `;
+      return renderArchiveProductCard(product, brand);
     })
     .join("");
 }
@@ -831,7 +860,7 @@ function renderCategorySortSelect(value = "") {
   `;
 }
 
-function renderCategoryProductCard(product, index) {
+function renderCategoryProductCard(product) {
   const productUrl = `/pages/product.html?slug=${encodeURIComponent(product.slug)}`;
   const productImage =
     product.images && product.images.length
@@ -841,40 +870,42 @@ function renderCategoryProductCard(product, index) {
   const comparePrice = getProductComparePrice(product);
   const hasSale = productHasPromotion(product);
   const discountPercent = getProductDiscountPercent(product);
-  const promotionBadgeLabel = index === 0 ? "Promotion" : `-${discountPercent}%`;
-  const isLowStock = index === 1;
-  const stockLabel = isLowStock ? "Dernière pièce" : "En stock";
+  const stock = getProductListingStockLabel(product);
+  const rating = getProductListingRating(product);
+
   return `
     <article class="category-product-card">
-      <a href="${productUrl}" class="category-product-media">
-        <img
-          src="${productImage}"
-          alt="${product.name}"
-          onerror="this.src='${getProductImageUrl(product, null)}'"
-        />
-        ${hasSale ? `<span class="category-product-badge">${promotionBadgeLabel}</span>` : ""}
-      </a>
-
-      <div class="category-product-body">
-        <h3 class="category-product-title">
-          <a href="${productUrl}">${product.name}</a>
-        </h3>
-        <div class="category-product-footer">
-          <div class="category-product-prices">
+      <a href="${productUrl}" class="category-product-link">
+        <div class="category-product-media">
+          ${hasSale ? renderCategoryProductSaleBadges(discountPercent) : ""}
+          <img
+            src="${productImage}"
+            alt="${product.name}"
+            loading="lazy"
+            onerror="this.src='${getProductImageUrl(product, null)}'"
+          />
+        </div>
+        <div class="category-product-body">
+          <h2 class="category-product-loop-title">${product.name}</h2>
+          <div class="category-product-pricing">
+            <span class="category-product-price-current">${formatPriceCHF(currentPrice)}</span>
             ${
               hasSale
-                ? `
-                  <div class="category-product-price-line">
-                    <span class="category-product-price-new">${formatPriceCHF(currentPrice)}</span>
-                    <span class="category-product-price-old">${formatPriceCHF(comparePrice)}</span>
-                  </div>
-                `
-                : `<span class="category-product-price-new">${formatPriceCHF(currentPrice)}</span>`
+                ? `<span class="category-product-price-old">${formatPriceCHF(comparePrice)}</span>`
+                : ""
             }
           </div>
+          <div class="category-product-meta">
+            ${renderProductStarRating(rating)}
+            <div class="category-product-footer">
+              <span class="category-product-stock category-product-stock--${stock.modifier}">
+                <span class="category-product-stock-icon" aria-hidden="true">✓</span>
+                ${stock.label}
+              </span>
+            </div>
+          </div>
         </div>
-        <p class="category-product-stock${isLowStock ? " category-product-stock--low" : ""}">${stockLabel}</p>
-      </div>
+      </a>
     </article>
   `;
 }
@@ -889,6 +920,7 @@ export async function initCategoryPage() {
   const filtersEl = document.getElementById("category-filters");
   const activeFiltersEl = document.getElementById("category-active-filters");
   const sortControlsEl = document.getElementById("category-sort-controls");
+  const clearFiltersEl = document.getElementById("category-clear-filters");
   const gridEl = document.getElementById("category-products-grid");
   if (!titleEl || !descriptionEl || !breadcrumbEl || !filtersEl || !sortControlsEl || !gridEl) return;
 
@@ -993,7 +1025,7 @@ export async function initCategoryPage() {
   titleEl.textContent = pageCopy.title;
   descriptionEl.textContent = pageCopy.intro;
   breadcrumbEl.textContent = pageCopy.title;
-  document.title = `${pageCopy.title} | Richard Design`;
+  document.title = `${pageCopy.title} | Richard La Literie`;
 
   filtersEl.innerHTML = [
     ...filterDefinitions.map((definition) =>
@@ -1066,7 +1098,7 @@ export async function initCategoryPage() {
           .join("")}
       </div>
       <button type="button" class="category-clear-all" data-clear-all-filters>
-        Réinitialiser les filtres
+        Effacer les filtres
       </button>
     `;
 
@@ -1086,15 +1118,26 @@ export async function initCategoryPage() {
     });
 
     activeFiltersEl.querySelector("[data-clear-all-filters]")?.addEventListener("click", () => {
-      filterDefinitions.forEach((definition) => {
-        state[definition.key] = "";
-      });
-      state.priceMin = "";
-      state.priceMax = "";
-      syncFilterFieldValues();
-      applyFiltersAndRender();
-      syncPriceFilterState();
+      resetAllFilters();
     });
+  }
+
+  function resetAllFilters() {
+    filterDefinitions.forEach((definition) => {
+      state[definition.key] = "";
+    });
+    state.priceMin = "";
+    state.priceMax = "";
+    state.sort = "";
+    syncFilterFieldValues();
+
+    const sortSelect = document.getElementById("category-sort-select");
+    if (sortSelect) {
+      sortSelect.value = "";
+    }
+
+    applyFiltersAndRender();
+    syncPriceFilterState();
   }
 
   function applyFiltersAndRender() {
@@ -1143,7 +1186,7 @@ export async function initCategoryPage() {
 
     gridEl.innerHTML = filtered
       .map((product, index) => {
-        return renderCategoryProductCard(product, index);
+        return renderCategoryProductCard(product);
       })
       .join("");
   }
@@ -1166,6 +1209,10 @@ export async function initCategoryPage() {
       applyFiltersAndRender();
     });
   }
+
+  clearFiltersEl?.addEventListener("click", () => {
+    resetAllFilters();
+  });
 
   const priceFilterEl = filtersEl.querySelector("[data-price-filter]");
   const priceTriggerEl = priceFilterEl?.querySelector(".category-price-trigger");
@@ -1340,6 +1387,34 @@ export async function initBrandPage() {
 
 const PRODUCT_OPTION_ORDER = ["firmness", "size", "cover", "finish", "technology"];
 
+const DEFAULT_MATTRESS_COVER_CHIP_VALUES = [
+  "Housse amovible et lavable",
+  "Thermorégulée"
+];
+
+/**
+ * Valeurs housse affichées en chips — priorité données explicites, sinon matelas variable.
+ */
+export function getProductCoverChipValues(product) {
+  if (Array.isArray(product?.coverOptions) && product.coverOptions.length) {
+    return product.coverOptions;
+  }
+
+  const variationCovers = [
+    ...new Set((product?.variations || []).map((variation) => variation.cover).filter(Boolean))
+  ];
+
+  if (variationCovers.length >= 2) {
+    return variationCovers;
+  }
+
+  if (product?.categoryId === "matelas" && product?.type === "variable") {
+    return DEFAULT_MATTRESS_COVER_CHIP_VALUES;
+  }
+
+  return variationCovers;
+}
+
 const PRODUCT_OPTION_META = {
   firmness: {
     control: "chips",
@@ -1368,12 +1443,18 @@ const PRODUCT_OPTION_META = {
   }
 };
 
+const MATTRESS_GALLERY_IMAGES = [
+  "/assets/images/products/ikea/vestmarka.jpg",
+  "/assets/images/products/ikea/akrehamn.jpg",
+  "/assets/images/products/ikea/haugesund.jpg",
+  "/assets/images/products/ikea/morgedal.jpg",
+  "/assets/images/products/ikea/matrand.jpg",
+  "/assets/images/products/ikea/anneland.jpg",
+  "/assets/images/products/ikea/valevag.jpg"
+];
+
 const PRODUCT_GALLERY_FALLBACKS = {
-  bedding: [
-    "/assets/images/products/bed-1839183_1920.jpg",
-    "/assets/images/products/bedroom-6778193_1920.jpg",
-    "/assets/images/products/minimal-4369856_1920.jpg"
-  ],
+  bedding: MATTRESS_GALLERY_IMAGES,
   decor: [
     "/assets/images/products/minimal-4369856_1920.jpg",
     "/assets/images/products/bedroom-6778193_1920.jpg",
@@ -1383,11 +1464,16 @@ const PRODUCT_GALLERY_FALLBACKS = {
     "/assets/images/products/armchair-8275688_1280.jpg",
     "/assets/images/products/bedroom-6778193_1920.jpg",
     "/assets/images/products/bed-1839183_1920.jpg"
-  ]
+  ],
+  mattress: MATTRESS_GALLERY_IMAGES
 };
 
 function getProductGalleryFallbackSet(product, category) {
-  const categoryId = category?.id || "";
+  const categoryId = category?.id || product.categoryId || "";
+
+  if (categoryId === "matelas" || categoryId.startsWith("matelas")) {
+    return PRODUCT_GALLERY_FALLBACKS.mattress;
+  }
 
   if (categoryId === "fauteuil-relax" || product.name.toLowerCase().includes("fauteuil")) {
     return PRODUCT_GALLERY_FALLBACKS.armchair;
@@ -1416,17 +1502,25 @@ function getProductGalleryImages(product, category) {
     galleryImages.push(getProductImageUrl(product, null));
   }
 
-  return galleryImages.slice(0, Math.max(3, galleryImages.length));
+  return galleryImages.slice(0, 5);
 }
 
 function getProductOptionDefinitions(product, category) {
   return PRODUCT_OPTION_ORDER.map((key) => {
-    const values = [
-      ...(product.variations?.map((variation) => variation[key]).filter(Boolean) || []),
-      ...(product[key] ? [product[key]] : [])
+    const variationValues = [
+      ...new Set(
+        (product.variations || []).map((variation) => variation[key]).filter(Boolean)
+      )
     ];
-    const uniqueValues = [...new Set(values)];
-    if (!uniqueValues.length) return null;
+    const values =
+      key === "cover"
+        ? getProductCoverChipValues(product)
+        : variationValues.length
+          ? variationValues
+          : product[key]
+            ? [product[key]]
+            : [];
+    if (!values.length) return null;
 
     const meta = PRODUCT_OPTION_META[key];
     const label =
@@ -1439,7 +1533,7 @@ function getProductOptionDefinitions(product, category) {
       label,
       control: meta?.control || "chips",
       formatLabel: meta?.formatLabel || ((value) => value),
-      values: key === "size" ? sortSizes(uniqueValues) : uniqueValues
+      values: key === "size" ? sortSizes(values) : values
     };
   }).filter(Boolean);
 }
@@ -1505,7 +1599,10 @@ function syncSelectionWithVariation(product, desiredSelection, priorityKey = "")
   };
 }
 
-function getProductDeliveryLabel(product, variation) {
+/**
+ * Valeur affichée sous le libellé « Livraison indicative » (fiche produit).
+ */
+function getProductDeliveryValue(product, variation) {
   if (product.liquidation) {
     return "Retrait ou livraison rapide selon stock";
   }
@@ -1515,10 +1612,20 @@ function getProductDeliveryLabel(product, variation) {
   }
 
   if (product.type === "variable") {
-    return "Livraison indicative : 3 à 4 semaines";
+    return "3 à 4 semaines";
   }
 
-  return "Livraison indicative : 5 à 10 jours ouvrés";
+  return "5 à 10 jours ouvrés";
+}
+
+function getProductDeliveryLabel(product, variation) {
+  const value = getProductDeliveryValue(product, variation);
+
+  if (product.liquidation || (variation && variation.inStock === false)) {
+    return value;
+  }
+
+  return `Livraison indicative : ${value}`;
 }
 
 function getCategoryAncestors(category, categoriesById) {
@@ -1650,27 +1757,9 @@ function renderSpecificationRows(product, brand, category, optionDefinitions, va
 
 function renderProductAccordion(product, brand, category, optionDefinitions, variation) {
   const highlights = buildProductHighlights(product, category, optionDefinitions, variation);
-  const sections = [
-    {
-      title: "Description",
-      open: true,
-      content: `
-        <div class="product-copy">
-          ${product.shortDescription ? `<p class="product-copy-intro">${product.shortDescription}</p>` : ""}
-          ${renderParagraphBlocks(product.description || "")}
-          ${
-            highlights.length
-              ? `<ul class="product-copy-list">${highlights
-                  .map((item) => `<li>${item}</li>`)
-                  .join("")}</ul>`
-              : ""
-          }
-        </div>
-      `
-    },
+  const collapsibleSections = [
     {
       title: "Caractéristiques produit",
-      open: false,
       content: `<div class="product-spec-grid">${renderSpecificationRows(
         product,
         brand,
@@ -1681,91 +1770,71 @@ function renderProductAccordion(product, brand, category, optionDefinitions, var
     },
     {
       title: "Livraison",
-      open: false,
       content: `
-        <div class="product-copy">
-          <p class="product-copy-intro">${getProductDeliveryLabel(product, variation)}</p>
-          <ul class="product-copy-list">
-            <li>Le délai exact est confirmé par notre équipe selon la configuration retenue.</li>
-            <li>Retrait en magasin et livraison à domicile possibles selon le produit et la zone.</li>
-            <li>Nos conseillers prennent contact pour organiser les détails logistiques si nécessaire.</li>
-          </ul>
-        </div>
+        <p>${getProductDeliveryLabel(product, variation)}</p>
+        <ul class="checks">
+          <li>Le délai exact est confirmé par notre équipe selon la configuration retenue.</li>
+          <li>Retrait en magasin et livraison à domicile possibles selon le produit et la zone.</li>
+          <li>Nos conseillers prennent contact pour organiser les détails logistiques si nécessaire.</li>
+        </ul>
       `
     },
     {
       title: "Garantie et Service",
-      open: false,
       content: `
-        <div class="product-copy">
-          <p class="product-copy-intro">Un accompagnement Richard SA est prévu avant, pendant et après l’achat.</p>
-          <ul class="product-copy-list">
-            <li>Conseil personnalisé en magasin ou à distance.</li>
-            <li>Accompagnement pour choisir la bonne dimension et la bonne configuration.</li>
-            <li>Informations de garantie et de SAV confirmées selon la marque et le modèle.</li>
-          </ul>
-        </div>
+        <p>Un accompagnement Richard SA est prévu avant, pendant et après l'achat.</p>
+        <ul class="checks">
+          <li>Conseil personnalisé en magasin ou à distance.</li>
+          <li>Accompagnement pour choisir la bonne dimension et la bonne configuration.</li>
+          <li>Informations de garantie et de SAV confirmées selon la marque et le modèle.</li>
+        </ul>
       `
     },
     {
       title: "Avis",
-      open: false,
       content: `
-        <div class="product-reviews">
-          <article class="product-review-card">
-            <div class="product-review-author">Boris76</div>
-            <div class="product-review-rating">★★★★★ <span>Bien adapté pour mon usage</span></div>
-            <p class="product-review-meta">Avis laissé en France le 30 juillet 2025</p>
-            <p class="product-review-meta">
-              Couleur: #1 Beige&nbsp;&nbsp;|&nbsp;&nbsp;Taille: 3XL&nbsp;&nbsp;|&nbsp;&nbsp;<strong>Achat vérifié</strong>
-            </p>
-            <p class="product-review-text">
-              Commande en grande taille, j’en ai recommandé deux unités depuis, car c’est à la fois
-              bien pratique sous un pantalon ou jean serré, sans pour autant blesser ni marquer.
-              Résiste bien aux lavages fréquents, et tout doux pour la peau.
-            </p>
-          </article>
-
-          <article class="product-review-card">
-            <div class="product-review-author">Julie M.</div>
-            <div class="product-review-rating">★★★★★ <span>Très bon soutien du dos</span></div>
-            <p class="product-review-meta">Avis laissé en Suisse le 12 avril 2026</p>
-            <p class="product-review-text">
-              Excellent maintien et très bon confort dès les premières nuits.
-            </p>
-          </article>
-        </div>
+        <p><strong>Boris76</strong> — ★★★★★ Bien adapté pour mon usage</p>
+        <p>Commande en grande taille, confortable et durable au quotidien.</p>
+        <p><strong>Julie M.</strong> — ★★★★★ Très bon soutien du dos</p>
+        <p>Excellent maintien et très bon confort dès les premières nuits.</p>
       `
     }
   ];
 
   return `
-    <section class="product-accordion-group">
-      ${sections
+    <section class="product-accordion accordion" aria-label="Informations produit">
+      <div class="product-accordion__description panel">
+        <h2 class="product-accordion__title">Description</h2>
+        <div class="product-accordion__content">
+          ${product.shortDescription ? `<p><strong>${product.shortDescription}</strong></p>` : ""}
+          ${renderParagraphBlocks(product.description || "")}
+          ${
+            highlights.length
+              ? `<ul class="checks">${highlights.map((item) => `<li>${item}</li>`).join("")}</ul>`
+              : ""
+          }
+        </div>
+      </div>
+      ${collapsibleSections
         .map(
           (section, index) => `
-            <article class="product-accordion-item${section.open ? " is-open" : ""}">
+            <div class="product-accordion__item">
               <button
                 type="button"
-                class="product-accordion-trigger"
-                aria-expanded="${section.open ? "true" : "false"}"
-                aria-controls="product-accordion-panel-${index}"
+                class="product-accordion__trigger panel-row"
+                data-accordion-trigger
+                aria-expanded="false"
+                aria-controls="product-panel-${index}"
               >
-                <span>${section.title}</span>
-                <span class="product-accordion-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24">
-                    <path d="m6 9 6 6 6-6" />
-                  </svg>
-                </span>
+                <span class="product-accordion__title">${section.title}</span>
+                <span class="product-accordion__icon" aria-hidden="true">+</span>
               </button>
-              <div
-                id="product-accordion-panel-${index}"
-                class="product-accordion-panel"
-                ${section.open ? "" : "hidden"}
-              >
-                ${section.content}
+              <div id="product-panel-${index}" class="product-accordion__panel panel" hidden data-accordion-panel>
+                <div class="product-accordion__content">
+                  ${section.content}
+                </div>
               </div>
-            </article>
+            </div>
           `
         )
         .join("")}
@@ -1776,10 +1845,11 @@ function renderProductAccordion(product, brand, category, optionDefinitions, var
 function renderProductOptionField(option, selectedValue) {
   if (option.control === "select") {
     return `
-      <label class="product-option-select-wrap${
-        option.key === "size" ? " product-option-select-wrap--size" : ""
-      }">
-        <select class="product-option-select" data-option-key="${option.key}">
+      <div class="product-option-card__control select-row">
+        <select
+          class="product-option-card__select${selectedValue ? " is-selected" : ""}"
+          data-option-key="${option.key}"
+        >
           ${option.values
             .map(
               (value) => `
@@ -1790,23 +1860,18 @@ function renderProductOptionField(option, selectedValue) {
             )
             .join("")}
         </select>
-        <span class="product-option-select-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </span>
-      </label>
+      </div>
     `;
   }
 
   return `
-    <div class="product-option-chips product-option-chips--${option.key}" role="list">
+    <div class="product-chips__list chips" role="list">
       ${option.values
         .map(
           (value) => `
             <button
               type="button"
-              class="product-option-chip product-option-chip--${option.key}${value === selectedValue ? " is-active" : ""}"
+              class="product-chip chip${value === selectedValue ? " is-active active" : ""}"
               data-option-key="${option.key}"
               data-option-value="${value}"
             >
@@ -1819,132 +1884,106 @@ function renderProductOptionField(option, selectedValue) {
   `;
 }
 
-function renderProductRailCard(product) {
-  const currentPrice = getProductMinimumPrice(product);
-  const comparePrice = getProductComparePrice(product, currentPrice);
-  const hasSale = productHasPromotion(product, currentPrice);
-  const stockLabel = "En stock";
-  const image =
-    product.images && product.images.length
-      ? getProductImageUrl(product, product.images[0])
-      : getProductImageUrl(product, null);
-
-  return `
-    <article class="category-product-card product-rail-card">
-      <a href="/pages/product.html?slug=${encodeURIComponent(product.slug)}" class="category-product-media">
-        <img
-          src="${image}"
-          alt="${product.name}"
-          onerror="this.src='${getProductImageUrl(product, null)}'"
-        />
-        ${hasSale ? `<span class="category-product-badge">-${getProductDiscountPercent(product, currentPrice)}%</span>` : ""}
-      </a>
-
-      <div class="category-product-body">
-        <h3 class="category-product-title">
-          <a href="/pages/product.html?slug=${encodeURIComponent(product.slug)}">${product.name}</a>
-        </h3>
-        <div class="category-product-footer">
-          <div class="category-product-prices">
-            ${
-              hasSale
-                ? `
-                  <div class="category-product-price-line">
-                    <span class="category-product-price-new">${formatPriceCHF(currentPrice)}</span>
-                    <span class="category-product-price-old">${formatPriceCHF(comparePrice)}</span>
-                  </div>
-                `
-                : `<span class="category-product-price-new">${formatPriceCHF(currentPrice)}</span>`
-            }
-          </div>
-        </div>
-        <p class="category-product-stock">${stockLabel}</p>
-      </div>
-    </article>
-  `;
-}
-
-function renderProductRail(title, products) {
+/**
+ * Grille produits liés — même présentation que l'archive catégorie.
+ */
+function renderProductRelatedSection(title, products) {
   if (!products.length) return "";
 
   return `
-    <section class="product-rail-section">
-      <div class="product-rail-header">
-        <h2>${title}</h2>
-      </div>
-      <div class="product-rail-slider" data-product-slider>
-        <button
-          type="button"
-          class="product-rail-arrow"
-          data-direction="prev"
-          aria-label="Faire defiler vers la gauche"
-        >
-          <svg viewBox="0 0 24 24">
-            <path d="M14.5 6 8.5 12l6 6" />
-          </svg>
-        </button>
-        <div class="product-rail-viewport">
-          <div class="product-rail-track">
-            ${products
-              .map((item) => renderProductRailCard(item))
-              .join("")}
+    <section class="product-related-section category-archive-page" aria-label="${title}">
+      <div class="category-page-shell layout-wide product-related-shell">
+        <header class="category-archive-header product-related-header">
+          <h2>${title}</h2>
+        </header>
+        <section class="category-products-section category-archive-products">
+          <div class="category-products-grid">
+            ${products.map((item) => renderCategoryProductCard(item)).join("")}
           </div>
-        </div>
-        <button
-          type="button"
-          class="product-rail-arrow"
-          data-direction="next"
-          aria-label="Faire defiler vers la droite"
-        >
-          <svg viewBox="0 0 24 24">
-            <path d="m9.5 6 6 6-6 6" />
-          </svg>
-        </button>
+        </section>
       </div>
     </section>
   `;
 }
 
-function initProductRailSliders(root) {
-  root.querySelectorAll("[data-product-slider]").forEach((slider) => {
-    const viewport = slider.querySelector(".product-rail-viewport");
-    const prevButton = slider.querySelector('[data-direction="prev"]');
-    const nextButton = slider.querySelector('[data-direction="next"]');
+function renderProductBenefits() {
+  return `
+    <section class="services product-page-services" aria-label="Nos services">
+      <div class="services__inner layout-wide">
+        <ul class="services__grid">
+          <li class="service">
+            <img class="sico" src="/assets/icons/services/bed-double.svg" alt="" width="40" height="40" loading="lazy" decoding="async" aria-hidden="true">
+            <span>Essai à domicile avant achat</span>
+          </li>
+          <li class="service">
+            <img class="sico" src="/assets/icons/services/post-office.svg" alt="" width="40" height="40" loading="lazy" decoding="async" aria-hidden="true">
+            <span>Livraison, installation et recyclage</span>
+          </li>
+          <li class="service">
+            <img class="sico" src="/assets/icons/services/customer-service-woman.svg" alt="" width="40" height="40" loading="lazy" decoding="async" aria-hidden="true">
+            <span>Conseils personnalisés, sur mesure</span>
+          </li>
+          <li class="service">
+            <img class="sico" src="/assets/icons/services/customer-service-help.svg" alt="" width="40" height="40" loading="lazy" decoding="async" aria-hidden="true">
+            <span>Garantie, 100% satisfaction</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+  `;
+}
 
-    if (!viewport || !prevButton || !nextButton) return;
+function renderProductAdviceSection() {
+  return `
+    <section class="product-advice advice" aria-label="Besoin d'un conseil">
+      <h3 class="product-advice__title">Besoin d'un conseil ?</h3>
+      <p class="product-advice__lead">Nous serions ravis de vous conseiller personnellement</p>
+      <div class="product-advice__grid contact-grid">
+        <div class="product-advice__card contact">
+          <img class="product-advice__icon" src="/assets/icons/services/customer-service-help.svg" alt="" width="48" height="48" loading="lazy" decoding="async" aria-hidden="true">
+          <div class="product-advice__content">
+            <strong class="product-advice__card-title">Appelez-nous</strong>
+            <span class="product-advice__card-text">+41 21 634 04 76</span>
+          </div>
+        </div>
+        <div class="product-advice__card contact">
+          <img class="product-advice__icon" src="/assets/icons/services/post-office.svg" alt="" width="48" height="48" loading="lazy" decoding="async" aria-hidden="true">
+          <div class="product-advice__content">
+            <strong class="product-advice__card-title">Écrivez-nous</strong>
+            <span class="product-advice__card-text">info@richard-decoration.ch</span>
+          </div>
+        </div>
+        <div class="product-advice__card contact">
+          <img class="product-advice__icon" src="/assets/icons/services/bed-double.svg" alt="" width="48" height="48" loading="lazy" decoding="async" aria-hidden="true">
+          <div class="product-advice__content">
+            <strong class="product-advice__card-title">Venez-nous rencontrer</strong>
+            <span class="product-advice__card-text">Richard La Literie<br>Rue des Alpes 2<br>1023 Crissier</span>
+          </div>
+        </div>
+      </div>
+      <a class="product-advice__cta about-btn" href="/pages/contact.html">Contactez-nous</a>
+    </section>
+  `;
+}
 
-    const updateButtons = () => {
-      const maxScroll = viewport.scrollWidth - viewport.clientWidth;
-      prevButton.disabled = viewport.scrollLeft <= 4;
-      nextButton.disabled = viewport.scrollLeft >= maxScroll - 4;
-    };
-
-    const scrollByAmount = (direction) => {
-      viewport.scrollBy({
-        left: Math.max(viewport.clientWidth * 0.82, 260) * direction,
-        behavior: "smooth"
-      });
-    };
-
-    prevButton.addEventListener("click", () => scrollByAmount(-1));
-    nextButton.addEventListener("click", () => scrollByAmount(1));
-    viewport.addEventListener("scroll", updateButtons, { passive: true });
-    window.addEventListener("resize", updateButtons);
-    updateButtons();
-  });
+function getProductBadgeClass(badge, index) {
+  const normalized = String(badge).toLowerCase();
+  if (normalized.includes("nouve")) return "new";
+  if (normalized.includes("best")) return "best";
+  return index === 0 ? "new" : "extra";
 }
 
 function initProductAccordions(root) {
-  root.querySelectorAll(".product-accordion-trigger").forEach((trigger) => {
+  root.querySelectorAll("[data-accordion-trigger]").forEach((trigger) => {
     trigger.addEventListener("click", () => {
-      const item = trigger.closest(".product-accordion-item");
-      const panel = item?.querySelector(".product-accordion-panel");
-      if (!item || !panel) return;
+      const panel = trigger.nextElementSibling;
+      if (!panel || !panel.hasAttribute("data-accordion-panel")) return;
 
-      const shouldOpen = !item.classList.contains("is-open");
-      item.classList.toggle("is-open", shouldOpen);
-      trigger.setAttribute("aria-expanded", shouldOpen ? "true" : "false");
+      const shouldOpen = panel.hidden;
       panel.hidden = !shouldOpen;
+      trigger.setAttribute("aria-expanded", shouldOpen ? "true" : "false");
+      const icon = trigger.querySelector("span:last-child");
+      if (icon) icon.textContent = shouldOpen ? "−" : "+";
     });
   });
 }
@@ -2062,33 +2101,32 @@ export async function initProductPage() {
   };
 
   pageEl.innerHTML = `
-    <nav class="product-breadcrumb" aria-label="Fil d'Ariane">
+    <nav class="breadcrumb product-page-breadcrumb" aria-label="Fil d'Ariane">
       <a href="/">Accueil</a>
       ${categoryAncestors
         .map(
           (entry) =>
-            `<span class="product-breadcrumb-separator">/</span><a href="/pages/category.html?slug=${encodeURIComponent(
-              entry.slug
-            )}">${entry.name}</a>`
+            `<span class="breadcrumb__separator" aria-hidden="true">›</span><a href="/pages/category.html?slug=${encodeURIComponent(entry.slug)}">${entry.name}</a>`
         )
         .join("")}
-      <span class="product-breadcrumb-separator">/</span>
-      <span class="product-breadcrumb-current">${product.name}</span>
+      <span class="breadcrumb__separator" aria-hidden="true">›</span>
+      <span class="breadcrumb__current">${product.name}</span>
     </nav>
 
-    <section class="product-hero-grid">
-      <div id="product-gallery-panel" class="product-gallery-panel card"></div>
-      <aside id="product-summary-panel" class="product-summary-panel card"></aside>
-    </section>
+    <div class="single-product__layout product">
+      <div id="product-gallery-panel" class="single-product__gallery gallery"></div>
+      <aside id="product-summary-panel" class="single-product__summary details product-summary"></aside>
+    </div>
 
-    <div id="product-details-panel"></div>
-    <div id="product-lightbox-root"></div>
-
-    ${renderProductRail("Produits similaires", similarProducts)}
-    ${renderProductRail("Nous vous recommandons aussi", recommendedProducts)}
+    ${renderProductBenefits()}
+    <div id="product-details-panel" class="product-details-panel"></div>
+    <div id="product-lightbox-root" class="product-lightbox-root"></div>
+    ${renderProductRelatedSection("Produits similaires", similarProducts)}
+    ${renderProductRelatedSection("Nous vous recommandons aussi", recommendedProducts)}
+    ${renderProductAdviceSection()}
   `;
 
-  document.title = `${product.name} | Richard Design`;
+  document.title = `${product.name} | Richard La Literie`;
 
   const galleryPanelEl = document.getElementById("product-gallery-panel");
   const summaryPanelEl = document.getElementById("product-summary-panel");
@@ -2209,7 +2247,7 @@ export async function initProductPage() {
         const direction = button.dataset.lightboxDirection === "next" ? 1 : -1;
         state.currentImageIndex =
           (state.currentImageIndex + direction + images.length) % images.length;
-        renderGallery();
+        renderGallery(syncVariation());
         renderLightbox();
       });
     });
@@ -2217,91 +2255,59 @@ export async function initProductPage() {
     lightboxRootEl.querySelectorAll("[data-lightbox-index]").forEach((button) => {
       button.addEventListener("click", () => {
         state.currentImageIndex = Number(button.dataset.lightboxIndex) || 0;
-        renderGallery();
+        renderGallery(syncVariation());
         renderLightbox();
       });
     });
   };
 
-  const renderGallery = () => {
+  const renderGallery = (variation = null) => {
     const fallbackImage = getProductImageUrl(product, null);
     const hasMultipleImages = images.length > 1;
+    const activeImage = images[state.currentImageIndex] || images[0];
+    const badges = getProductDisplayBadges(product, 2);
+    const activeVariation = variation ?? syncVariation();
+    const currentPrice = activeVariation?.price ?? getProductMinimumPrice(product);
+    const hasSale = productHasPromotion(product, currentPrice);
+    const discountPercent = hasSale ? getProductDiscountPercent(product, currentPrice) : 0;
 
     galleryPanelEl.innerHTML = `
-      <div class="product-gallery-stage">
-        <button
-          type="button"
-          class="product-gallery-open"
-          aria-label="Ouvrir le diaporama plein écran"
-          data-open-lightbox
-        >
-          <div class="product-gallery-viewport">
-          <div
-            class="product-gallery-track"
-            style="transform: translateX(-${state.currentImageIndex * 100}%);"
-          >
-            ${images
-              .map(
-                (image, index) => `
-                  <div class="product-gallery-slide">
-                    <div class="product-gallery-frame">
-                      <img
-                        src="${image}"
-                        alt="${product.name} - vue ${index + 1}"
-                        class="product-gallery-image"
-                        onerror="this.src='${fallbackImage}'"
-                      />
-                    </div>
-                  </div>
-                `
-              )
-              .join("")}
-          </div>
-          </div>
-        </button>
-      </div>
-
-      ${
-        hasMultipleImages
-          ? `
-            <div class="product-gallery-thumbs-slider">
-              <button
-                type="button"
-                class="product-gallery-thumbs-arrow"
-                data-thumb-direction="prev"
-                aria-label="Images précédentes"
-              >
-                <svg viewBox="0 0 24 24">
-                  <path d="M14.5 6 8.5 12l6 6" />
-                </svg>
-              </button>
-              <div class="product-gallery-thumbs-viewport">
-                <div class="product-gallery-thumbs-track">
-                  ${images
-                    .map(
-                      (image, index) => `
-                        <button
-                          type="button"
-                          class="product-gallery-thumb${index === state.currentImageIndex ? " is-active" : ""}"
-                          data-gallery-index="${index}"
-                        >
-                          <img src="${image}" alt="${product.name} - vue ${index + 1}" onerror="this.src='${fallbackImage}'" />
-                        </button>
-                      `
-                    )
-                    .join("")}
-                </div>
+      <div class="product-gallery__main photo-wrap">
+        ${
+          hasSale || badges.length
+            ? `
+              <div class="product-gallery__badges" aria-hidden="true">
+                ${hasSale ? `<span class="product-gallery__badge product-gallery__badge--sale">-${discountPercent}%</span>` : ""}
+                ${badges
+                  .map((badge) => `<span class="product-gallery__badge product-gallery__badge--label">${badge}</span>`)
+                  .join("")}
               </div>
-              <button
-                type="button"
-                class="product-gallery-thumbs-arrow"
-                data-thumb-direction="next"
-                aria-label="Images suivantes"
-              >
-                <svg viewBox="0 0 24 24">
-                  <path d="m9.5 6 6 6-6 6" />
-                </svg>
-              </button>
+            `
+            : ""
+        }
+        <img src="${activeImage}" alt="${product.name}" onerror="this.src='${fallbackImage}'" data-open-lightbox>
+        ${
+          hasMultipleImages
+            ? `
+              <button type="button" class="arrow product-gallery__arrow left" data-gallery-direction="prev" aria-label="Image précédente">‹</button>
+              <button type="button" class="arrow product-gallery__arrow right" data-gallery-direction="next" aria-label="Image suivante">›</button>
+            `
+            : ""
+        }
+      </div>
+      ${
+        images.length
+          ? `
+            <div class="product-gallery__thumbs thumbs">
+              ${images
+                .map(
+                  (image, index) => `
+                    <button type="button" class="product-gallery__thumb thumb${index === state.currentImageIndex ? " active is-active" : ""}" data-gallery-index="${index}">
+                      <img src="${image}" alt="${product.name} - vue ${index + 1}" onerror="this.src='${fallbackImage}'">
+                    </button>
+                  `
+                )
+                .join("")}
             </div>
           `
           : ""
@@ -2311,7 +2317,7 @@ export async function initProductPage() {
     galleryPanelEl.querySelectorAll("[data-gallery-index]").forEach((button) => {
       button.addEventListener("click", () => {
         state.currentImageIndex = Number(button.dataset.galleryIndex) || 0;
-        renderGallery();
+        renderGallery(syncVariation());
         renderLightbox();
       });
     });
@@ -2321,33 +2327,14 @@ export async function initProductPage() {
       renderLightbox();
     });
 
-    const thumbsViewport = galleryPanelEl.querySelector(".product-gallery-thumbs-viewport");
-    const activeThumb = galleryPanelEl.querySelector(".product-gallery-thumb.is-active");
-    const thumbPrevButton = galleryPanelEl.querySelector('[data-thumb-direction="prev"]');
-    const thumbNextButton = galleryPanelEl.querySelector('[data-thumb-direction="next"]');
-
-    if (thumbsViewport && thumbPrevButton && thumbNextButton) {
-      const updateThumbButtons = () => {
-        const maxScroll = thumbsViewport.scrollWidth - thumbsViewport.clientWidth;
-        thumbPrevButton.disabled = thumbsViewport.scrollLeft <= 4;
-        thumbNextButton.disabled = thumbsViewport.scrollLeft >= maxScroll - 4;
-      };
-
-      const scrollThumbs = (direction) => {
-        thumbsViewport.scrollBy({
-          left: Math.max(thumbsViewport.clientWidth * 0.72, 180) * direction,
-          behavior: "smooth"
-        });
-      };
-
-      thumbPrevButton.addEventListener("click", () => scrollThumbs(-1));
-      thumbNextButton.addEventListener("click", () => scrollThumbs(1));
-      thumbsViewport.addEventListener("scroll", updateThumbButtons, { passive: true });
-      requestAnimationFrame(() => {
-        activeThumb?.scrollIntoView({ inline: "center", block: "nearest" });
-        updateThumbButtons();
+    galleryPanelEl.querySelectorAll("[data-gallery-direction]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const direction = button.dataset.galleryDirection === "next" ? 1 : -1;
+        state.currentImageIndex = (state.currentImageIndex + direction + images.length) % images.length;
+        renderGallery(syncVariation());
+        renderLightbox();
       });
-    }
+    });
   };
 
   document.addEventListener("keydown", (event) => {
@@ -2361,7 +2348,7 @@ export async function initProductPage() {
 
     if (event.key === "ArrowRight") {
       state.currentImageIndex = (state.currentImageIndex + 1) % images.length;
-      renderGallery();
+      renderGallery(syncVariation());
       renderLightbox();
       return;
     }
@@ -2369,7 +2356,7 @@ export async function initProductPage() {
     if (event.key === "ArrowLeft") {
       state.currentImageIndex =
         (state.currentImageIndex - 1 + images.length) % images.length;
-      renderGallery();
+      renderGallery(syncVariation());
       renderLightbox();
     }
   });
@@ -2385,100 +2372,61 @@ export async function initProductPage() {
     ].slice(0, 4);
 
     summaryPanelEl.innerHTML = `
-      <div class="product-summary-inner">
-        <div class="product-summary-topbar">
+      <div class="product-summary-panel">
+        <div class="product-summary__header">
+          <h1 class="product_title">${product.name}</h1>
           ${
-            summaryBadges.length
-              ? `
-                <div class="product-summary-badges">
-                  ${summaryBadges
-                    .map((badge) => {
-                      const badgeClass =
-                        badge.startsWith("-") || badge === "Sur commande"
-                          ? "product-summary-badge product-summary-badge--accent"
-                          : "product-summary-badge product-summary-badge--light";
-                      return `<span class="${badgeClass}">${badge}</span>`;
-                    })
-                    .join("")}
-                </div>
-              `
-              : "<span></span>"
-          }
-          ${
-            brand?.logo
-              ? `<img src="${brand.logo}" alt="${brand.name}" class="product-summary-brand-logo" />`
+            brand
+              ? `<div class="product-brand">
+                  ${
+                    brand.logo
+                      ? `<a href="/pages/brands.html?slug=${encodeURIComponent(brand.slug)}" class="product-brand__link"><img src="${brand.logo}" alt="${brand.name}" class="product-brand__logo"></a>`
+                      : `<a href="/pages/brands.html?slug=${encodeURIComponent(brand.slug)}" class="product-brand__name">${brand.name}</a>`
+                  }
+                </div>`
               : ""
           }
         </div>
-
-        <div class="product-summary-copy">
-          <h1 class="product-summary-title">${product.name}</h1>
-        </div>
-
-        <div class="product-summary-price-block">
-          <div class="product-summary-price-current">${formatPriceCHF(currentPrice)}</div>
+        <div class="price-display">
+          <div class="price-display__current"><span class="price">${formatPriceCHF(currentPrice)}</span></div>
           ${
             hasSale
-              ? `
-                  <div class="product-summary-price-catalog">
-                    <span class="product-summary-price-catalog-label">Prix catalogue</span>
-                    <span class="product-summary-price-catalog-value">${formatPriceCHF(comparePrice)}</span>
-                    <span class="product-summary-price-catalog-saving">-${discountPercent}%</span>
-                  </div>
-                `
-              : `<p class="product-summary-price-meta">Prix affiché pour la configuration sélectionnée</p>`
-          }
-        </div>
-
-        ${
-          optionDefinitions.length
-            ? `
-              <div class="product-option-stack">
-                ${optionDefinitions
-                  .map(
-                    (option) => `
-                      <section class="product-option-card">
-                        <div class="product-option-label">${option.label}</div>
-                        ${renderProductOptionField(option, state.selectedOptions[option.key])}
-                      </section>
-                    `
-                  )
-                  .join("")}
-              </div>
-            `
-            : ""
-        }
-
-        <div class="product-purchase-panel">
-          <div class="product-purchase-delivery">
-            <span class="product-purchase-delivery-label">Délai de livraison</span>
-            <span class="product-purchase-delivery-value">${getProductDeliveryLabel(product, variation)}</span>
-          </div>
-
-          <div class="product-purchase-actions">
-            <div class="product-quantity-stepper" aria-label="Quantité">
-              <button type="button" class="product-quantity-button" data-quantity-action="decrease">-</button>
-              <input
-                type="number"
-                min="1"
-                value="${state.quantity}"
-                class="product-quantity-input"
-                id="product-quantity-input"
-              />
-              <button type="button" class="product-quantity-button" data-quantity-action="increase">+</button>
-            </div>
-
-            <button type="button" class="btn btn-primary btn-large product-add-to-cart-button" id="product-add-to-cart">
-              Ajouter au panier
-            </button>
-          </div>
-
-          ${
-            state.feedback
-              ? `<p class="product-cart-feedback">${state.feedback}</p>`
+              ? `<div class="price-display__catalog"><span>Prix catalogue</span> <span class="price-display__catalog-value">${formatPriceCHF(comparePrice)}</span> <strong class="price-display__discount">-${discountPercent}%</strong></div>`
               : ""
           }
         </div>
+        ${
+          optionDefinitions.length
+            ? `<div class="product-options">${optionDefinitions
+                .map((option) => {
+                  const summaryOption =
+                    option.key === "cover"
+                      ? { ...option, values: getProductCoverChipValues(product) }
+                      : option;
+                  return `
+                    <div class="product-option-card option-card">
+                      <span class="product-option-card__label">${summaryOption.label}</span>
+                      ${renderProductOptionField(summaryOption, state.selectedOptions[summaryOption.key])}
+                    </div>
+                  `;
+                })
+                .join("")}</div>`
+            : ""
+        }
+        <div class="product-option-card product-option-card--delivery option-card delivery">
+          <p class="product-delivery-inline">
+            <span class="product-option-card__label">Livraison indicative</span><span class="product-option-card__value"> : ${getProductDeliveryValue(product, variation)}</span>
+          </p>
+        </div>
+        <div class="product-cart-row cart-row">
+          <div class="product-cart-row__qty qty" aria-label="Quantité">
+            <button type="button" class="product-quantity__btn" data-quantity-action="decrease" aria-label="Diminuer">−</button>
+            <span id="product-quantity-display">${state.quantity}</span>
+            <button type="button" class="product-quantity__btn" data-quantity-action="increase" aria-label="Augmenter">+</button>
+          </div>
+          <button type="button" class="product-cart-row__submit add-cart" id="product-add-to-cart">Ajouter au panier</button>
+        </div>
+        ${state.feedback ? `<p class="cart-feedback product-cart-feedback">${state.feedback}</p>` : ""}
       </div>
     `;
 
@@ -2489,17 +2437,17 @@ export async function initProductPage() {
         const nextVariation = syncVariation(optionKey);
         renderSummary(nextVariation);
         renderDetails(nextVariation);
-        renderGallery();
+        renderGallery(nextVariation);
       });
     });
 
-    summaryPanelEl.querySelectorAll(".product-option-select").forEach((select) => {
+    summaryPanelEl.querySelectorAll(".product-option-card__select, .select-row select").forEach((select) => {
       select.addEventListener("change", () => {
         state.selectedOptions[select.dataset.optionKey] = select.value;
         const nextVariation = syncVariation(select.dataset.optionKey);
         renderSummary(nextVariation);
         renderDetails(nextVariation);
-        renderGallery();
+        renderGallery(nextVariation);
       });
     });
 
@@ -2511,14 +2459,6 @@ export async function initProductPage() {
         );
         renderSummary(syncVariation());
       });
-    });
-
-    const quantityInput = summaryPanelEl.querySelector("#product-quantity-input");
-    quantityInput?.addEventListener("input", () => {
-      state.quantity = Math.max(1, Number(quantityInput.value) || 1);
-      if (quantityInput.value !== String(state.quantity)) {
-        quantityInput.value = String(state.quantity);
-      }
     });
 
     const addToCartButton = summaryPanelEl.querySelector("#product-add-to-cart");
@@ -2564,11 +2504,10 @@ export async function initProductPage() {
   };
 
   const initialVariation = syncVariation();
-  renderGallery();
+  renderGallery(initialVariation);
   renderSummary(initialVariation);
   renderDetails(initialVariation);
   renderLightbox();
-  initProductRailSliders(pageEl);
 }
 
 /* PAGE PANIER */

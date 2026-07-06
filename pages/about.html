@@ -2,79 +2,308 @@
 <html lang="fr">
   <head>
     <meta charset="utf-8" />
-    <title>À propos | Richard Design</title>
+    <title>À propos | Richard La Literie</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/styles/base.css" />
     <link rel="stylesheet" href="/styles/layout.css" />
     <link rel="stylesheet" href="/styles/components.css" />
+    <link rel="stylesheet" href="/styles/about-page.css" />
   </head>
   <body class="page" data-page="about">
     <header id="site-header"></header>
-    <main class="page-main layout-main">
-      <div class="container">
-        <div class="content-page">
-          <header class="section-header content-page-intro">
-            <div class="section-header-title">
-              <p class="section-kicker">À propos</p>
-              <h1>Richard SA, le confort pensé pour durer</h1>
-            </div>
-            <p class="section-description">
-              Cette maquette présente l’univers de la marque, sa sélection de produits
-              et une expérience d’achat orientée conseil pour la literie, les matelas
-              et les sommiers.
-            </p>
-          </header>
 
-          <div class="grid grid-2">
-            <section class="content-card content-card--soft">
-              <span class="content-tag">Notre approche</span>
-              <h2>Une sélection claire, lisible et rassurante</h2>
-              <p>
-                L’objectif est de mettre en avant les grandes familles de produits,
-                les marques partenaires et les offres spéciales sans surcharger la
-                navigation.
-              </p>
-              <ul class="content-list">
-                <li>Parcours simplifié entre découverte, conseil et fiche produit.</li>
-                <li>Ton premium, chaleureux et rassurant.</li>
-                <li>Accent mis sur le confort, la qualité et l’accompagnement.</li>
-              </ul>
-            </section>
-
-            <section class="content-card">
-              <span class="content-tag">Ce que vous trouverez</span>
-              <h2>Les univers principaux de la boutique</h2>
-              <ul class="content-list">
-                <li>Matelas pour différents profils de sommeil.</li>
-                <li>Sommiers fixes ou relevables.</li>
-                <li>Literie, oreillers, duvets et accessoires de confort.</li>
-                <li>Marques suisses et europeennes sélectionnées.</li>
-              </ul>
-            </section>
-          </div>
-
-          <section class="content-card content-card--accent">
-            <span class="content-tag">Notre approche</span>
-            <h2>Un site de validation avant intégration finale</h2>
-            <p>
-              Le contenu visible ici sert à cadrer la structure, l’identité visuelle
-              et les priorités éditoriales avant développement complet dans
-              l’environnement e-commerce définitif.
-            </p>
-            <div class="content-actions">
-              <a href="/pages/advice.html" class="btn btn-primary">Voir les conseils</a>
-              <a href="/pages/brands.html" class="btn btn-ghost">Découvrir les marques</a>
-              <a href="/pages/contact.html" class="btn btn-ghost">Nous contacter</a>
-            </div>
-          </section>
+    <main class="rd-page about-page">
+      <!-- En-tête de page -->
+      <section class="about-hero" aria-labelledby="about-hero-title">
+        <div class="about-hero__inner layout-wide">
+          <h1 id="about-hero-title" class="about-hero__title">
+            L'expert de la literie à Crissier depuis 1933
+          </h1>
         </div>
-      </div>
+      </section>
+
+      <!-- Portrait gérant + histoire entreprise -->
+      <section class="about-founder-story" aria-labelledby="about-story-heading">
+        <div class="about-founder-story__inner layout-wide">
+          <div class="about-founder-story__grid">
+            <aside class="about-founder" aria-label="Votre gérant de magasin">
+              <div class="about-founder__card">
+                <div class="about-founder__media">
+                  <img
+                    src="/assets/home/expert.jpg"
+                    alt="Jean-Marc Richard, gérant Richard La Literie à Crissier"
+                    width="320"
+                    height="360"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="about-founder__body">
+                  <p class="about-founder__identity">
+                    <span class="about-founder__role">Votre gérant de magasin</span>
+                    <span class="about-founder__name">Jean-Marc Richard</span>
+                  </p>
+                  <blockquote class="about-founder__quote">
+                    <p>
+                      Chaque client est unique. Je suis là pour vous écouter, comprendre vos
+                      besoins et vous guider. Nous ne vendons pas un produit standard&nbsp;: nous
+                      concevons avec vous votre solution de couchage idéale, pour investir dans
+                      votre sommeil pour de nombreuses années.
+                    </p>
+                  </blockquote>
+                </div>
+              </div>
+            </aside>
+
+            <div class="about-story about-story--boxed">
+              <h2 id="about-story-heading" class="about-story__title">
+                Richard la Literie, votre référence literie à Crissier et à proximité de Lausanne,
+                depuis 1933
+              </h2>
+              <div class="about-story__text">
+                <p>
+                  Installés au cœur de Crissier, au 2 rue des Alpes, Richard La Literie est une
+                  adresse emblématique pour tous ceux qui recherchent un conseil personnalisé en
+                  matière de literie. Notre magasin est bien plus qu'un point de vente&nbsp;:
+                  c'est un lieu d'échange où chaque client est accueilli avec attention.
+                </p>
+                <p>
+                  Jean-Marc Richard représente la troisième génération d'une famille passionnée,
+                  après son grand-père Édouard et son père Claude. Cette transmission incarne une
+                  tradition d'exigence, de rigueur et d'attention portée aux moindres détails.
+                </p>
+                <p>
+                  Nos origines de tapissiers-décorateurs nous ont appris à fabriquer nos propres
+                  matelas avec des matériaux naturels — crin de cheval, laine de mouton — un
+                  savoir-faire artisanal qui guide encore aujourd'hui notre sélection de produits.
+                </p>
+                <p>
+                  Bien dormir ne relève ni du hasard, ni d'un choix standardisé. Face aux achats
+                  impulsifs sur internet, nous proposons un confort sur mesure et une sélection
+                  rigoureuse de matelas et sommiers adaptés à chaque dormeur.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pourquoi essayer en magasin -->
+      <section class="about-split about-split--image-left" aria-labelledby="about-why-title">
+        <div class="about-split__inner layout-wide">
+          <div class="about-split__grid">
+            <div class="about-split__media">
+              <img
+                src="/assets/home/hero-slide-bedroom.jpg"
+                alt="Showroom Richard La Literie à Crissier"
+                width="1024"
+                height="683"
+                loading="lazy"
+              />
+            </div>
+            <div class="about-split__content">
+              <p class="about-split__kicker about-eyebrow">Votre magasin de literie à Crissier</p>
+              <h2 id="about-why-title" class="about-split__title">
+                Pourquoi essayer son matelas en magasin&nbsp;?
+              </h2>
+              <p>
+                Depuis 1933, Richard La Literie accompagne les dormeurs de Crissier et des environs
+                de Lausanne. Le sommeil mérite plus qu'un simple clic&nbsp;: nous construisons avec
+                vous une solution de couchage sur mesure, loin des choix standardisés.
+              </p>
+
+              <h3 class="about-expertise__title">Le conseil et l'expertise</h3>
+              <p>
+                Choisir sa literie ne se résume pas à opposer souple, medium ou ferme, mousse ou
+                ressorts. Chaque dormeur est unique&nbsp;: morphologie, habitudes, tensions,
+                sensibilité à la chaleur, allergies et préférences de matériaux orientent vers des
+                solutions parfois totalement différentes.
+              </p>
+              <ul class="about-expertise__list">
+                <li>Dormez-vous sur le dos, le côté ou le ventre&nbsp;?</li>
+                <li>
+                  Ressentez-vous des tensions au cou, aux épaules, aux hanches ou aux lombaires&nbsp;?
+                </li>
+                <li>Préférez-vous un accueil enveloppant ou un soutien plus tonique&nbsp;?</li>
+                <li>
+                  Êtes-vous sensible à la transpiration, aux allergies ou aux troubles
+                  circulatoires&nbsp;?
+                </li>
+                <li>
+                  Avez-vous besoin d'un accompagnement particulier pour vous lever ou vous coucher&nbsp;?
+                </li>
+              </ul>
+              <p class="about-expertise__closing">
+                Autant d'éléments qui orientent vers des solutions parfois totalement différentes.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Essai matelas indispensable -->
+      <section
+        class="about-split about-split--image-right"
+        aria-labelledby="about-trial-title"
+      >
+        <div class="about-split__inner layout-wide">
+          <div class="about-split__grid">
+            <div class="about-split__content">
+              <h2 id="about-trial-title" class="about-split__title">
+                Essayer son matelas, un indispensable
+              </h2>
+              <p>
+                Venir chez Richard La Literie à Crissier, c'est d'abord essayer un matelas dans de
+                vraies conditions&nbsp;: sans précipitation, confortablement installé, et non pas
+                en manteau debout devant un sommier.
+              </p>
+              <p>
+                Nous vous proposons un oreiller adapté pour simuler vos conditions réelles de
+                sommeil. Nous vous invitons également à tester le matelas sur différents sommiers,
+                car le sommier représente près d'un tiers du confort final et peut modifier
+                sensiblement les sensations.
+              </p>
+              <p>
+                Un expert vous accompagne tout au long de l'essai, observe vos réactions et vous
+                aide à comprendre ce que vous ressentez pour orienter votre choix.
+              </p>
+              <p>
+                Si un doute subsiste, nous proposons l'essai du matelas à domicile pendant
+                quelques nuits, pour sécuriser votre décision.
+              </p>
+              <blockquote class="about-split__pullquote">
+                <p>«&nbsp;Je ne pensais pas qu'il pouvait y avoir une telle différence.&nbsp;»</p>
+              </blockquote>
+            </div>
+            <div class="about-split__media">
+              <img
+                src="/assets/home/hero-slide-wall.jpg"
+                alt="Essai de matelas en conditions réelles"
+                width="1024"
+                height="576"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Services premium -->
+      <section class="about-premium" aria-labelledby="about-premium-title">
+        <div class="about-premium__inner layout-wide">
+          <div class="about-premium__boxed">
+            <header class="about-premium__header">
+              <h2 id="about-premium-title" class="about-premium__title">Nos services premium</h2>
+              <div class="about-premium__intro">
+                <p>
+                  Parce que le choix d'un matelas ne s'improvise pas, nous avons développé une gamme de
+                  services premium pour vous guider, vous simplifier la vie et sécuriser votre achat.
+                </p>
+                <p>
+                  De l'essai à domicile aux garanties exclusives, tout est conçu pour vous aider à faire
+                  le bon choix.
+                </p>
+              </div>
+            </header>
+            <ul class="about-premium__grid">
+              <li class="about-premium-card">
+                <span class="about-premium-card__icon" aria-hidden="true">
+                  <img src="/assets/icons/services/customer-service-woman.svg" alt="" width="40" height="40" />
+                </span>
+                <p class="about-premium-card__text">Conseils personnalisés, sur mesure</p>
+              </li>
+              <li class="about-premium-card">
+                <span class="about-premium-card__icon" aria-hidden="true">
+                  <img src="/assets/icons/services/bed-double.svg" alt="" width="40" height="40" />
+                </span>
+                <p class="about-premium-card__text">Essai Sommeil à Domicile avant achat</p>
+              </li>
+              <li class="about-premium-card">
+                <span class="about-premium-card__icon" aria-hidden="true">
+                  <img src="/assets/icons/services/post-office.svg" alt="" width="40" height="40" />
+                </span>
+                <p class="about-premium-card__text">Services de livraison, recyclage et montage</p>
+              </li>
+              <li class="about-premium-card">
+                <span class="about-premium-card__icon" aria-hidden="true">
+                  <img src="/assets/icons/services/customer-service-help.svg" alt="" width="40" height="40" />
+                </span>
+                <p class="about-premium-card__text">Garantie 100&nbsp;% satisfaction</p>
+              </li>
+              <li class="about-premium-card">
+                <span class="about-premium-card__icon about-premium-card__icon--badge" aria-hidden="true">
+                  <span class="about-premium-card__badge">✓</span>
+                </span>
+                <p class="about-premium-card__text">Garantie fabricants</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Univers literie — repris de la page d'accueil -->
+      <section class="univers about-univers" aria-labelledby="about-univers-title">
+        <div class="univers__inner layout-wide">
+          <header class="univers__header">
+            <p class="univers__eyebrow">Trouvez votre confort idéal</p>
+            <h2 id="about-univers-title">Nos univers literie</h2>
+          </header>
+          <div class="univers__cards">
+            <a class="ucard" href="/pages/category.html?slug=matelas">
+              <div class="ucard__media">
+                <img src="/assets/home/cat-matelas.webp" alt="Matelas" loading="lazy" />
+              </div>
+              <div class="ucard__body">
+                <h3 class="ucard__title">Matelas</h3>
+                <p class="ucard__text">Soutien, accueil, technologies : trouvez le matelas qui vous correspond.</p>
+                <span class="ucard__link">Découvrir <span class="ucard__link-arrow" aria-hidden="true">→</span></span>
+              </div>
+            </a>
+            <a class="ucard" href="/pages/category.html?slug=sommier">
+              <div class="ucard__media">
+                <img src="/assets/home/cat-sommiers-ref.jpg" alt="Sommiers" loading="lazy" />
+              </div>
+              <div class="ucard__body">
+                <h3 class="ucard__title">Sommiers</h3>
+                <p class="ucard__text">Soutien, accueil, technologies : trouvez le matelas qui vous correspond.</p>
+                <span class="ucard__link">Découvrir <span class="ucard__link-arrow" aria-hidden="true">→</span></span>
+              </div>
+            </a>
+            <a class="ucard" href="/pages/category.html?slug=lit">
+              <div class="ucard__media">
+                <img src="/assets/home/cat-lits-ref.jpg" alt="Lits" loading="lazy" />
+              </div>
+              <div class="ucard__body">
+                <h3 class="ucard__title">Lits</h3>
+                <p class="ucard__text">Soutien, accueil, technologies : trouvez le matelas qui vous correspond.</p>
+                <span class="ucard__link">Découvrir <span class="ucard__link-arrow" aria-hidden="true">→</span></span>
+              </div>
+            </a>
+            <a class="ucard" href="/pages/category.html?slug=literie">
+              <div class="ucard__media">
+                <img src="/assets/home/cat-literie-ref.webp" alt="Literie" loading="lazy" />
+              </div>
+              <div class="ucard__body">
+                <h3 class="ucard__title">Literie</h3>
+                <p class="ucard__text">Soutien, accueil, technologies : trouvez le matelas qui vous correspond.</p>
+                <span class="ucard__link">Découvrir <span class="ucard__link-arrow" aria-hidden="true">→</span></span>
+              </div>
+            </a>
+            <a class="ucard" href="/pages/advice.html">
+              <div class="ucard__media">
+                <img src="/assets/home/cat-conseils-ref.webp" alt="Conseils" loading="lazy" />
+              </div>
+              <div class="ucard__body">
+                <h3 class="ucard__title">Conseils</h3>
+                <p class="ucard__text">Soutien, accueil, technologies : trouvez le matelas qui vous correspond.</p>
+                <span class="ucard__link">Découvrir <span class="ucard__link-arrow" aria-hidden="true">→</span></span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
     </main>
+
     <footer id="site-footer"></footer>
     <script type="module" src="/js/app.js"></script>
   </body>
 </html>
-
