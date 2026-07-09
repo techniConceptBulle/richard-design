@@ -1755,6 +1755,70 @@ function renderSpecificationRows(product, brand, category, optionDefinitions, va
     .join("");
 }
 
+/** Avis clients mock affichés dans l'accordéon fiche produit */
+const PRODUCT_ACCORDION_REVIEWS = [
+  {
+    author: "Boris76",
+    rating: 5,
+    title: "Bien adapté pour mon usage",
+    text: "Commande en grande taille, confortable et durable au quotidien."
+  },
+  {
+    author: "Julie M.",
+    rating: 5,
+    title: "Très bon soutien du dos",
+    text: "Excellent maintien et très bon confort dès les premières nuits."
+  },
+  {
+    author: "Marc D.",
+    rating: 5,
+    title: "Qualité au rendez-vous",
+    text: "Finitions soignées et accueil chaleureux en magasin à Crissier."
+  },
+  {
+    author: "Sophie L.",
+    rating: 4,
+    title: "Confort progressif",
+    text: "Le matelas se bonifie après quelques nuits, très bon rapport qualité-prix."
+  },
+  {
+    author: "Thomas R.",
+    rating: 5,
+    title: "Livraison impeccable",
+    text: "Équipe ponctuelle et installation rapide, produit conforme à la démo."
+  },
+  {
+    author: "Clara B.",
+    rating: 5,
+    title: "Conseil personnalisé",
+    text: "La recommandation en boutique correspond parfaitement à mes attentes de fermeté."
+  }
+];
+
+/**
+ * Génère la grille d'avis clients pour la section accordéon « Avis ».
+ */
+export function renderProductReviews(reviews = PRODUCT_ACCORDION_REVIEWS) {
+  return `
+    <div class="product-reviews">
+      ${reviews
+        .map(
+          (review) => `
+            <article class="product-review-card">
+              <div class="product-review-author">${review.author}</div>
+              <div class="product-review-rating" aria-label="${review.rating} sur 5">
+                ${"★".repeat(review.rating)}<span>${review.rating}/5</span>
+              </div>
+              <p class="product-review-meta">${review.title}</p>
+              <p class="product-review-text">${review.text}</p>
+            </article>
+          `
+        )
+        .join("")}
+    </div>
+  `;
+}
+
 function renderProductAccordion(product, brand, category, optionDefinitions, variation) {
   const highlights = buildProductHighlights(product, category, optionDefinitions, variation);
   const collapsibleSections = [
@@ -1792,12 +1856,7 @@ function renderProductAccordion(product, brand, category, optionDefinitions, var
     },
     {
       title: "Avis",
-      content: `
-        <p><strong>Boris76</strong> — ★★★★★ Bien adapté pour mon usage</p>
-        <p>Commande en grande taille, confortable et durable au quotidien.</p>
-        <p><strong>Julie M.</strong> — ★★★★★ Très bon soutien du dos</p>
-        <p>Excellent maintien et très bon confort dès les premières nuits.</p>
-      `
+      content: renderProductReviews()
     }
   ];
 

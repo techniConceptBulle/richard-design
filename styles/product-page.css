@@ -537,6 +537,19 @@
   margin-right: var(--space-2);
 }
 
+/* Grille avis accordéon — une colonne mobile, trois colonnes sur grands écrans */
+.single-product-page .product-reviews {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 1024px) {
+  .single-product-page .product-reviews {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 .single-product-page .product-spec-grid {
   display: grid;
   gap: var(--space-2);

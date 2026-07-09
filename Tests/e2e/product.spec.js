@@ -141,6 +141,20 @@ test.describe("Product detail page", () => {
     await expect(housseRow).toContainText("Thermorégulée");
   });
 
+  test("renders product reviews in three columns on large screens", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(PRODUCT_URL);
+
+    await page.locator('[data-accordion-trigger]').filter({ hasText: "Avis" }).click();
+    const reviews = page.locator(".product-reviews .product-review-card");
+    await expect(reviews).toHaveCount(6);
+
+    const columnCount = await page.locator(".product-reviews").evaluate(
+      (element) => getComputedStyle(element).gridTemplateColumns.split(" ").length
+    );
+    expect(columnCount).toBe(3);
+  });
+
   test("applies accordion border-bottom only on last element", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto(PRODUCT_URL);
