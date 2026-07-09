@@ -6,7 +6,6 @@ import { getCurrentPageKey } from "./utils.js";
 import {
   renderSharedLayout,
   initHomePage,
-  initCategoriesPage,
   initCategoryPage,
   initBrandsPage,
   initBrandPage,
@@ -25,9 +24,6 @@ async function initPage() {
   switch (page) {
     case "home":
       await initHomePage();
-      break;
-    case "categories":
-      await initCategoriesPage();
       break;
     case "category":
       await initCategoryPage();

@@ -15,6 +15,7 @@ import {
   getProductBySlug
 } from "./data.js";
 import { formatPriceCHF, parseQueryParams, getProductImageUrl, getCategoryImageUrl, getBrandImageUrl } from "./utils.js";
+import { filterProductsBySearchTerm } from "./search.js";
 import { addToCart, getCartItems, saveCartItems } from "./cart.js";
 import {
   getProductListingRating,
@@ -145,7 +146,7 @@ export function renderSharedLayout() {
               <img src="/assets/home/logo.png" alt="Richard La Literie" width="125" height="48">
             </a>
 
-            <form class="header-main__search header-main__search--desktop" role="search" action="/pages/categories.html" method="get">
+            <form class="header-main__search header-main__search--desktop" role="search" action="/pages/category.html" method="get">
               <label class="sr-only" for="site-search-input">Rechercher un produit</label>
               <div class="header-main__search-field">
                 <input
@@ -171,7 +172,7 @@ export function renderSharedLayout() {
             </div>
           </div>
 
-          <form class="header-main__search header-main__search--mobile" role="search" action="/pages/categories.html" method="get">
+          <form class="header-main__search header-main__search--mobile" role="search" action="/pages/category.html" method="get">
             <label class="sr-only" for="site-search-input-mobile">Rechercher un produit</label>
             <div class="header-main__search-field">
               <input
@@ -389,148 +390,7 @@ async function renderHomeLiquidation() {
     .join("");
 }
 
-/* PAGE CATÉGORIES (LISTE) */
-
-/**
- * Carte catégorie principale — pattern univers literie (richard2026).
- */
-function renderCategoriesListingCard(category) {
-  return `
-    <a class="ucard" href="/pages/category.html?slug=${encodeURIComponent(category.slug)}">
-      <div class="ucard__media">
-        <img src="${getCategoryImageUrl(category)}" alt="${category.name}" loading="lazy" />
-      </div>
-      <div class="ucard__body">
-        <h3 class="ucard__title">${category.name}</h3>
-        <p class="ucard__text">${category.description || ""}</p>
-        <span class="ucard__link">Découvrir <span class="ucard__link-arrow" aria-hidden="true">→</span></span>
-      </div>
-    </a>
-  `;
-}
-
-/**
- * Carte produit archive — alignée sur la boucle WooCommerce richard2026.
- */
-function renderArchiveProductCard(product, brand = null) {
-  const productUrl = `/pages/product.html?slug=${encodeURIComponent(product.slug)}`;
-  const productImage =
-    product.images && product.images.length
-      ? getProductImageUrl(product, product.images[0])
-      : getProductImageUrl(product, null);
-  const currentPrice = getProductMinimumPrice(product);
-  const comparePrice = getProductComparePrice(product);
-  const hasSale = productHasPromotion(product);
-
-  return `
-    <article class="category-product-card">
-      <a href="${productUrl}" class="category-product-link">
-        ${hasSale ? `<span class="category-product-onsale">Sale!</span>` : ""}
-        <img
-          src="${productImage}"
-          alt="${product.name}"
-          loading="lazy"
-          onerror="this.src='${getProductImageUrl(product, null)}'"
-        />
-        <h2 class="category-product-loop-title">${product.name}</h2>
-        ${
-          brand
-            ? `<span class="category-product-loop-brand">${brand.name}</span>`
-            : ""
-        }
-        <span class="category-product-price">
-          ${
-            hasSale
-              ? `
-                <del aria-hidden="true">${formatPriceCHF(comparePrice)}</del>
-                <ins aria-hidden="true">${formatPriceCHF(currentPrice)}</ins>
-              `
-              : formatPriceCHF(currentPrice)
-          }
-        </span>
-      </a>
-    </article>
-  `;
-}
-
-export async function initCategoriesPage() {
-  const container = document.getElementById("categories-listing");
-  const titleEl = document.getElementById("categories-title");
-  const descriptionEl = document.getElementById("categories-description");
-  const kickerEl = document.getElementById("categories-kicker");
-  if (!container || !titleEl || !descriptionEl || !kickerEl) return;
-
-  const { q } = parseQueryParams();
-  const searchTerm = (q || "").trim().toLowerCase();
-
-  const renderCategoryCards = async () => {
-    const categories = await getMainCategories();
-    kickerEl.textContent = "Navigation";
-    titleEl.textContent = "Catégories";
-    descriptionEl.textContent =
-      "Aperçu de toutes les catégories et sous-catégories disponibles dans la boutique.";
-    container.className = "univers__cards";
-    container.innerHTML = categories.map((cat) => renderCategoriesListingCard(cat)).join("");
-    document.title = "Catégories | Richard La Literie";
-  };
-
-  if (!searchTerm) {
-    await renderCategoryCards();
-    return;
-  }
-
-  const [products, brands, categories] = await Promise.all([
-    getProducts(),
-    getBrands(),
-    getCategories()
-  ]);
-
-  const results = products.filter((product) => {
-    const brand = brands.find((item) => item.id === product.brandId);
-    const category = categories.find((item) => item.id === product.categoryId);
-    const haystack = [
-      product.name,
-      product.shortDescription,
-      product.description,
-      brand?.name,
-      category?.name
-    ]
-      .filter(Boolean)
-      .join(" ")
-      .toLowerCase();
-
-    return haystack.includes(searchTerm);
-  });
-
-  kickerEl.textContent = "Recherche";
-  titleEl.textContent = `Resultats pour "${q}"`;
-  descriptionEl.textContent = results.length
-    ? `${results.length} produit${results.length > 1 ? "s" : ""} correspondant a votre recherche.`
-    : "Aucun produit ne correspond a votre recherche pour le moment.";
-
-  if (!results.length) {
-    container.className = "categories-search-empty";
-    container.innerHTML = `
-      <div class="categories-empty-state">
-        <h2>Aucun resultat</h2>
-        <p>
-          Essayez un autre mot-cle comme "matelas", "sommier", "oreiller" ou le nom d'une marque.
-        </p>
-      </div>
-    `;
-    return;
-  }
-
-  container.className = "category-products-grid categories-search-results";
-  container.innerHTML = results
-    .map((product) => {
-      const brand = brands.find((item) => item.id === product.brandId);
-      return renderArchiveProductCard(product, brand);
-    })
-    .join("");
-}
-
-/* PAGE CATÉGORIE DÉTAILLÉE */
+/* PAGE CATÉGORIE ARCHIVE */
 
 const CATEGORY_PAGE_CONTENT = {
   matelas: {
@@ -911,8 +771,8 @@ function renderCategoryProductCard(product) {
 }
 
 export async function initCategoryPage() {
-  const { slug } = parseQueryParams();
-  if (!slug) return;
+  const { slug, q } = parseQueryParams();
+  const searchTerm = (q || "").trim().toLowerCase();
 
   const titleEl = document.getElementById("category-title");
   const descriptionEl = document.getElementById("category-description");
@@ -923,6 +783,38 @@ export async function initCategoryPage() {
   const clearFiltersEl = document.getElementById("category-clear-filters");
   const gridEl = document.getElementById("category-products-grid");
   if (!titleEl || !descriptionEl || !breadcrumbEl || !filtersEl || !sortControlsEl || !gridEl) return;
+
+  if (searchTerm) {
+    const controlsEl = document.querySelector(".category-archive-controls");
+    if (controlsEl) {
+      controlsEl.hidden = true;
+    }
+
+    const [products, brands, categories] = await Promise.all([
+      getProducts(),
+      getBrands(),
+      getCategories()
+    ]);
+    const results = filterProductsBySearchTerm(products, brands, categories, searchTerm);
+
+    titleEl.textContent = `Resultats pour "${q}"`;
+    descriptionEl.textContent = results.length
+      ? `${results.length} produit${results.length > 1 ? "s" : ""} correspondant a votre recherche.`
+      : "Aucun produit ne correspond a votre recherche pour le moment.";
+    breadcrumbEl.textContent = "Recherche";
+    document.title = "Recherche | Richard La Literie";
+
+    if (!results.length) {
+      gridEl.innerHTML =
+        `<div class="category-products-empty">Aucun resultat. Essayez un autre mot-cle comme "matelas", "sommier" ou le nom d'une marque.</div>`;
+      return;
+    }
+
+    gridEl.innerHTML = results.map((product) => renderCategoryProductCard(product)).join("");
+    return;
+  }
+
+  if (!slug) return;
 
   const [category, allCategories, products, brands] = await Promise.all([
     getCategoryBySlug(slug),

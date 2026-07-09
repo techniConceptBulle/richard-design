@@ -1,152 +1,6 @@
 /**
- * Pages catégories — liste et archive alignées richard2026.ddev.site
+ * Page archive catégorie — alignée richard2026 WooCommerce.
  */
-
-/* Liste catégories — section univers literie */
-
-.categories-page {
-  background: #fff;
-}
-
-.categories-page .categories-listing-section {
-  margin: 0;
-}
-
-.categories-page__title {
-  margin: 0.4375rem 0 0;
-  font-family: var(--font-family-display);
-  font-size: var(--font-size-display-lg);
-  line-height: var(--line-height-tight);
-  font-weight: 800;
-  color: #082b4e;
-}
-
-.categories-page__description {
-  margin: 0.75rem 0 0;
-  max-width: 42rem;
-  font-size: var(--font-size-body-md);
-  line-height: var(--line-height-relaxed);
-  color: #24384a;
-}
-
-.categories-page .ucard,
-.rd-page .ucard {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  background: #fff;
-  border: 1px solid #ddd4c8;
-  text-align: center;
-  text-decoration: none;
-  color: inherit;
-}
-
-.categories-page .ucard:hover,
-.rd-page .ucard:hover {
-  border-color: #d8d8d8;
-  text-decoration: none;
-}
-
-.categories-page .ucard__media,
-.rd-page .ucard__media {
-  overflow: hidden;
-  aspect-ratio: 4 / 3;
-  min-height: 10rem;
-}
-
-.categories-page .ucard img,
-.rd-page .ucard img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-  max-width: none;
-}
-
-.categories-page .ucard__body,
-.rd-page .ucard__body {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.categories-page .ucard__title,
-.rd-page .ucard__title {
-  margin: var(--space-4) 0 var(--space-2);
-  font-family: var(--font-family-display);
-  font-size: 1.125rem;
-  font-weight: 800;
-  line-height: var(--line-height-snug);
-  color: #082b4e;
-}
-
-.categories-page .ucard__text,
-.rd-page .ucard__text {
-  margin: 0 var(--space-4) 0.625rem;
-  font-size: var(--font-size-body-desktop);
-  line-height: var(--line-height-normal);
-  color: #24384a;
-  flex: 1 1 auto;
-}
-
-.categories-page .ucard__link,
-.rd-page .ucard__link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  margin: 0 0 var(--space-4);
-  font-size: var(--font-size-label-caps);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #082b4e;
-  text-decoration: none;
-  transition: color 200ms ease;
-}
-
-.categories-page .ucard:hover .ucard__link,
-.rd-page .ucard:hover .ucard__link {
-  color: var(--color-accent-strong);
-}
-
-.categories-page .ucard__link-arrow,
-.rd-page .ucard__link-arrow {
-  font-size: var(--font-size-caption);
-  line-height: 1;
-}
-
-.categories-search-empty {
-  grid-column: 1 / -1;
-}
-
-.categories-empty-state {
-  padding: var(--space-6);
-  border: 1px solid #ddd4c8;
-  border-radius: var(--radius-md);
-  background: var(--color-surface-raised);
-  text-align: center;
-}
-
-.categories-empty-state h2 {
-  margin: 0 0 var(--space-3);
-  font-family: var(--font-family-display);
-  color: #082b4e;
-}
-
-.categories-empty-state p {
-  margin: 0;
-  color: #24384a;
-}
-
-.categories-search-results {
-  margin-top: var(--space-5);
-}
-
-/* Archive catégorie — alignée richard2026 WooCommerce */
 
 .category-archive-page {
   background: #fff;
@@ -228,6 +82,10 @@
   flex-direction: column;
   gap: var(--space-3);
   width: 100%;
+}
+
+.category-archive-controls[hidden] {
+  display: none !important;
 }
 
 .category-archive-filters-panel {

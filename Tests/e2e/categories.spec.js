@@ -1,42 +1,19 @@
 /**
- * Tests E2E — pages catégories (liste + archive) alignées richard2026.
+ * Tests E2E — page archive catégorie alignée richard2026.
  */
 import { test, expect } from "@playwright/test";
 
-test.describe("Categories listing page", () => {
-  test("renders univers literie cards for main categories", async ({ page }) => {
-    await page.setViewportSize({ width: 1280, height: 900 });
-    await page.goto("/pages/categories.html");
-
-    await expect(page).toHaveTitle(/Catégories.*Richard La Literie/i);
-    await expect(page.locator("#categories-title")).toHaveText("Catégories");
-    await expect(page.locator(".categories-listing-section")).toHaveCSS(
-      "background-color",
-      "rgb(251, 246, 237)"
-    );
-
-    const matelasCard = page.locator('.ucard[href*="slug=matelas"]');
-    await expect(matelasCard).toBeVisible();
-    await expect(matelasCard.locator(".ucard__title")).toHaveText("Matelas");
-    await expect(matelasCard.locator(".ucard__link")).toContainText("Découvrir");
-
-    const fontFamily = await matelasCard.locator(".ucard__title").evaluate((el) =>
-      getComputedStyle(el).fontFamily.toLowerCase()
-    );
-    expect(fontFamily).not.toContain("poppins");
-  });
-
+test.describe("Category archive page", () => {
   test("search mode displays product cards with CHF prices", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
-    await page.goto("/pages/categories.html?q=matelas");
+    await page.goto("/pages/category.html?q=matelas");
 
-    await expect(page.locator("#categories-title")).toContainText("Resultats");
-    await expect(page.locator(".categories-search-results .category-product-card").first()).toBeVisible();
-    await expect(page.locator(".category-product-price").first()).toContainText("CHF");
+    await expect(page.locator("#category-title")).toContainText("Resultats");
+    await expect(page.locator(".category-archive-controls")).toBeHidden();
+    await expect(page.locator("#category-products-grid .category-product-card").first()).toBeVisible();
+    await expect(page.locator(".category-product-price-current").first()).toContainText("CHF");
   });
-});
 
-test.describe("Category archive page", () => {
   test("renders centered header, toolbar and rich product cards", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto("/pages/category.html?slug=matelas");
