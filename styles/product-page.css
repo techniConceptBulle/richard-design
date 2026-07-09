@@ -459,10 +459,22 @@
 .single-product-page .product-accordion__description,
 .single-product-page .product-accordion__panel {
   padding: var(--space-4) 1.25rem;
+}
+
+/* Bordure basse uniquement sur le dernier bloc visible de l'accordéon */
+.single-product-page .product-accordion > .product-accordion__description:last-child {
   border-bottom: var(--product-control-border);
 }
 
-.single-product-page .product-accordion__item:last-child .product-accordion__panel {
+.single-product-page .product-accordion > .product-accordion__item:last-child .product-accordion__trigger {
+  border-bottom: var(--product-control-border);
+}
+
+.single-product-page .product-accordion > .product-accordion__item:last-child .product-accordion__panel:not([hidden]) {
+  border-bottom: var(--product-control-border);
+}
+
+.single-product-page .product-accordion > .product-accordion__item:last-child .product-accordion__trigger:has(+ .product-accordion__panel:not([hidden])) {
   border-bottom: 0;
 }
 

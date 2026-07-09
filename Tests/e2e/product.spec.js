@@ -141,6 +141,32 @@ test.describe("Product detail page", () => {
     await expect(housseRow).toContainText("Thermorégulée");
   });
 
+  test("applies accordion border-bottom only on last element", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(PRODUCT_URL);
+
+    const description = page.locator(".product-accordion__description");
+    await expect(description).toHaveCSS("border-bottom-width", "0px");
+
+    const triggers = page.locator(".product-accordion__trigger");
+    const triggerCount = await triggers.count();
+    expect(triggerCount).toBeGreaterThan(1);
+
+    for (let index = 0; index < triggerCount - 1; index += 1) {
+      await expect(triggers.nth(index)).toHaveCSS("border-bottom-width", "0px");
+    }
+
+    const lastTrigger = triggers.last();
+    await expect(lastTrigger).not.toHaveCSS("border-bottom-width", "0px");
+
+    await lastTrigger.click();
+    await expect(lastTrigger).toHaveCSS("border-bottom-width", "0px");
+    await expect(page.locator(".product-accordion__item:last-child .product-accordion__panel")).not.toHaveCSS(
+      "border-bottom-width",
+      "0px"
+    );
+  });
+
   test("renders smaller brand logo in product summary", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto(PRODUCT_URL);
