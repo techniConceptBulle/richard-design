@@ -316,11 +316,14 @@
   text-decoration: none;
 }
 
-.category-product-media {
+.category-archive-page .category-product-media,
+.categories-search-results .category-product-media {
   position: relative;
   padding: 0;
   background: #fff;
   overflow: hidden;
+  border: none;
+  border-radius: 0;
 }
 
 /* Priorité sur components.css — badges en ligne en haut à gauche de l'image */
