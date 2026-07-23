@@ -24,7 +24,7 @@ const products = [
 ];
 
 const brands = [
-  { id: "b1", name: "IKEA" },
+  { id: "b1", name: "Roviva" },
   { id: "b2", name: "Swissflex" }
 ];
 

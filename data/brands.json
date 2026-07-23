@@ -63,15 +63,6 @@
     "website": "https://www.swissflex.com"
   },
   {
-    "id": "ikea",
-    "name": "IKEA",
-    "slug": "ikea",
-    "country": "Suisse",
-    "description": "Matelas et literie accessibles, inspirés du catalogue IKEA Suisse.",
-    "logo": "/assets/icons/brand-roviva.png",
-    "website": "https://www.ikea.com/ch/fr/"
-  },
-  {
     "id": "richard-sa",
     "name": "Richard SA",
     "slug": "richard-sa",
@@ -81,4 +72,3 @@
     "website": "https://www.richard-sa.ch"
   }
 ]
-

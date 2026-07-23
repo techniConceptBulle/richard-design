@@ -1,0 +1,7 @@
+<!--
+  Icône enveloppe  section conseil fiche produit (debrief).
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+  <path d="M4.5 7.5H19.5C20.0523 7.5 20.5 7.94772 20.5 8.5V16.5C20.5 17.0523 20.0523 17.5 19.5 17.5H4.5C3.94772 17.5 3.5 17.0523 3.5 16.5V8.5C3.5 7.94772 3.94772 7.5 4.5 7.5Z" stroke="#082b4e" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M4.5 8.5L12 13L19.5 8.5" stroke="#082b4e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

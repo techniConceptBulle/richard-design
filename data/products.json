@@ -3,11 +3,11 @@
     "id": "matelas-bico-allegra-22",
     "name": "VALEVÅG matelas à ressorts ensachés",
     "slug": "matelas-bico-allegra-22",
-    "brandId": "ikea",
+    "brandId": "roviva",
     "categoryId": "matelas",
     "type": "variable",
-    "shortDescription": "VALEVÅG matelas à ressorts ensachés, exemple inspiré du catalogue IKEA Suisse.",
-    "description": "VALEVÅG matelas à ressorts ensachés — matelas de démonstration pour la maquette catégorie, inspiré des produits visibles sur ikea.com/ch/fr/search/?q=matelas.",
+    "shortDescription": "VALEVÅG matelas à ressorts ensachés, exemple inspiré du catalogue Roviva.",
+    "description": "VALEVÅG matelas à ressorts ensachés — matelas de démonstration Roviva pour la maquette catégorie.",
     "badges": [
       "Nouveauté",
       "Best-seller"
@@ -46,7 +46,7 @@
       }
     ],
     "images": [
-      "/assets/images/products/ikea/valevag.jpg"
+      "/assets/images/products/roviva/valevag.jpg"
     ]
   },
   {
@@ -247,11 +247,11 @@
     "id": "matelas-bico-liquidation",
     "name": "VALEVÅG matelas et surmatelas",
     "slug": "matelas-bico-liquidation",
-    "brandId": "ikea",
+    "brandId": "roviva",
     "categoryId": "matelas",
     "type": "simple",
-    "shortDescription": "VALEVÅG matelas et surmatelas, exemple inspiré du catalogue IKEA Suisse.",
-    "description": "VALEVÅG matelas et surmatelas — matelas de démonstration pour la maquette catégorie, inspiré des produits visibles sur ikea.com/ch/fr/search/?q=matelas.",
+    "shortDescription": "VALEVÅG matelas et surmatelas, exemple inspiré du catalogue Roviva.",
+    "description": "VALEVÅG matelas et surmatelas — matelas de démonstration Roviva pour la maquette catégorie.",
     "badges": [
       "En liquidation"
     ],
@@ -263,18 +263,18 @@
     "firmness": "firm",
     "cover": "Housse amovible et lavable",
     "images": [
-      "/assets/images/products/ikea/valevag-topper.jpg"
+      "/assets/images/products/roviva/valevag-topper.jpg"
     ]
   },
   {
     "id": "matelas-superba-elegance",
     "name": "VESTMARKA matelas à ressorts",
     "slug": "matelas-superba-elegance",
-    "brandId": "ikea",
+    "brandId": "roviva",
     "categoryId": "matelas",
     "type": "variable",
-    "shortDescription": "VESTMARKA matelas à ressorts, exemple inspiré du catalogue IKEA Suisse.",
-    "description": "VESTMARKA matelas à ressorts — matelas de démonstration pour la maquette catégorie, inspiré des produits visibles sur ikea.com/ch/fr/search/?q=matelas.",
+    "shortDescription": "VESTMARKA matelas à ressorts, exemple inspiré du catalogue Roviva.",
+    "description": "VESTMARKA matelas à ressorts — matelas de démonstration Roviva pour la maquette catégorie.",
     "badges": [
       "Confort ventilé"
     ],
@@ -408,22 +408,22 @@
       "Thermorégulée"
     ],
     "images": [
-      "/assets/images/products/ikea/vestmarka.jpg",
-      "/assets/images/products/ikea/akrehamn.jpg",
-      "/assets/images/products/ikea/haugesund.jpg",
-      "/assets/images/products/ikea/morgedal.jpg",
-      "/assets/images/products/ikea/matrand.jpg"
+      "/assets/images/products/roviva/vestmarka.jpg",
+      "/assets/images/products/roviva/akrehamn.jpg",
+      "/assets/images/products/roviva/haugesund.jpg",
+      "/assets/images/products/roviva/morgedal.jpg",
+      "/assets/images/products/roviva/matrand.jpg"
     ]
   },
   {
     "id": "matelas-tempur-pro-plus",
     "name": "ÅKREHAMN matelas en mousse",
     "slug": "matelas-tempur-pro-plus",
-    "brandId": "ikea",
+    "brandId": "roviva",
     "categoryId": "matelas",
     "type": "variable",
-    "shortDescription": "ÅKREHAMN matelas en mousse, exemple inspiré du catalogue IKEA Suisse.",
-    "description": "ÅKREHAMN matelas en mousse — matelas de démonstration pour la maquette catégorie, inspiré des produits visibles sur ikea.com/ch/fr/search/?q=matelas.",
+    "shortDescription": "ÅKREHAMN matelas en mousse, exemple inspiré du catalogue Roviva.",
+    "description": "ÅKREHAMN matelas en mousse — matelas de démonstration Roviva pour la maquette catégorie.",
     "badges": [
       "Mémoire de forme"
     ],
@@ -452,18 +452,18 @@
       }
     ],
     "images": [
-      "/assets/images/products/ikea/akrehamn.jpg"
+      "/assets/images/products/roviva/akrehamn.jpg"
     ]
   },
   {
     "id": "matelas-richard-signature",
     "name": "MATRAND matelas en mousse polyuréthane",
     "slug": "matelas-richard-signature",
-    "brandId": "ikea",
+    "brandId": "roviva",
     "categoryId": "matelas",
     "type": "simple",
-    "shortDescription": "MATRAND matelas en mousse polyuréthane, exemple inspiré du catalogue IKEA Suisse.",
-    "description": "MATRAND matelas en mousse polyuréthane — matelas de démonstration pour la maquette catégorie, inspiré des produits visibles sur ikea.com/ch/fr/search/?q=matelas.",
+    "shortDescription": "MATRAND matelas en mousse polyuréthane, exemple inspiré du catalogue Roviva.",
+    "description": "MATRAND matelas en mousse polyuréthane — matelas de démonstration Roviva pour la maquette catégorie.",
     "badges": [
       "Exclusivité Richard SA"
     ],
@@ -475,18 +475,18 @@
     "firmness": "medium",
     "cover": "Housse en coton bio",
     "images": [
-      "/assets/images/products/ikea/matrand.jpg"
+      "/assets/images/products/roviva/matrand.jpg"
     ]
   },
   {
     "id": "matelas-bico-climaluxe",
     "name": "HAUGESUND matelas à ressorts ensachés",
     "slug": "matelas-bico-climaluxe",
-    "brandId": "ikea",
+    "brandId": "roviva",
     "categoryId": "matelas",
     "type": "variable",
-    "shortDescription": "HAUGESUND matelas à ressorts ensachés, exemple inspiré du catalogue IKEA Suisse.",
-    "description": "HAUGESUND matelas à ressorts ensachés — matelas de démonstration pour la maquette catégorie, inspiré des produits visibles sur ikea.com/ch/fr/search/?q=matelas.",
+    "shortDescription": "HAUGESUND matelas à ressorts ensachés, exemple inspiré du catalogue Roviva.",
+    "description": "HAUGESUND matelas à ressorts ensachés — matelas de démonstration Roviva pour la maquette catégorie.",
     "badges": [
       "Ventilation active"
     ],
@@ -524,18 +524,18 @@
       }
     ],
     "images": [
-      "/assets/images/products/ikea/haugesund.jpg"
+      "/assets/images/products/roviva/haugesund.jpg"
     ]
   },
   {
     "id": "matelas-superba-ortho-support",
     "name": "MORGEDAL matelas en mousse",
     "slug": "matelas-superba-ortho-support",
-    "brandId": "ikea",
+    "brandId": "roviva",
     "categoryId": "matelas",
     "type": "simple",
-    "shortDescription": "MORGEDAL matelas en mousse, exemple inspiré du catalogue IKEA Suisse.",
-    "description": "MORGEDAL matelas en mousse — matelas de démonstration pour la maquette catégorie, inspiré des produits visibles sur ikea.com/ch/fr/search/?q=matelas.",
+    "shortDescription": "MORGEDAL matelas en mousse, exemple inspiré du catalogue Roviva.",
+    "description": "MORGEDAL matelas en mousse — matelas de démonstration Roviva pour la maquette catégorie.",
     "badges": [
       "Soutien ferme"
     ],
@@ -547,18 +547,18 @@
     "firmness": "firm",
     "cover": "Housse anti-acariens",
     "images": [
-      "/assets/images/products/ikea/morgedal.jpg"
+      "/assets/images/products/roviva/morgedal.jpg"
     ]
   },
   {
     "id": "matelas-tempur-cloud-elite",
     "name": "ÅNNELAND matelas à ressorts",
     "slug": "matelas-tempur-cloud-elite",
-    "brandId": "ikea",
+    "brandId": "roviva",
     "categoryId": "matelas",
     "type": "variable",
-    "shortDescription": "ÅNNELAND matelas à ressorts, exemple inspiré du catalogue IKEA Suisse.",
-    "description": "ÅNNELAND matelas à ressorts — matelas de démonstration pour la maquette catégorie, inspiré des produits visibles sur ikea.com/ch/fr/search/?q=matelas.",
+    "shortDescription": "ÅNNELAND matelas à ressorts, exemple inspiré du catalogue Roviva.",
+    "description": "ÅNNELAND matelas à ressorts — matelas de démonstration Roviva pour la maquette catégorie.",
     "badges": [
       "Accueil souple"
     ],
@@ -587,7 +587,7 @@
       }
     ],
     "images": [
-      "/assets/images/products/ikea/anneland.jpg"
+      "/assets/images/products/roviva/anneland.jpg"
     ]
   },
   {

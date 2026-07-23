@@ -20,9 +20,15 @@ test.describe("Category archive page", () => {
 
     await expect(page).toHaveTitle(/Matelas.*Richard La Literie/i);
 
-    const homeLink = page.locator(".category-archive-breadcrumb strong");
+    const homeLink = page.locator(".category-archive-breadcrumb a").first();
+    const currentCrumb = page.locator(".category-archive-breadcrumb .breadcrumb__current");
     await expect(homeLink).toHaveText("Accueil");
-    await expect(homeLink).toHaveCSS("color", "rgb(40, 125, 99)");
+    await expect(homeLink).toHaveCSS("color", "rgb(8, 43, 78)");
+    await expect(homeLink).toHaveCSS("font-weight", "400");
+    await expect(currentCrumb).toHaveText("Matelas");
+    await expect(currentCrumb).toHaveCSS("color", "rgb(40, 125, 99)");
+    await expect(currentCrumb).toHaveCSS("font-weight", "700");
+    await expect(page.locator(".category-archive-breadcrumb")).toHaveCSS("font-size", "16px");
 
     await expect(page.locator("#category-title")).toHaveText("Matelas");
     await expect(page.locator("#category-title")).toHaveCSS("text-align", "center");
@@ -34,6 +40,20 @@ test.describe("Category archive page", () => {
     const firstFilterSelect = page.locator(
       ".category-archive-filters-panel .category-filter-select:not(.category-sort-select)"
     ).first();
+    // Libellés filtres en gras (Marque, Taille, Dureté, Housse, Prix)
+    const filterSelects = page.locator(
+      ".category-archive-filters-panel .category-filter-select:not(.category-sort-select)"
+    );
+    await expect(filterSelects).toHaveCount(4);
+    for (const label of ["Marque", "Taille", "Dureté", "Housse"]) {
+      await expect(
+        page.locator(".category-archive-filters-panel .category-filter-select", { hasText: label }).first()
+      ).toBeVisible();
+    }
+    await expect(filterSelects.first()).toHaveCSS("font-weight", "700");
+    const priceTrigger = page.locator(".category-archive-filters-panel .category-price-trigger");
+    await expect(priceTrigger).toContainText("Prix");
+    await expect(priceTrigger).toHaveCSS("font-weight", "700");
     const searchInput = page.locator("#site-search-input");
     const filterBorder = await firstFilterSelect.evaluate((el) => getComputedStyle(el).border);
     const searchBorder = await searchInput.evaluate((el) => getComputedStyle(el).border);
@@ -139,7 +159,7 @@ test.describe("Category archive page", () => {
     await expect(firstCard.locator(".category-product-subtitle")).toHaveCount(0);
     await expect(firstCard.locator(".category-product-media img")).toHaveAttribute(
       "src",
-      /\/assets\/images\/products\/ikea\//
+      /\/assets\/images\/products\/roviva\//
     );
     await expect(firstCard.locator(".category-product-badges")).toBeVisible();
     const badge = firstCard.locator(".category-product-badge--discount");
@@ -202,7 +222,7 @@ test.describe("Category archive page", () => {
     }
 
     const options = await brandSelect.locator("option").allTextContents();
-    const firstBrand = options.find((label) => label && !/marque/i.test(label) && label !== "IKEA");
+    const firstBrand = options.find((label) => label && !/marque/i.test(label) && label !== "Roviva");
     if (!firstBrand) {
       await brandSelect.selectOption({ index: 1 });
     } else {

@@ -1,6 +1,7 @@
 // Gestion du panier (localStorage, totaux, quantités).
 
 const CART_KEY = "richard_cart";
+const CART_SERVICES_KEY = "richard_cart_services";
 
 export function getCartItems() {
   try {
@@ -16,6 +17,24 @@ export function getCartItems() {
 export function saveCartItems(items) {
   window.localStorage.setItem(CART_KEY, JSON.stringify(items));
   updateCartBadgeCount(items);
+}
+
+/**
+ * Options livraison / recyclage / garantie choisies sur la page panier.
+ */
+export function getCartServiceOptions() {
+  try {
+    const raw = window.localStorage.getItem(CART_SERVICES_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+export function saveCartServiceOptions(options) {
+  window.localStorage.setItem(CART_SERVICES_KEY, JSON.stringify(options || {}));
 }
 
 export function updateCartBadgeCount(items = null) {
@@ -46,5 +65,3 @@ export function addToCart(newItem) {
 
   saveCartItems(items);
 }
-
-

@@ -18,8 +18,9 @@ test.describe("Product detail page", () => {
     await expect(homeLink).toHaveText("Accueil");
     await expect(homeLink).toHaveCSS("color", "rgb(8, 43, 78)");
     await expect(homeLink).toHaveCSS("font-weight", "400");
-    await expect(currentCrumb).toHaveCSS("color", "rgb(8, 43, 78)");
+    await expect(currentCrumb).toHaveCSS("color", "rgb(40, 125, 99)");
     await expect(currentCrumb).toHaveCSS("font-weight", "700");
+    await expect(page.locator(".product-page-breadcrumb")).toHaveCSS("font-size", "16px");
 
     await expect(page.locator(".single-product__layout")).toBeVisible();
     await expect(page.locator(".product_title")).toBeVisible();
@@ -43,6 +44,25 @@ test.describe("Product detail page", () => {
       "color",
       "rgb(40, 125, 99)"
     );
+    // Typo prix agrandie (debrief)
+    await expect(page.locator(".price-display__current .price")).toHaveCSS("font-size", "27px");
+    await expect(page.locator(".price-display__catalog")).toHaveCSS("font-size", "14px");
+    await expect(page.locator(".price-display__discount")).toHaveCSS("font-size", "16px");
+  });
+
+  test("defaults to 90x200 size and orders options size then firmness then cover", async ({
+    page
+  }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(PRODUCT_URL);
+
+    const optionLabels = page.locator(".product-options .product-option-card__label");
+    await expect(optionLabels.nth(0)).toHaveText("Taille");
+    await expect(optionLabels.nth(1)).toHaveText("Dureté");
+    await expect(optionLabels.nth(2)).toHaveText("Housse");
+
+    const sizeSelect = page.locator('.product-option-card__select[data-option-key="size"]');
+    await expect(sizeSelect).toHaveValue("90x200");
   });
 
   test("activates firmness chip and updates selection style", async ({ page }) => {
@@ -85,32 +105,78 @@ test.describe("Product detail page", () => {
     await expect(page.locator(".product-cart-feedback")).toContainText("ajouté au panier");
   });
 
-  test("renders homepage services strip after gallery", async ({ page }) => {
+  test("does not render homepage services strip on product page", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto(PRODUCT_URL);
 
-    const services = page.locator(".product-page-services.services");
-    await expect(services).toBeVisible();
-    await expect(services.locator(".service .sico").first()).toBeVisible();
-    await expect(services).toHaveCSS("background-color", "rgb(247, 242, 235)");
+    await expect(page.locator(".product-page-services")).toHaveCount(0);
     await expect(page.locator(".product-accordion")).toBeVisible();
   });
 
-  test("renders delivery note inline with label and value", async ({ page }) => {
+  test("renders delivery delay after options", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto(PRODUCT_URL);
 
-    const deliveryInline = page.locator(".product-delivery-inline");
-    await expect(deliveryInline).toContainText("Livraison indicative");
-    await expect(deliveryInline).toContainText(": 3 à 4 semaines");
-    await expect(deliveryInline).toHaveCSS("text-align", "left");
+    const deliveryCard = page.locator(".product-option-card--delivery");
+    await expect(deliveryCard.locator(".product-option-card__label")).toHaveText(
+      "Délai de livraison :"
+    );
+    await expect(deliveryCard.locator(".product-option-card__delivery-value")).toHaveText(
+      "3 à 4 semaines"
+    );
+    await expect(deliveryCard.locator(".product-option-card__delivery-value")).toHaveCSS(
+      "font-weight",
+      "400"
+    );
+    await expect(deliveryCard).toHaveCSS("flex-direction", "row");
 
-    const labelBox = await deliveryInline.locator(".product-option-card__label").boundingBox();
-    const valueBox = await deliveryInline.locator(".product-option-card__value").boundingBox();
-    expect(labelBox && valueBox).toBeTruthy();
-    if (labelBox && valueBox) {
-      expect(Math.abs(labelBox.y - valueBox.y)).toBeLessThan(4);
+    const optionsBox = await page.locator(".product-options").boundingBox();
+    const deliveryBox = await deliveryCard.boundingBox();
+    const cartBox = await page.locator(".product-cart-row").boundingBox();
+    expect(optionsBox && deliveryBox && cartBox).toBeTruthy();
+    if (optionsBox && deliveryBox) {
+      expect(deliveryBox.y).toBeGreaterThan(optionsBox.y + optionsBox.height - 8);
     }
+    if (deliveryBox && cartBox) {
+      expect(cartBox.y - (deliveryBox.y + deliveryBox.height)).toBeGreaterThanOrEqual(16);
+    }
+
+    const inlineLayout = await deliveryCard.evaluate((el) => {
+      const label = el.querySelector(".product-option-card__label");
+      const value = el.querySelector(".product-option-card__delivery-value");
+      if (!label || !value) return null;
+      const l = label.getBoundingClientRect();
+      const v = value.getBoundingClientRect();
+      return { sameRow: Math.abs(l.top - v.top) < 8, valueAfter: v.left >= l.left };
+    });
+    expect(inlineLayout).not.toBeNull();
+    expect(inlineLayout.sameRow).toBe(true);
+    expect(inlineLayout.valueAfter).toBe(true);
+  });
+
+  test("does not render service options block on product page", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(PRODUCT_URL);
+
+    await expect(page.locator(".product-service-options")).toHaveCount(0);
+    await expect(page.locator(".cart-service-options")).toHaveCount(0);
+  });
+
+  test("renames return policy accordion and removes delivery accordion field", async ({
+    page
+  }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(PRODUCT_URL);
+
+    await expect(
+      page.locator("[data-accordion-trigger]", { hasText: "Politique de retour" })
+    ).toBeVisible();
+    await expect(
+      page.locator("[data-accordion-trigger]", { hasText: "Garantie et Service" })
+    ).toHaveCount(0);
+    await expect(
+      page.locator("[data-accordion-trigger]", { hasText: /^Livraison$/ })
+    ).toHaveCount(0);
   });
 
   test("renders mattress images in product gallery", async ({ page }) => {
@@ -118,14 +184,14 @@ test.describe("Product detail page", () => {
     await page.goto(PRODUCT_URL);
 
     const mainSrc = await page.locator(".product-gallery__main img").getAttribute("src");
-    expect(mainSrc).toMatch(/\/assets\/images\/products\/ikea\//);
+    expect(mainSrc).toMatch(/\/assets\/images\/products\/roviva\//);
 
     const thumbSrcs = await page.locator(".product-gallery__thumb img").evaluateAll((images) =>
       images.map((img) => img.getAttribute("src") || "")
     );
     await expect(page.locator(".product-gallery__thumb")).toHaveCount(5);
     thumbSrcs.forEach((src) => {
-      expect(src).toMatch(/\/assets\/images\/products\/ikea\//);
+      expect(src).toMatch(/\/assets\/images\/products\/roviva\//);
     });
   });
 
@@ -139,6 +205,27 @@ test.describe("Product detail page", () => {
     await expect(housseRow.locator(".product-spec-list li")).toHaveCount(2);
     await expect(housseRow).toContainText("Housse amovible et lavable");
     await expect(housseRow).toContainText("Thermorégulée");
+    await expect(housseRow.locator(".product-spec-list li").first()).toHaveCSS("font-size", "16px");
+  });
+
+  test("uses 16px body text for accordion paragraphs and lists", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(PRODUCT_URL);
+
+    const descriptionP = page.locator(".product-accordion__description .product-accordion__content p").first();
+    await expect(descriptionP).toHaveCSS("font-size", "16px");
+
+    const checkItem = page.locator(".product-accordion__description .checks li").first();
+    if ((await checkItem.count()) > 0) {
+      await expect(checkItem).toHaveCSS("font-size", "16px");
+    }
+
+    await page.locator("[data-accordion-trigger]", { hasText: "Politique de retour" }).click();
+    await expect(
+      page.locator("[data-accordion-panel]:not([hidden]) .product-accordion__content p").first()
+    ).toHaveCSS("font-size", "16px");
+
+    await expect(page.locator(".product-advice__card-text").first()).toHaveCSS("font-size", "16px");
   });
 
   test("renders product reviews in three columns on large screens", async ({ page }) => {
@@ -181,13 +268,46 @@ test.describe("Product detail page", () => {
     );
   });
 
-  test("renders smaller brand logo in product summary", async ({ page }) => {
+  test("renders larger brand logo at title right and name above title", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto(PRODUCT_URL);
 
     const logo = page.locator(".product-brand__logo");
+    const brandName = page.locator(".product-brand__name");
+    const title = page.locator(".product_title");
     await expect(logo).toBeVisible();
-    await expect(logo).toHaveCSS("max-height", "28px");
+    await expect(logo).toHaveCSS("max-height", "52px");
+    await expect(brandName).toBeVisible();
+
+    const positions = await page.evaluate(() => {
+      const name = document.querySelector(".product-brand__name");
+      const h1 = document.querySelector(".product_title");
+      const brandLogo = document.querySelector(".product-brand__logo");
+      const header = document.querySelector(".product-summary__header");
+      const price = document.querySelector(".price-display");
+      const options = document.querySelector(".product-options");
+      if (!name || !h1 || !brandLogo || !header || !price || !options) return null;
+      const nameRect = name.getBoundingClientRect();
+      const titleRect = h1.getBoundingClientRect();
+      const logoRect = brandLogo.getBoundingClientRect();
+      const priceRect = price.getBoundingClientRect();
+      const optionsRect = options.getBoundingClientRect();
+      return {
+        nameAboveTitle: nameRect.bottom <= titleRect.top + 2,
+        logoRightOfTitle: logoRect.left >= titleRect.right - 4,
+        logoInHeader: header.contains(brandLogo),
+        brandToTitleGap: titleRect.top - nameRect.bottom,
+        titleToPriceGap: priceRect.top - titleRect.bottom,
+        priceToOptionsGap: optionsRect.top - priceRect.bottom
+      };
+    });
+    expect(positions).not.toBeNull();
+    expect(positions.nameAboveTitle).toBe(true);
+    expect(positions.logoRightOfTitle).toBe(true);
+    expect(positions.logoInHeader).toBe(true);
+    expect(positions.brandToTitleGap).toBeLessThan(12);
+    expect(positions.titleToPriceGap).toBeGreaterThanOrEqual(12);
+    expect(positions.priceToOptionsGap).toBeGreaterThanOrEqual(20);
   });
 
   test("renders advice cards with bold titles and normal details", async ({ page }) => {
@@ -223,19 +343,42 @@ test.describe("Product detail page", () => {
     await expect(page.locator(".product-advice__lead")).toHaveCSS("font-size", "16px");
     await expect(page.locator("h3.product-advice__title")).toHaveText("Besoin d'un conseil ?");
     await expect(page.locator("h3.product-advice__title")).toHaveCSS("font-weight", "800");
-    await expect(page.locator(".product-advice__icon").first()).toHaveAttribute(
-      "src",
-      /customer-service-help\.svg/
+    // Pictos maquette product/index.html + textes alignés home (magasin / tel)
+    await expect(page.locator(".product-advice__icon").nth(0)).toHaveText("☎");
+    await expect(page.locator(".product-advice__icon").nth(1)).toHaveText("✉");
+    await expect(page.locator(".product-advice__icon").nth(2)).toHaveText("⌂");
+    const iconMetrics = await page.locator(".product-advice__icon").evaluateAll((icons) =>
+      icons.map((icon) => {
+        const style = getComputedStyle(icon);
+        return {
+          fontSize: style.fontSize,
+          width: style.width,
+          height: style.height
+        };
+      })
     );
-    await expect(page.locator(".product-advice__icon").nth(1)).toHaveAttribute(
-      "src",
-      /post-office\.svg/
+    expect(iconMetrics).toHaveLength(3);
+    expect(iconMetrics[0].fontSize).toBe("40px");
+    expect(iconMetrics.every((m) => m.fontSize === iconMetrics[0].fontSize)).toBe(true);
+    expect(iconMetrics.every((m) => m.width === iconMetrics[0].width)).toBe(true);
+    expect(iconMetrics.every((m) => m.height === iconMetrics[0].height)).toBe(true);
+    await expect(page.locator(".product-advice__card-title").nth(0)).toHaveText("Appelez-nous");
+    await expect(page.locator(".product-advice__card-text").nth(0)).toContainText("021 634 04 76");
+    await expect(page.locator(".product-advice__card-title").nth(1)).toHaveText("Écrivez-nous");
+    await expect(page.locator(".product-advice__card-text").nth(1)).toContainText(
+      "info@richard-decoration.ch"
     );
-    await expect(page.locator(".product-advice__icon").nth(2)).toHaveAttribute(
-      "src",
-      /bed-double\.svg/
+    await expect(page.locator(".product-advice__card-title").nth(2)).toHaveText(
+      "Venez-nous rencontrer"
+    );
+    await expect(page.locator(".product-advice__card-text").nth(2)).toContainText(
+      "Richard La Literie"
+    );
+    await expect(page.locator(".product-advice__card-text").nth(2)).toContainText(
+      "Rue des Alpes 2"
     );
     await expect(page.locator(".product-advice__cta")).toHaveText("Contactez-nous");
+    await expect(page.locator(".product-advice__cta")).toHaveAttribute("href", "/pages/contact.html");
     await expect(page.locator(".product-advice__card").first()).toHaveCSS("column-gap", "18px");
     await expect(page.locator(".product-advice__card").first()).toHaveCSS("padding-left", "40px");
     await expect(page.locator(".product-advice__card-title").first()).toHaveCSS("font-weight", "700");

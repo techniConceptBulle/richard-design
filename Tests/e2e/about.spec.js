@@ -160,7 +160,7 @@ test.describe("About page", () => {
       "Nos univers literie"
     );
     await expect(page.locator('.about-univers .ucard[href*="slug=matelas"]')).toBeVisible();
-    await expect(page.locator(".about-univers .ucard")).toHaveCount(5);
+    await expect(page.locator(".about-univers .ucard")).toHaveCount(2);
   });
 
   test("univers decouvrir link matches homepage typography", async ({ page }) => {

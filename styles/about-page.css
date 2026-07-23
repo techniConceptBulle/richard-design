@@ -6,6 +6,14 @@
   background: var(--color-bg);
 }
 
+/* Ancres menu À propos — compenser l'enveloppe fixe */
+.about-page #about-expert,
+.about-page #about-store,
+.about-page #about-premium,
+.about-page #about-products {
+  scroll-margin-top: calc(var(--envelope-offset, var(--envelope-height-desktop)) + 1rem);
+}
+
 .about-page .layout-wide {
   padding-inline: var(--gutter);
 }
@@ -166,7 +174,7 @@
 
 .about-founder__quote p {
   margin: 0;
-  font-size: var(--font-size-body-sm);
+  font-size: var(--font-size-body-md);
   line-height: var(--line-height-relaxed);
   color: var(--color-text-soft);
   font-style: italic;
@@ -193,16 +201,10 @@
 .about-story__text p {
   margin: 0 0 var(--space-5);
   max-width: none;
-  font-size: 0.75rem;
+  font-size: var(--font-size-body-md);
   line-height: 1.55;
   color: var(--color-text-soft);
   text-wrap: pretty;
-}
-
-@media (min-width: 768px) {
-  .about-story__text p {
-    font-size: var(--font-size-body-desktop);
-  }
 }
 
 .about-story__text p:last-child {
@@ -266,16 +268,10 @@
 .about-split__content p {
   margin: 0 0 var(--space-4);
   max-width: none;
-  font-size: 0.75rem;
+  font-size: var(--font-size-body-md);
   line-height: 1.45;
   color: var(--color-text-soft);
   text-wrap: pretty;
-}
-
-@media (min-width: 768px) {
-  .about-split__content p {
-    font-size: var(--font-size-body-desktop);
-  }
 }
 
 .about-expertise__title {
@@ -298,15 +294,9 @@
   margin: 0 0 var(--space-4);
   padding-left: 1.25rem;
   color: var(--color-text-soft);
-  font-size: 0.75rem;
+  font-size: var(--font-size-body-md);
   line-height: 1.45;
   text-wrap: pretty;
-}
-
-@media (min-width: 768px) {
-  .about-expertise__list {
-    font-size: var(--font-size-body-desktop);
-  }
 }
 
 .about-expertise__list li + li {

@@ -1,15 +1,15 @@
 /**
- * Tests unitaires — catalogue matelas inspiré IKEA pour la page catégorie.
+ * Tests unitaires — catalogue matelas Roviva pour la page catégorie.
  */
-import { readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 
-const rootDir = join(dirname(fileURLToPath(import.meta.url)), "../..");
-const products = JSON.parse(readFileSync(join(rootDir, "data/products.json"), "utf8"));
+const products = JSON.parse(
+  readFileSync(resolve(process.cwd(), "data/products.json"), "utf8")
+);
 
-const ikeaMattressNames = [
+const rovivaMattressNames = [
   "VALEVÅG matelas à ressorts ensachés",
   "VALEVÅG matelas et surmatelas",
   "VESTMARKA matelas à ressorts",
@@ -20,21 +20,21 @@ const ikeaMattressNames = [
   "ÅNNELAND matelas à ressorts"
 ];
 
-describe("IKEA-inspired mattress catalog", () => {
-  it("lists eight IKEA-branded mattresses in the matelas category", () => {
+describe("Roviva mattress catalog", () => {
+  it("lists eight Roviva-branded mattresses in the matelas category", () => {
     const mattresses = products.filter(
-      (product) => product.categoryId === "matelas" && product.brandId === "ikea"
+      (product) => product.categoryId === "matelas" && product.brandId === "roviva"
     );
 
     expect(mattresses).toHaveLength(8);
-    expect(mattresses.map((product) => product.name).sort()).toEqual([...ikeaMattressNames].sort());
+    expect(mattresses.map((product) => product.name).sort()).toEqual([...rovivaMattressNames].sort());
   });
 
-  it("uses IKEA mattress images from the local ikea assets folder", () => {
+  it("uses Roviva mattress images from the local roviva assets folder", () => {
     const mattresses = products.filter(
-      (product) => product.categoryId === "matelas" && product.brandId === "ikea"
+      (product) => product.categoryId === "matelas" && product.brandId === "roviva"
     );
 
-    expect(mattresses.every((product) => product.images?.[0]?.includes("/ikea/"))).toBe(true);
+    expect(mattresses.every((product) => product.images?.[0]?.includes("/roviva/"))).toBe(true);
   });
 });

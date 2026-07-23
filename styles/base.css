@@ -83,6 +83,17 @@ p {
   margin: 0 0 var(--space-3);
   color: var(--color-text-soft);
   max-width: 68ch;
+  /* Corps texte = page d’accueil (16px) */
+  font-size: var(--font-size-body-md);
+}
+
+ul,
+ol {
+  font-size: var(--font-size-body-md);
+}
+
+li {
+  font-size: inherit;
 }
 
 small {

@@ -25,6 +25,7 @@ test.describe("Global footer", () => {
     await expect(footer.locator(".footer-global__column")).toHaveCount(3);
     await expect(footer.locator(".footer-global__hours-col")).toContainText("Horaires");
     await expect(footer.locator(".footer-global__hours-col")).toContainText("9h00");
+    await expect(footer.locator(".footer-global__copyright")).toContainText(/© \d{4} Richard La Literie/);
     await expect(footer.locator(".footer-global__socials")).toHaveCount(0);
 
     const layout = await page.evaluate(() => {

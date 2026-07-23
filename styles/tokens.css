@@ -55,7 +55,7 @@
   --font-family-heading: var(--font-family-display);
   --font-family-base: "SuisseIntl", Arial, Helvetica, sans-serif;
 
-  --font-size-label-caps: 0.6875rem;
+  --font-size-label-caps: 0.75rem;
   --font-size-caption: 0.75rem;
   --font-size-body-sm: 0.875rem;
   --font-size-body-md: 1rem;
@@ -105,11 +105,12 @@
   --content-wide-width: var(--layout-max-width);
 
   /* Hauteurs enveloppe fixe — repli CSS avant mesure JS (envelope-offset.js) */
-  --envelope-height-mobile: 13.5rem;
-  --envelope-height-desktop: 9.625rem;
-  --header-height-mobile: 5rem;
-  --header-height-desktop: 5.25rem;
-  --topbar-height: 2rem;
+  /* Recalées après agrandissement logo (1) + bandeau nav (2) */
+  --envelope-height-mobile: 14.75rem;
+  --envelope-height-desktop: 11.25rem;
+  --header-height-mobile: 5.75rem;
+  --header-height-desktop: 6rem;
+  --topbar-height: 2.375rem;
 
   --z-header: 20;
   --z-overlay: 30;

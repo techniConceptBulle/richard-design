@@ -41,7 +41,8 @@ body.nav-open {
   max-width: var(--layout-max-width);
   margin: 0 auto;
   min-height: var(--topbar-height);
-  padding: 0.125rem 1.25rem;
+  /* Padding vertical un peu relevé ; taille ≤ menu catalogue (14px) */
+  padding: 0.4rem 1.25rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -52,12 +53,22 @@ body.nav-open {
   text-transform: uppercase;
 }
 
+.topbar__message,
+.topbar__links {
+  /* Annule p/ul de base.css (16px) pour rester à la taille du topbar */
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+
 .topbar__message {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   min-width: 0;
   margin: 0;
+  max-width: none;
   color: #fff;
 }
 
@@ -66,6 +77,7 @@ body.nav-open {
   text-overflow: ellipsis;
   white-space: nowrap;
   color: #fff;
+  font-size: inherit;
 }
 
 .topbar__flag {
@@ -86,6 +98,8 @@ body.nav-open {
   color: inherit;
   text-decoration: none;
   white-space: nowrap;
+  font-size: inherit;
+  font-weight: inherit;
 }
 
 .topbar__link:hover {
@@ -122,7 +136,8 @@ body.nav-open {
 
 .header-main__brand img {
   display: block;
-  height: 2.5rem;
+  /* Point 1 debrief : logo agrandi (mobile) */
+  height: 3.25rem;
   width: auto;
   max-width: none;
 }
@@ -200,6 +215,11 @@ body.nav-open {
   display: inline-flex;
 }
 
+.header-main__cart-icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
 .header-main__cart-label {
   font-size: var(--font-size-caption);
   color: #6b7378;
@@ -240,7 +260,8 @@ body.nav-open {
   }
 
   .header-main__brand img {
-    height: 3rem;
+    /* Point 1 debrief : logo agrandi (desktop) — 64px */
+    height: 4rem;
   }
 
   .header-main__search--desktop {
@@ -265,7 +286,8 @@ body.nav-open {
 .nav-primary__inner {
   max-width: var(--layout-max-width);
   margin: 0 auto;
-  padding: 0.2rem 1.5rem;
+  /* Point 2 debrief : bandeau bleu élargi en hauteur */
+  padding: 0.55rem 1.5rem;
   display: flex;
   align-items: stretch;
   justify-content: flex-end;
@@ -312,33 +334,79 @@ body.nav-open {
   text-decoration: none;
 }
 
-.nav-primary .menu-link:hover,
-.nav-primary .menu-link--active {
+.nav-primary .menu-link:hover {
   color: #cfe2d4;
   text-decoration: none;
 }
 
-.nav-primary .menu-item-promo {
-  align-self: stretch;
-  display: flex;
+/* Page active : fond vert (ex-Offres spéciales) + texte blanc */
+.nav-primary .menu-inner > li > .menu-link--active,
+.nav-primary .menu-item__parent.menu-link--active {
+  background: #27745d;
+  color: #fff;
+  text-decoration: none;
+}
+
+.nav-primary .menu-inner > li > .menu-link--active:hover,
+.nav-primary .menu-item__parent.menu-link--active:hover {
+  background: #27745d;
+  color: #fff;
 }
 
 .nav-primary .menu-item-promo .menu-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1 1 auto;
-  width: 100%;
-  background: #27745d;
-  color: #fff;
   font-weight: 700;
 }
 
-.nav-primary .menu-item-promo .menu-link:hover,
-.nav-primary .menu-item-promo .menu-link--active {
-  color: #fff;
-  background: var(--color-accent-strong);
-  text-decoration: none;
+.nav-primary .menu-item--has-children {
+  position: relative;
+}
+
+.nav-primary .menu-item__trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+}
+
+.nav-primary .submenu-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.nav-primary .submenu-toggle svg {
+  width: 0.65rem;
+  height: 0.45rem;
+  transition: transform 0.2s ease;
+}
+
+.nav-primary .submenu-toggle[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+.nav-primary .submenu {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: none;
+}
+
+.nav-primary .submenu.is-open {
+  display: block;
+}
+
+.nav-primary .submenu .menu-link {
+  font-size: 1rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: normal;
+  padding: 0.4rem 1rem;
 }
 
 .burger {
@@ -379,12 +447,8 @@ body.nav-open {
 
 @media (min-width: 768px) {
   .nav-primary__inner {
-    padding: 0.2rem 2.375rem;
-  }
-
-  .nav-primary .menu-item-promo {
-    /* Compense le padding vertical de l'inner pour fond pleine hauteur */
-    margin-block: -0.2rem;
+    /* Point 2 debrief : bandeau bleu élargi desktop */
+    padding: 0.55rem 2.375rem;
   }
 
   .burger {
@@ -417,6 +481,12 @@ body.nav-open {
     display: flex;
     align-items: center;
     justify-content: center;
+    /* Étire chaque item sur toute la hauteur du bandeau (padding inclus) */
+    margin-block: -0.55rem;
+  }
+
+  .nav-primary .menu-item--has-children {
+    flex-wrap: wrap;
   }
 
   .nav-primary .menu-link {
@@ -424,16 +494,101 @@ body.nav-open {
     align-items: center;
     justify-content: center;
     width: 100%;
-    padding: 0.5rem 0.5rem;
-    font-size: var(--font-size-label-caps);
+    padding: 0.65rem 0.5rem;
+    /* Menu catalogue légèrement agrandi */
+    font-size: 0.875rem;
     font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     text-align: center;
   }
 
-  .nav-primary .menu-item-promo .menu-link {
+  /* Fond actif pleine hauteur du bandeau (comme l’ancien Offres spéciales) */
+  .nav-primary .menu-inner > li > .menu-link--active {
     height: 100%;
+  }
+
+  .nav-primary .menu-item--has-children:has(> .menu-item__trigger > .menu-link--active) {
+    background: #27745d;
+  }
+
+  .nav-primary .menu-item--has-children:has(> .menu-item__trigger > .menu-link--active) .menu-item__trigger {
+    height: 100%;
+  }
+
+  .nav-primary .menu-item--has-children:has(> .menu-item__trigger > .menu-link--active) .submenu-toggle {
+    color: #fff;
+  }
+
+  .nav-primary .menu-item__trigger {
+    width: 100%;
+  }
+
+  .nav-primary .submenu {
+    position: absolute;
+    /* Sous le bandeau, sans chevaucher les items du menu */
+    top: calc(100% + 0.35rem);
+    left: 0;
+    right: auto;
+    transform: none;
+    min-width: 14rem;
+    max-width: 20rem;
+    margin: 0;
+    padding: 0.5rem 0;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    border-radius: 0.25rem;
+    z-index: 1000;
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+
+  /* Pont de survol pour ne pas perdre le focus entre le bandeau et le dropdown */
+  .nav-primary .submenu::before {
+    content: "";
+    position: absolute;
+    top: -0.35rem;
+    left: 0;
+    right: 0;
+    height: 0.35rem;
+  }
+
+  .nav-primary .menu-item--has-children:hover .submenu,
+  .nav-primary .menu-item--has-children:focus-within .submenu,
+  .nav-primary .submenu.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .nav-primary .submenu .menu-link {
+    display: block;
+    width: 100%;
+    padding: 0.625rem 1.25rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #082b4e;
+    text-align: left;
+    text-transform: none;
+    letter-spacing: normal;
+  }
+
+  .nav-primary .submenu .menu-link:hover {
+    background: #f5f0e8;
+    color: var(--color-primary-dark);
+  }
+
+  .nav-primary .submenu .menu-link--active {
+    color: #27745d;
+    font-weight: 700;
+    background: transparent;
+  }
+
+  .nav-primary .submenu-toggle {
+    display: none;
   }
 }
 
@@ -447,7 +602,7 @@ body.nav-open {
   width: 100%;
   max-width: var(--layout-max-width);
   margin: 0 auto;
-  padding: 1.375rem var(--gutter);
+  padding: 2.5rem var(--gutter) 2rem;
   box-sizing: border-box;
 }
 
@@ -478,6 +633,15 @@ body.nav-open {
   display: flex;
   flex-direction: column;
   gap: 0;
+}
+
+.footer-global__copyright {
+  margin: 2rem 0 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .footer-global__contact-line,
@@ -550,7 +714,7 @@ body.nav-open {
 
 @media (min-width: 768px) {
   .footer-global__inner {
-    padding-inline: 2.375rem;
+    padding: 3.5rem 2.375rem 2.5rem;
   }
 
   .footer-global__contact-line,
@@ -796,7 +960,8 @@ body.nav-open {
   text-decoration: none;
   border-radius: 2px;
   text-transform: uppercase;
-  font-size: 0.625rem;
+  /* Point 4 debrief : agrandi (10px → 12px), sous le corps hero (13px) */
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.01875rem;
   line-height: 1.2;
@@ -872,6 +1037,11 @@ body.nav-open {
 
   .hero-slider-block .hero-slider__text p {
     font-size: var(--font-size-body-desktop);
+  }
+
+  .hero-slider-block .hero-slider__cta {
+    /* Point 4 : 14px — reste sous le corps hero 16px */
+    font-size: 0.875rem;
   }
 }
 
@@ -949,19 +1119,24 @@ body.nav-open {
   display: flex;
   gap: 1rem;
   align-items: center;
-  font-size: 0.75rem;
+  /* Point 5 debrief : textes services agrandis */
+  font-size: 0.875rem;
   font-weight: 700;
   color: #082b4e;
   line-height: 1.35;
 }
 
 .rd-page .service .sico {
-  width: 2.5rem;
-  height: 2.5rem;
+  /* Pictos maquette — taille relevée (capture services) */
   flex-shrink: 0;
-  display: block;
-  object-fit: contain;
-  object-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  font-size: 2.5rem;
+  font-weight: 400;
+  line-height: 1;
+  color: #082b4e;
 }
 
 /* Section histoire */
@@ -1027,7 +1202,8 @@ body.nav-open {
 
 .rd-page .history__eyebrow {
   margin: 0.875rem 0 0;
-  font-size: 0.625rem;
+  /* Points 6 + 8 : aligné sur .univers__eyebrow, typo agrandie */
+  font-size: 0.8125rem;
   font-weight: 800;
   letter-spacing: 0.05rem;
   text-transform: uppercase;
@@ -1066,18 +1242,12 @@ body.nav-open {
 }
 
 .rd-page .history__text p {
-  font-size: 0.75rem;
+  font-size: var(--font-size-body-md);
   line-height: 1.45;
   margin: 0 0 0.625rem;
   color: #24384a;
   font-weight: 400;
   max-width: none;
-}
-
-@media (min-width: 768px) {
-  .rd-page .history__text p {
-    font-size: var(--font-size-body-desktop);
-  }
 }
 
 .rd-page .history__text p:last-child {
@@ -1092,11 +1262,19 @@ body.nav-open {
   color: var(--color-primary-dark);
   text-decoration: none;
   padding: 0.75rem 0.9375rem;
-  font-size: 0.625rem;
+  /* Point 7 debrief : agrandi (10px → 12px), sous le corps histoire */
+  font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
   border-radius: 0;
   background: transparent;
+}
+
+@media (min-width: 768px) {
+  .rd-page .btn-outline {
+    /* 14px — reste sous le corps histoire 16px */
+    font-size: 0.875rem;
+  }
 }
 
 .rd-page .history__facts {
@@ -1106,7 +1284,8 @@ body.nav-open {
   gap: 1rem;
   min-height: 14.75rem;
   margin-top: 0;
-  padding: 1.125rem 1.5rem;
+  /* Padding gauche/droite réduit pour les faits clés */
+  padding: 1.125rem 0.75rem;
   background: #f7f2eb;
 }
 
@@ -1118,21 +1297,26 @@ body.nav-open {
 
 .rd-page .history__fact {
   display: grid;
-  grid-template-columns: 1.75rem 1fr;
+  grid-template-columns: 2.25rem 1fr;
   gap: 0.875rem;
   align-items: center;
-  font-size: 0.75rem;
+  /* Point 6 debrief : textes faits clés agrandis */
+  font-size: 0.875rem;
   font-weight: 700;
   line-height: 1.35;
   color: #082b4e;
 }
 
 .rd-page .history__fact-icon {
-  width: 1.5rem;
-  height: 1.5rem;
-  display: block;
-  object-fit: contain;
-  object-position: center;
+  /* Pictos maquette — taille relevée pour lisibilité */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  font-size: 2rem;
+  line-height: 1;
+  color: #082b4e;
 }
 
 /* Section univers literie */
@@ -1149,7 +1333,8 @@ body.nav-open {
   margin: 0;
   color: var(--color-accent-strong);
   text-transform: uppercase;
-  font-size: var(--font-size-label-caps);
+  /* Point 8 debrief : typo agrandie (reste égale à .history__eyebrow) */
+  font-size: 0.8125rem;
   font-weight: 800;
   letter-spacing: 0.06em;
 }
@@ -1167,21 +1352,10 @@ body.nav-open {
   width: 100%;
 }
 
+/* Deux univers (Matelas + Sommiers) en pleine largeur */
 @media (min-width: 640px) {
   .rd-page .univers__cards {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1024px) {
-  .rd-page .univers__cards {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1280px) {
-  .rd-page .univers__cards {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
 
@@ -1359,28 +1533,41 @@ body.nav-open {
   right: 1.5rem;
 }
 
+/* Section rendez-vous + magasin — 3 blocs égaux (texte | image | carte) */
 .rd-page .appointment {
-  min-height: 220px;
+  /* Même fond que fiche produit « Besoin d'un conseil » */
+  background-color: #dfe9df;
+  color: #082b4e;
+  margin: 0;
+}
+
+.rd-page .appointment__inner.layout-wide {
+  /* Pas de padding vertical : l’image colle haut/bas comme la maquette */
+  padding-block: 0;
+}
+
+.rd-page .appointment__grid {
   display: grid;
-  grid-template-columns: 410px 350px 1fr;
-  background: #062f52;
-  color: #fff;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  align-items: stretch;
+  width: 100%;
 }
 
 .rd-page .appt-left {
-  min-height: 220px;
   display: grid;
-  grid-template-columns: 52px 1fr;
-  gap: 16px;
+  grid-template-columns: 2.375rem 1fr;
+  gap: 1rem;
   align-items: start;
-  padding: 28px 34px 22px 58px;
+  padding: 1.75rem 0;
+  box-sizing: border-box;
 }
 
 .rd-page .cal-icon {
-  width: 38px;
-  height: 38px;
-  margin-top: 2px;
-  color: #fff;
+  width: 2.375rem;
+  height: 2.375rem;
+  margin-top: 0.125rem;
+  color: #082b4e;
 }
 
 .rd-page .cal-icon svg {
@@ -1390,85 +1577,214 @@ body.nav-open {
 }
 
 .rd-page .appt-kicker {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 10px;
+  margin: 0 0 0.5rem;
+  font-size: 0.8125rem;
   line-height: 1;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
-  color: #6b7378;
+  letter-spacing: 0.08em;
+  color: var(--color-accent-strong);
   font-weight: 800;
-  margin-bottom: 6px;
 }
 
 .rd-page .appt-left h2 {
-  color: #fff;
-  font-size: 23px;
-  line-height: 1.08;
-  margin: 0 0 10px;
+  color: #082b4e;
+  font-family: var(--font-family-display);
+  font-size: 1.5rem;
+  line-height: 1.15;
+  font-weight: 700;
+  margin: 0 0 0.75rem;
 }
 
-.rd-page .appt-left p {
-  font-size: 10.5px;
-  line-height: 1.35;
-  margin: 0 0 13px;
-  font-weight: 700;
+.rd-page .appt-left p:not(.appt-kicker) {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  margin: 0 0 1rem;
+  font-weight: 600;
+  color: #082b4e;
+  max-width: 28rem;
 }
 
 .rd-page .btn-green {
   display: inline-block;
-  background: #278968;
+  background: #27745d;
   color: #fff;
   text-decoration: none;
-  font-size: 10px;
+  font-size: 0.75rem;
   font-weight: 800;
   text-transform: uppercase;
-  padding: 11px 20px;
+  letter-spacing: 0.06em;
+  padding: 0.75rem 1.25rem;
   border-radius: 2px;
 }
 
+.rd-page a.btn-green:hover {
+  background: var(--color-accent-strong);
+  color: #fff;
+  text-decoration: none;
+}
+
+.rd-page .store-media {
+  position: relative;
+  width: 100%;
+  min-height: 14rem;
+  overflow: hidden;
+}
+
 .rd-page .store-img {
-  width: 350px;
-  height: 220px;
+  display: block;
+  width: 100%;
+  height: 14rem;
   max-width: none;
   object-fit: cover;
+  object-position: center;
+}
+
+.rd-page .store-card-wrap {
+  display: block;
 }
 
 .rd-page .store-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
   background: #fff;
   color: #082b4e;
-  min-height: 172px;
-  margin: 24px 28px 24px 34px;
-  padding: 24px 28px;
+  margin: 0;
+  padding: 1.5rem 1.75rem;
+  min-height: 10.75rem;
+  box-sizing: border-box;
+}
+
+.rd-page .store-card__header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rd-page .store-card__header h3 {
+  margin: 0;
 }
 
 .rd-page .store-card h3 {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 11px;
+  font-size: 0.8125rem;
   text-transform: uppercase;
-  margin: 0 0 14px;
-  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-weight: 800;
+  color: #082b4e;
+}
+
+.rd-page .store-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1 1 auto;
+  justify-content: center;
 }
 
 .rd-page .store-card p {
-  font-size: 11px;
-  line-height: 1.4;
-  margin: 0 0 10px;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  margin: 0;
+  font-weight: 700;
+  color: #082b4e;
+}
+
+.rd-page .store-card__link,
+.rd-page .store-card a.store-card__link {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #27745d;
+  font-weight: 800;
+  text-decoration: none;
+  align-self: flex-start;
+}
+
+.rd-page .store-card__link:hover {
+  color: var(--color-accent-strong);
+  text-decoration: underline;
+}
+
+.rd-page .store-card p a {
+  font-size: inherit;
+  text-transform: none;
+  letter-spacing: normal;
+  color: #082b4e;
   font-weight: 700;
 }
 
-.rd-page .store-card a {
-  font-size: 10px;
-  text-transform: uppercase;
+.rd-page .store-card .icon-box {
+  flex-shrink: 0;
+  font-size: 1.625rem;
+  line-height: 1;
   color: #082b4e;
-  font-weight: 800;
 }
 
-.rd-page .store-card .icon-box {
-  width: 26px;
-  height: 26px;
-  float: left;
-  margin-right: 12px;
-  color: #082b4e;
+@media (min-width: 1024px) {
+  /*
+   * Exemple : 3 blocs côte à côte, largeurs égales (~⅓ / ⅓ / ⅓).
+   * Image collée haut/bas ; carte blanche inset dans le 3e bloc.
+   */
+  .rd-page .appointment__grid {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    align-items: stretch;
+  }
+
+  .rd-page .appt-left {
+    min-height: 13.75rem;
+    height: auto;
+    /* Plus d’air haut/bas ; l’image (col. 2) reste collée à la bande */
+    padding: 3rem 2rem 3rem 1.5rem;
+    box-sizing: border-box;
+  }
+
+  .rd-page .appt-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .rd-page .appt-content .btn-green {
+    margin-top: auto;
+    align-self: flex-start;
+  }
+
+  .rd-page .store-media {
+    position: relative;
+    width: 100%;
+    min-height: 100%;
+    height: 100%;
+    align-self: stretch;
+  }
+
+  .rd-page .store-media .store-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .rd-page .store-card-wrap {
+    display: flex;
+    align-items: stretch;
+    align-self: stretch;
+    height: auto;
+    min-height: 100%;
+    /* Cadre carte : padding vertical aligné sur la colonne texte */
+    padding: 3rem 1.75rem;
+    box-sizing: border-box;
+  }
+
+  .rd-page .store-card {
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: 0;
+    height: 100%;
+    margin: 0;
+  }
 }
 
 @media (max-width: 1080px) {

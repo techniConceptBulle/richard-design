@@ -52,11 +52,13 @@ describe("footer-config", () => {
     expect(html).toContain(renderFooterColumnsHtml().trim().slice(0, 40));
   });
 
-  it("renders complete footer with contact, links cluster and hours", () => {
+  it("renders complete footer with contact, links cluster, hours and copyright", () => {
     const html = renderFooterHtml();
     expect(html).toContain('class="footer-global__contact-col"');
     expect(html).toContain('class="footer-global__links-cluster"');
     expect(html).toContain('class="footer-global__hours-col"');
+    expect(html).toContain('class="footer-global__copyright"');
+    expect(html).toMatch(/© \d{4} Richard La Literie/);
     expect(html).not.toContain("footer-global__intro-text");
     expect(html).not.toContain("footer-global__tagline");
     expect(html).not.toContain("footer-global__logo");

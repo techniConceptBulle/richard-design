@@ -137,6 +137,8 @@ export function renderFooterAsideHtml() {
  * Génère le markup complet du footer global.
  */
 export function renderFooterHtml() {
+  const year = new Date().getFullYear();
+
   return `
     <footer class="footer-global" id="footer">
       <div class="footer-global__inner">
@@ -145,6 +147,9 @@ export function renderFooterHtml() {
           ${renderFooterLinksClusterHtml()}
           ${renderFooterHoursColumnHtml()}
         </div>
+        <p class="footer-global__copyright">
+          © ${year} Richard La Literie. Tous droits réservés.
+        </p>
       </div>
     </footer>
   `;

@@ -16,7 +16,7 @@ import {
 } from "./data.js";
 import { formatPriceCHF, parseQueryParams, getProductImageUrl, getCategoryImageUrl, getBrandImageUrl } from "./utils.js";
 import { filterProductsBySearchTerm } from "./search.js";
-import { addToCart, getCartItems, saveCartItems } from "./cart.js";
+import { addToCart, getCartItems, getCartServiceOptions, saveCartItems, saveCartServiceOptions } from "./cart.js";
 import {
   getProductListingRating,
   getProductListingStockLabel,
@@ -30,7 +30,9 @@ const FLAG_CH_SVG = `<svg class="topbar__flag-icon" width="14" height="14" viewB
 
 const SEARCH_ICON_SVG = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M14 14L18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`;
 
-const CART_ICON_SVG = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 4H5.2L6.4 13.2C6.5 13.9 7.1 14.5 7.8 14.5H15.2C15.9 14.5 16.5 13.9 16.6 13.2L17.4 7.5H6.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="8.5" cy="17" r="1" fill="currentColor"/><circle cx="14.5" cy="17" r="1" fill="currentColor"/></svg>`;
+const CART_ICON_SVG = `<svg width="24" height="24" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 4H5.2L6.4 13.2C6.5 13.9 7.1 14.5 7.8 14.5H15.2C15.9 14.5 16.5 13.9 16.6 13.2L17.4 7.5H6.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="8.5" cy="17" r="1" fill="currentColor"/><circle cx="14.5" cy="17" r="1" fill="currentColor"/></svg>`;
+
+const SUBMENU_CHEVRON_SVG = `<svg viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
 const TOPBAR_LINKS = [
   { href: "/pages/contact.html", label: "Magasin à Crissier" },
@@ -39,7 +41,28 @@ const TOPBAR_LINKS = [
 ];
 
 const PRIMARY_NAV_ITEMS = [
-  { href: "/pages/about.html", label: "A propos" },
+  {
+    href: "/pages/about.html",
+    label: "A propos",
+    children: [
+      {
+        href: "/pages/about.html#about-expert",
+        label: "L'expert de la literie à Crissier"
+      },
+      {
+        href: "/pages/about.html#about-store",
+        label: "Votre magasin à Crissier"
+      },
+      {
+        href: "/pages/about.html#about-premium",
+        label: "Nos services premium"
+      },
+      {
+        href: "/pages/about.html#about-products",
+        label: "Nos produits de literie"
+      }
+    ]
+  },
   { href: "/pages/category.html?slug=matelas", label: "Matelas" },
   { href: "/pages/category.html?slug=sommier", label: "Sommiers" },
   { href: "/pages/category.html?slug=lit", label: "Lits" },
@@ -50,7 +73,7 @@ const PRIMARY_NAV_ITEMS = [
 ];
 
 /**
- * Active le menu burger mobile de l'enveloppe site.
+ * Active le menu burger mobile et les sous-menus de l'enveloppe site.
  */
 function initSiteEnvelope(headerEl) {
   const burger = headerEl.querySelector("#nav-burger");
@@ -63,6 +86,12 @@ function initSiteEnvelope(headerEl) {
     burger.classList.remove("is-active");
     burger.setAttribute("aria-expanded", "false");
     document.body.classList.remove("nav-open");
+    menu.querySelectorAll(".submenu.is-open").forEach((submenu) => {
+      submenu.classList.remove("is-open");
+    });
+    menu.querySelectorAll('.submenu-toggle[aria-expanded="true"]').forEach((toggle) => {
+      toggle.setAttribute("aria-expanded", "false");
+    });
   };
 
   const mediaQuery = window.matchMedia("(min-width: 768px)");
@@ -89,6 +118,20 @@ function initSiteEnvelope(headerEl) {
     document.body.classList.toggle("nav-open", willOpen);
   });
 
+  menu.querySelectorAll(".submenu-toggle").forEach((toggle) => {
+    toggle.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const parent = toggle.closest(".menu-item--has-children");
+      const submenu = parent?.querySelector(":scope > .submenu");
+      if (!submenu) return;
+
+      const willOpen = !submenu.classList.contains("is-open");
+      submenu.classList.toggle("is-open", willOpen);
+      toggle.setAttribute("aria-expanded", willOpen ? "true" : "false");
+    });
+  });
+
   menu.querySelectorAll(".menu-link").forEach((link) => {
     link.addEventListener("click", closeMenu);
   });
@@ -96,6 +139,47 @@ function initSiteEnvelope(headerEl) {
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") closeMenu();
   });
+}
+
+/**
+ * Construit le HTML d'un item de navigation catalogue (avec sous-menu éventuel).
+ */
+function renderPrimaryNavItem(item, isNavItemActive) {
+  const { href, label, sale, children } = item;
+  const activeClass = isNavItemActive(href) ? " menu-link--active" : "";
+  const promoClass = sale ? " menu-item-promo" : "";
+
+  if (!children?.length) {
+    return `<li class="${promoClass.trim()}"><a href="${href}" class="menu-link${activeClass}">${label}</a></li>`;
+  }
+
+  const submenuId = "nav-submenu-about";
+  const childLinks = children
+    .map((child) => {
+      const childActive = isNavItemActive(child.href) ? " menu-link--active" : "";
+      return `<li><a href="${child.href}" class="menu-link${childActive}">${child.label}</a></li>`;
+    })
+    .join("");
+
+  return `
+    <li class="menu-item--has-children">
+      <div class="menu-item__trigger">
+        <a href="${href}" class="menu-link menu-item__parent${activeClass}">${label}</a>
+        <button
+          type="button"
+          class="submenu-toggle"
+          aria-expanded="false"
+          aria-controls="${submenuId}"
+          aria-label="Afficher le sous-menu ${label}"
+        >
+          ${SUBMENU_CHEVRON_SVG}
+        </button>
+      </div>
+      <ul class="submenu" id="${submenuId}">
+        ${childLinks}
+      </ul>
+    </li>
+  `;
 }
 
 export function renderSharedLayout() {
@@ -115,6 +199,11 @@ export function renderSharedLayout() {
         return targetSlug === currentSlug;
       }
 
+      // Ancres À propos : actif seulement si le hash correspond
+      if (targetUrl.hash) {
+        return currentUrl.hash === targetUrl.hash;
+      }
+
       return true;
     };
 
@@ -122,11 +211,7 @@ export function renderSharedLayout() {
       ({ href, label }) => `<li><a class="topbar__link" href="${href}">${label}</a></li>`
     ).join("");
 
-    const mainNav = PRIMARY_NAV_ITEMS.map(({ href, label, sale }) => {
-      const activeClass = isNavItemActive(href) ? " menu-link--active" : "";
-      const promoClass = sale ? " menu-item-promo" : "";
-      return `<li class="${promoClass.trim()}"><a href="${href}" class="menu-link${activeClass}">${label}</a></li>`;
-    }).join("");
+    const mainNav = PRIMARY_NAV_ITEMS.map((item) => renderPrimaryNavItem(item, isNavItemActive)).join("");
 
     headerEl.innerHTML = `
       <div class="site-envelope" id="site-envelope">
@@ -143,7 +228,7 @@ export function renderSharedLayout() {
         <div class="header-main">
           <div class="header-main__inner">
             <a href="/" class="header-main__brand" aria-label="Richard La Literie — Accueil">
-              <img src="/assets/home/logo.png" alt="Richard La Literie" width="125" height="48">
+              <img src="/assets/home/logo.png" alt="Richard La Literie" width="140" height="64">
             </a>
 
             <form class="header-main__search header-main__search--desktop" role="search" action="/pages/category.html" method="get">
@@ -1277,7 +1362,11 @@ export async function initBrandPage() {
 
 /* PAGE PRODUIT DÉTAILLÉE */
 
-const PRODUCT_OPTION_ORDER = ["firmness", "size", "cover", "finish", "technology"];
+/* Ordre debrief : Taille → Dureté → Housse (puis finition / technologie si présents) */
+const PRODUCT_OPTION_ORDER = ["size", "firmness", "cover", "finish", "technology"];
+
+/** Taille par défaut affichée / sélectionnée sur la fiche produit */
+const DEFAULT_PRODUCT_SIZE = "90x200";
 
 const DEFAULT_MATTRESS_COVER_CHIP_VALUES = [
   "Housse amovible et lavable",
@@ -1310,12 +1399,12 @@ export function getProductCoverChipValues(product) {
 const PRODUCT_OPTION_META = {
   firmness: {
     control: "chips",
-    label: "Confort",
+    label: "Dureté",
     formatLabel: (value) => formatFirmnessLabel(value)
   },
   size: {
     control: "select",
-    label: "Dimensions",
+    label: "Taille",
     formatLabel: (value) => formatSizeLabel(value)
   },
   cover: {
@@ -1336,13 +1425,13 @@ const PRODUCT_OPTION_META = {
 };
 
 const MATTRESS_GALLERY_IMAGES = [
-  "/assets/images/products/ikea/vestmarka.jpg",
-  "/assets/images/products/ikea/akrehamn.jpg",
-  "/assets/images/products/ikea/haugesund.jpg",
-  "/assets/images/products/ikea/morgedal.jpg",
-  "/assets/images/products/ikea/matrand.jpg",
-  "/assets/images/products/ikea/anneland.jpg",
-  "/assets/images/products/ikea/valevag.jpg"
+  "/assets/images/products/roviva/vestmarka.jpg",
+  "/assets/images/products/roviva/akrehamn.jpg",
+  "/assets/images/products/roviva/haugesund.jpg",
+  "/assets/images/products/roviva/morgedal.jpg",
+  "/assets/images/products/roviva/matrand.jpg",
+  "/assets/images/products/roviva/anneland.jpg",
+  "/assets/images/products/roviva/valevag.jpg"
 ];
 
 const PRODUCT_GALLERY_FALLBACKS = {
@@ -1415,14 +1504,10 @@ function getProductOptionDefinitions(product, category) {
     if (!values.length) return null;
 
     const meta = PRODUCT_OPTION_META[key];
-    const label =
-      key === "size" && category?.id === "matelas"
-        ? "Dimensions du matelas (cm)"
-        : meta?.label || key;
 
     return {
       key,
-      label,
+      label: meta?.label || key,
       control: meta?.control || "chips",
       formatLabel: meta?.formatLabel || ((value) => value),
       values: key === "size" ? sortSizes(values) : values
@@ -1430,11 +1515,19 @@ function getProductOptionDefinitions(product, category) {
   }).filter(Boolean);
 }
 
-function getDefaultProductSelection(product) {
+/**
+ * Sélection initiale : privilégie la taille 90×200 (debrief), sinon premier stock.
+ */
+export function getDefaultProductSelection(product) {
   const defaultSelection = {};
+  const variations = product.variations || [];
   const defaultVariation =
-    product.variations?.find((variation) => variation.inStock) ||
-    product.variations?.[0] ||
+    variations.find(
+      (variation) => variation.size === DEFAULT_PRODUCT_SIZE && variation.inStock !== false
+    ) ||
+    variations.find((variation) => variation.size === DEFAULT_PRODUCT_SIZE) ||
+    variations.find((variation) => variation.inStock) ||
+    variations[0] ||
     null;
 
   PRODUCT_OPTION_ORDER.forEach((key) => {
@@ -1492,9 +1585,9 @@ function syncSelectionWithVariation(product, desiredSelection, priorityKey = "")
 }
 
 /**
- * Valeur affichée sous le libellé « Livraison indicative » (fiche produit).
+ * Valeur du délai de livraison (jours ou semaines selon le produit).
  */
-function getProductDeliveryValue(product, variation) {
+export function getProductDeliveryValue(product, variation) {
   if (product.liquidation) {
     return "Retrait ou livraison rapide selon stock";
   }
@@ -1508,16 +1601,6 @@ function getProductDeliveryValue(product, variation) {
   }
 
   return "5 à 10 jours ouvrés";
-}
-
-function getProductDeliveryLabel(product, variation) {
-  const value = getProductDeliveryValue(product, variation);
-
-  if (product.liquidation || (variation && variation.inStock === false)) {
-    return value;
-  }
-
-  return `Livraison indicative : ${value}`;
 }
 
 function getCategoryAncestors(category, categoriesById) {
@@ -1595,7 +1678,7 @@ function renderSpecificationRows(product, brand, category, optionDefinitions, va
       values: optionDefinitions.find((option) => option.key === "size")?.values || []
     },
     {
-      label: "Confort",
+      label: "Dureté",
       values:
         optionDefinitions.find((option) => option.key === "firmness")?.values.map((value) =>
           formatFirmnessLabel(value)
@@ -1725,24 +1808,14 @@ function renderProductAccordion(product, brand, category, optionDefinitions, var
       )}</div>`
     },
     {
-      title: "Livraison",
-      content: `
-        <p>${getProductDeliveryLabel(product, variation)}</p>
-        <ul class="checks">
-          <li>Le délai exact est confirmé par notre équipe selon la configuration retenue.</li>
-          <li>Retrait en magasin et livraison à domicile possibles selon le produit et la zone.</li>
-          <li>Nos conseillers prennent contact pour organiser les détails logistiques si nécessaire.</li>
-        </ul>
-      `
-    },
-    {
-      title: "Garantie et Service",
+      title: "Politique de retour",
       content: `
         <p>Un accompagnement Richard SA est prévu avant, pendant et après l'achat.</p>
         <ul class="checks">
           <li>Conseil personnalisé en magasin ou à distance.</li>
           <li>Accompagnement pour choisir la bonne dimension et la bonne configuration.</li>
           <li>Informations de garantie et de SAV confirmées selon la marque et le modèle.</li>
+          <li>Les modalités de retour et d'échange sont précisées au moment de la commande.</li>
         </ul>
       `
     },
@@ -1857,29 +1930,122 @@ function renderProductRelatedSection(title, products) {
   `;
 }
 
-function renderProductBenefits() {
+/**
+ * Panneaux options panier (livraison / recyclage / garantie).
+ * Affichés sur la page panier — sélection possible ici (pas sur la fiche).
+ */
+export const CART_SERVICE_OPTION_PANELS = {
+  delivery: {
+    id: "delivery",
+    label: "Options de Livraison et Installation",
+    icon: "/assets/icons/services/truck.svg",
+    rows: [
+      ["Livraison standard", "À domicile selon zone géographique"],
+      ["Livraison + installation", "Mise en place par nos équipes"],
+      ["Retrait en magasin", "Rue des Alpes 2, 1023 Crissier"]
+    ]
+  },
+  recycle: {
+    id: "recycle",
+    label: "Options de Recyclage",
+    icon: "/assets/icons/services/recycle.svg",
+    rows: [
+      ["Reprise ancienne literie", "Enlèvement lors de la livraison"],
+      ["Recyclage responsable", "Filière adaptée selon le produit"],
+      ["Sans reprise", "Aucun enlèvement demandé"]
+    ]
+  },
+  warranty: {
+    id: "warranty",
+    label: "Garantie",
+    icon: "/assets/icons/services/warranty.svg",
+    rows: [
+      ["Garantie fabricant", "Selon marque et modèle"],
+      ["Satisfaction Richard", "Accompagnement avant / après achat"],
+      ["SAV magasin", "Suivi et conseil à Crissier"]
+    ]
+  }
+};
+
+/**
+ * Bloc beige options services — page panier (sélection).
+ */
+export function renderCartServiceOptionsBlock(selectedOptions = {}) {
+  const panels = Object.values(CART_SERVICE_OPTION_PANELS);
+
   return `
-    <section class="services product-page-services" aria-label="Nos services">
-      <div class="services__inner layout-wide">
-        <ul class="services__grid">
-          <li class="service">
-            <img class="sico" src="/assets/icons/services/bed-double.svg" alt="" width="40" height="40" loading="lazy" decoding="async" aria-hidden="true">
-            <span>Essai à domicile avant achat</span>
-          </li>
-          <li class="service">
-            <img class="sico" src="/assets/icons/services/post-office.svg" alt="" width="40" height="40" loading="lazy" decoding="async" aria-hidden="true">
-            <span>Livraison, installation et recyclage</span>
-          </li>
-          <li class="service">
-            <img class="sico" src="/assets/icons/services/customer-service-woman.svg" alt="" width="40" height="40" loading="lazy" decoding="async" aria-hidden="true">
-            <span>Conseils personnalisés, sur mesure</span>
-          </li>
-          <li class="service">
-            <img class="sico" src="/assets/icons/services/customer-service-help.svg" alt="" width="40" height="40" loading="lazy" decoding="async" aria-hidden="true">
-            <span>Garantie, 100% satisfaction</span>
-          </li>
-        </ul>
-      </div>
+    <section class="cart-service-options" aria-label="Livraison, recyclage et garantie">
+      <ul class="cart-service-options__list">
+        ${panels
+          .map(
+            (panel) => `
+              <li>
+                <button
+                  type="button"
+                  class="cart-service-options__trigger"
+                  data-service-panel="${panel.id}"
+                  aria-expanded="false"
+                  aria-controls="cart-service-panel-${panel.id}"
+                >
+                  <img class="cart-service-options__icon" src="${panel.icon}" alt="" width="28" height="28" loading="lazy" decoding="async" aria-hidden="true">
+                  <span class="cart-service-options__label">${panel.label}</span>
+                  <span class="cart-service-options__chevron" aria-hidden="true">›</span>
+                </button>
+              </li>
+            `
+          )
+          .join("")}
+      </ul>
+      ${panels
+        .map((panel) => {
+          const selectedIndex = Number.isInteger(selectedOptions[panel.id])
+            ? selectedOptions[panel.id]
+            : 0;
+          return `
+            <div
+              id="cart-service-panel-${panel.id}"
+              class="cart-service-options__panel"
+              data-service-panel-content="${panel.id}"
+              hidden
+              role="region"
+              aria-label="${panel.label}"
+            >
+              <p class="cart-service-options__hint">Choisissez une option pour votre commande.</p>
+              <table class="cart-service-options__table">
+                <thead>
+                  <tr>
+                    <th scope="col">Option</th>
+                    <th scope="col">Détail</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${panel.rows
+                    .map(
+                      ([name, detail], index) => `
+                        <tr>
+                          <td>
+                            <label class="cart-service-options__choice">
+                              <input
+                                type="radio"
+                                name="cart-service-${panel.id}"
+                                value="${index}"
+                                data-service-option="${panel.id}"
+                                ${index === selectedIndex ? "checked" : ""}
+                              >
+                              <span>${name}</span>
+                            </label>
+                          </td>
+                          <td>${detail}</td>
+                        </tr>
+                      `
+                    )
+                    .join("")}
+                </tbody>
+              </table>
+            </div>
+          `;
+        })
+        .join("")}
     </section>
   `;
 }
@@ -1891,21 +2057,21 @@ function renderProductAdviceSection() {
       <p class="product-advice__lead">Nous serions ravis de vous conseiller personnellement</p>
       <div class="product-advice__grid contact-grid">
         <div class="product-advice__card contact">
-          <img class="product-advice__icon" src="/assets/icons/services/customer-service-help.svg" alt="" width="48" height="48" loading="lazy" decoding="async" aria-hidden="true">
+          <span class="product-advice__icon" aria-hidden="true">☎</span>
           <div class="product-advice__content">
             <strong class="product-advice__card-title">Appelez-nous</strong>
-            <span class="product-advice__card-text">+41 21 634 04 76</span>
+            <span class="product-advice__card-text"><a href="tel:+41216340476">021 634 04 76</a></span>
           </div>
         </div>
         <div class="product-advice__card contact">
-          <img class="product-advice__icon" src="/assets/icons/services/post-office.svg" alt="" width="48" height="48" loading="lazy" decoding="async" aria-hidden="true">
+          <span class="product-advice__icon" aria-hidden="true">✉</span>
           <div class="product-advice__content">
             <strong class="product-advice__card-title">Écrivez-nous</strong>
-            <span class="product-advice__card-text">info@richard-decoration.ch</span>
+            <span class="product-advice__card-text"><a href="mailto:info@richard-decoration.ch">info@richard-decoration.ch</a></span>
           </div>
         </div>
         <div class="product-advice__card contact">
-          <img class="product-advice__icon" src="/assets/icons/services/bed-double.svg" alt="" width="48" height="48" loading="lazy" decoding="async" aria-hidden="true">
+          <span class="product-advice__icon" aria-hidden="true">⌂</span>
           <div class="product-advice__content">
             <strong class="product-advice__card-title">Venez-nous rencontrer</strong>
             <span class="product-advice__card-text">Richard La Literie<br>Rue des Alpes 2<br>1023 Crissier</span>
@@ -2069,7 +2235,6 @@ export async function initProductPage() {
       <aside id="product-summary-panel" class="single-product__summary details product-summary"></aside>
     </div>
 
-    ${renderProductBenefits()}
     <div id="product-details-panel" class="product-details-panel"></div>
     <div id="product-lightbox-root" class="product-lightbox-root"></div>
     ${renderProductRelatedSection("Produits similaires", similarProducts)}
@@ -2324,16 +2489,17 @@ export async function initProductPage() {
 
     summaryPanelEl.innerHTML = `
       <div class="product-summary-panel">
+        ${
+          brand
+            ? `<p class="product-brand__name-row"><a href="/pages/brands.html?slug=${encodeURIComponent(brand.slug)}" class="product-brand__name">${brand.name}</a></p>`
+            : ""
+        }
         <div class="product-summary__header">
           <h1 class="product_title">${product.name}</h1>
           ${
-            brand
+            brand?.logo
               ? `<div class="product-brand">
-                  ${
-                    brand.logo
-                      ? `<a href="/pages/brands.html?slug=${encodeURIComponent(brand.slug)}" class="product-brand__link"><img src="${brand.logo}" alt="${brand.name}" class="product-brand__logo"></a>`
-                      : `<a href="/pages/brands.html?slug=${encodeURIComponent(brand.slug)}" class="product-brand__name">${brand.name}</a>`
-                  }
+                  <a href="/pages/brands.html?slug=${encodeURIComponent(brand.slug)}" class="product-brand__link"><img src="${brand.logo}" alt="${brand.name}" class="product-brand__logo"></a>
                 </div>`
               : ""
           }
@@ -2365,9 +2531,8 @@ export async function initProductPage() {
             : ""
         }
         <div class="product-option-card product-option-card--delivery option-card delivery">
-          <p class="product-delivery-inline">
-            <span class="product-option-card__label">Livraison indicative</span><span class="product-option-card__value"> : ${getProductDeliveryValue(product, variation)}</span>
-          </p>
+          <span class="product-option-card__label">Délai de livraison :</span>
+          <strong class="product-option-card__delivery-value">${getProductDeliveryValue(product, variation)}</strong>
         </div>
         <div class="product-cart-row cart-row">
           <div class="product-cart-row__qty qty" aria-label="Quantité">
@@ -2488,74 +2653,40 @@ export async function initCartPage() {
         ${items.map((item, index) => {
           const itemTotal = item.price * item.quantity;
           subtotal += itemTotal;
-          const itemBadges = getProductDisplayBadges(item.product || {}, 2);
           return `
-            <div class="cart-item card" data-index="${index}">
+            <div class="cart-item" data-index="${index}">
               <div class="cart-item-image">
                 <img src="${item.image || getProductImageUrl({ name: item.productName }, null)}" alt="${item.productName}" onerror="this.src='${getProductImageUrl({ name: item.productName }, null)}'" />
               </div>
-              <div class="cart-item-details">
-                <h3 class="cart-item-name">
-                  <a href="/pages/product.html?slug=${item.productSlug}">${item.productName}</a>
-                </h3>
-                ${item.variationLabel ? `<p class="cart-item-variation">${item.variationLabel}</p>` : ""}
-                ${
-                  itemBadges.length
-                    ? `
-                      <div class="cart-item-badges">
-                        ${itemBadges.map((badge) => `<span class="badge">${badge}</span>`).join("")}
-                      </div>
-                    `
-                    : ""
-                }
-                <div class="cart-item-price">${formatPriceCHF(item.price)}</div>
-              </div>
-              <div class="cart-item-quantity">
-                <span class="cart-item-label">Quantité</span>
-                <div class="cart-quantity-stepper">
-                  <button type="button" class="cart-quantity-button" data-cart-quantity-action="decrease" data-index="${index}" aria-label="Diminuer la quantité">−</button>
-                  <input 
-                    type="number" 
-                    class="cart-quantity-input" 
-                    min="1" 
-                    value="${item.quantity}" 
-                    data-index="${index}"
-                  />
-                  <button type="button" class="cart-quantity-button" data-cart-quantity-action="increase" data-index="${index}" aria-label="Augmenter la quantité">+</button>
+              <div class="cart-item-body">
+                <div class="cart-item-top">
+                  <h3 class="cart-item-name">
+                    <a href="/pages/product.html?slug=${item.productSlug}">${item.productName}</a>
+                  </h3>
+                  <div class="cart-item-price">${formatPriceCHF(item.price)}</div>
                 </div>
-              </div>
-              <div class="cart-item-total">
-                <span class="cart-item-label">Total</span>
-                <span class="price">${formatPriceCHF(itemTotal)}</span>
-              </div>
-              <div class="cart-item-actions">
-                <button type="button" class="cart-item-remove" data-index="${index}" aria-label="Supprimer">
-                  Retirer
-                </button>
+                ${item.variationLabel ? `<p class="cart-item-variation">${item.variationLabel}</p>` : ""}
+                <div class="cart-item-controls">
+                  <div class="cart-item-quantity" aria-label="Quantité">
+                    <button type="button" class="cart-quantity-button" data-cart-quantity-action="decrease" data-index="${index}" aria-label="Diminuer la quantité">−</button>
+                    <span class="cart-quantity-display">${item.quantity}</span>
+                    <button type="button" class="cart-quantity-button" data-cart-quantity-action="increase" data-index="${index}" aria-label="Augmenter la quantité">+</button>
+                  </div>
+                  <button type="button" class="cart-item-remove" data-index="${index}" aria-label="Retirer du panier">
+                    <svg class="cart-item-remove__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path d="M9 3h6M4 7h16M8 7v12a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V7M10 11v6M14 11v6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
           `;
         }).join("")}
       </div>
+      ${renderCartServiceOptionsBlock(getCartServiceOptions())}
     `;
 
-    // Gestion modification quantités
-    const quantityInputs = contentsEl.querySelectorAll(".cart-quantity-input");
-    quantityInputs.forEach((input) => {
-      input.addEventListener("change", (e) => {
-        const index = parseInt(e.target.getAttribute("data-index"));
-        const newQuantity = parseInt(e.target.value) || 1;
-        if (newQuantity < 1) {
-          e.target.value = 1;
-          return;
-        }
-        const updatedItems = [...items];
-        updatedItems[index].quantity = newQuantity;
-        saveCartItems(updatedItems);
-        renderCart();
-      });
-    });
-
+    // Gestion modification quantités (stepper comme fiche produit)
     const quantityButtons = contentsEl.querySelectorAll("[data-cart-quantity-action]");
     quantityButtons.forEach((button) => {
       button.addEventListener("click", () => {
@@ -2579,6 +2710,36 @@ export async function initCartPage() {
       });
     });
 
+    // Options services : ouverture panneaux + sélection radio
+    contentsEl.querySelectorAll("[data-service-panel]").forEach((trigger) => {
+      trigger.addEventListener("click", () => {
+        const panelId = trigger.getAttribute("data-service-panel");
+        const panel = contentsEl.querySelector(`[data-service-panel-content="${panelId}"]`);
+        if (!panel) return;
+
+        const willOpen = panel.hidden;
+        contentsEl.querySelectorAll("[data-service-panel-content]").forEach((other) => {
+          other.hidden = true;
+        });
+        contentsEl.querySelectorAll("[data-service-panel]").forEach((btn) => {
+          btn.setAttribute("aria-expanded", "false");
+        });
+
+        if (willOpen) {
+          panel.hidden = false;
+          trigger.setAttribute("aria-expanded", "true");
+        }
+      });
+    });
+
+    contentsEl.querySelectorAll("[data-service-option]").forEach((input) => {
+      input.addEventListener("change", () => {
+        const key = input.getAttribute("data-service-option");
+        const next = { ...getCartServiceOptions(), [key]: Number(input.value) };
+        saveCartServiceOptions(next);
+      });
+    });
+
     // Résumé panier
     summaryEl.innerHTML = `
       <div class="cart-summary-section">
@@ -2599,7 +2760,7 @@ export async function initCartPage() {
           <p>Validation simple, paiement au checkout et accompagnement possible par notre équipe.</p>
           <p class="text-muted">La disponibilité exacte et les détails de livraison sont confirmés avant finalisation.</p>
         </div>
-        <a href="/pages/checkout.html" class="btn btn-primary btn-large btn-block">
+        <a href="/pages/checkout.html" class="cart-checkout-button">
           Passer au checkout
         </a>
       </div>
@@ -2665,7 +2826,6 @@ export async function initCheckoutPage() {
     <form id="checkout-form-main" class="checkout-form-main">
       <section class="checkout-section">
         <h2 class="checkout-section-title">Coordonnées</h2>
-        <p class="checkout-section-note">Pour préparer votre commande et assurer le bon suivi.</p>
         <div class="checkout-form-grid">
           <label class="field">
             <span class="field-label">Prénom <span class="field-required">*</span></span>
@@ -2688,7 +2848,6 @@ export async function initCheckoutPage() {
 
       <section class="checkout-section">
         <h2 class="checkout-section-title">Adresse de livraison</h2>
-        <p class="checkout-section-note">Nous utilisons ces informations pour confirmer la livraison et l’installation si nécessaire.</p>
         <div class="checkout-form-grid">
           <label class="field">
             <span class="field-label">Rue et numéro <span class="field-required">*</span></span>
@@ -2713,7 +2872,6 @@ export async function initCheckoutPage() {
 
       <section class="checkout-section">
         <h2 class="checkout-section-title">Mode de livraison</h2>
-        <p class="checkout-section-note">Choisissez le mode qui correspond le mieux à votre projet.</p>
         <div class="checkout-shipping-options">
           <label class="checkout-shipping-option">
             <input type="radio" name="shipping" value="poste" required />
@@ -2737,7 +2895,7 @@ export async function initCheckoutPage() {
       <section class="checkout-section">
         <h2 class="checkout-section-title">Paiement</h2>
         <div class="checkout-payment">
-          <p class="text-soft">Paiement sécurisé via Payrexx au moment de l’intégration finale.</p>
+          <p class="checkout-payment-note">Paiement sécurisé via Payrexx au moment de l’intégration finale.</p>
           <div class="checkout-payment-mock">
             <div class="checkout-payment-card">
               <div class="checkout-payment-card-header">
@@ -2756,7 +2914,7 @@ export async function initCheckoutPage() {
         </div>
       </section>
 
-      <button type="submit" class="btn btn-primary btn-large btn-block">
+      <button type="submit" class="checkout-submit-button">
         Confirmer ma commande
       </button>
     </form>
