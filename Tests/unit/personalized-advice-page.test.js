@@ -57,6 +57,10 @@ describe("personalized advice page", () => {
     expect(css).toMatch(/\.about-advice__list\s*\{/);
   });
 
+  it("uses the same editorial max-width as brand detail pages", () => {
+    expect(css).toMatch(/\.about-advice__boxed\s*\{[^}]*max-width:\s*62rem/s);
+  });
+
   it("updates the À propos submenu label in render.js", () => {
     expect(renderJs).toContain('label: "Nos conseils personnalisés sur mesure"');
     expect(renderJs).not.toContain('label: "Nos produits de literie"');

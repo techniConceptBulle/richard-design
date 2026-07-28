@@ -1266,7 +1266,9 @@
 }
 
 .about-advice__boxed {
-  max-width: 48rem;
+  max-width: 62rem;
+  width: 100%;
+  margin-inline: auto;
 }
 
 .about-advice__title {
