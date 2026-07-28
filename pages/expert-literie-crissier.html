@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>L'expert de la literie à Crissier depuis 1933 | Richard La Literie</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/styles/base.css" />
+    <link rel="stylesheet" href="/styles/layout.css" />
+    <link rel="stylesheet" href="/styles/components.css" />
+    <link rel="stylesheet" href="/styles/about-page.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+  </head>
+  <body class="page" data-page="about-expert">
+    <header id="site-header"></header>
+
+    <main class="rd-page about-page">
+      <!-- En-tête de page -->
+      <section class="about-hero" aria-labelledby="about-hero-title">
+        <div class="about-hero__inner layout-wide">
+          <nav class="breadcrumb" aria-label="Fil d'Ariane">
+            <a href="/">Accueil</a>
+            <span class="breadcrumb__separator" aria-hidden="true">›</span>
+            <span class="breadcrumb__current">L'expert de la literie à Crissier</span>
+          </nav>
+          <h1 id="about-hero-title" class="about-hero__title">
+            L'expert de la literie à Crissier depuis 1933
+          </h1>
+        </div>
+      </section>
+
+      <!-- Portrait gérant + histoire entreprise -->
+      <section class="about-founder-story" aria-labelledby="about-story-heading">
+        <div class="about-founder-story__inner layout-wide">
+          <div class="about-founder-story__grid">
+            <aside class="about-founder" aria-label="Votre gérant de magasin">
+              <div class="about-founder__card">
+                <div class="about-founder__media">
+                  <img
+                    src="/assets/home/expert.jpg"
+                    alt="Jean-Marc Richard, gérant Richard La Literie à Crissier"
+                    width="320"
+                    height="360"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="about-founder__body">
+                  <p class="about-founder__identity">
+                    <span class="about-founder__role">Votre gérant de magasin</span>
+                    <span class="about-founder__name">Jean-Marc Richard</span>
+                  </p>
+                  <blockquote class="about-founder__quote">
+                    <p>
+                      Chaque client est unique. Je suis là pour vous écouter, comprendre vos
+                      besoins et vous guider.
+                    </p>
+                    <p>
+                      Nous ne vendons pas un produit standard&nbsp;: nous concevons avec vous
+                      votre solution de couchage idéale, pour investir dans votre sommeil pour de
+                      nombreuses années.
+                    </p>
+                  </blockquote>
+                </div>
+              </div>
+            </aside>
+
+            <div class="about-story about-story--boxed">
+              <h2 id="about-story-heading" class="about-story__title">
+                Richard La Literie – votre référence literie à Crissier et à proximité de Lausanne,
+                depuis 1933
+              </h2>
+              <div class="about-story__text">
+                <p>
+                  Au cœur de Crissier, Rue des Alpes 2,
+                  <strong>Richard La Literie</strong> n’est pas seulement un magasin&nbsp;:
+                  c’est une <strong>adresse emblématique</strong> où le confort du sommeil prend
+                  vie. Depuis 1933, notre enseigne familiale accompagne les habitants de la
+                  région avec des produits soigneusement sélectionnés et des conseils
+                  personnalisés pour que chaque nuit soit véritablement réparatrice.
+                </p>
+                <p>
+                  Aujourd’hui, <strong>Jean-Marc Richard</strong>, représentant de la troisième
+                  génération, perpétue la passion de ses prédécesseurs. Son grand-père, Edouard
+                  puis son père, Claude ont transmis un savoir-faire unique, fait de rigueur,
+                  d’attention et de sens du détail. Cette tradition familiale, profondément
+                  ancrée, fait de <strong>Richard La Literie</strong> une référence
+                  incontournable pour tous ceux qui souhaitent investir dans un sommeil de
+                  qualité et réparateur, près de Lausanne.
+                </p>
+                <p>
+                  À l’origine tapissiers-décorateurs, la famille Richard fabriquait elle-même ses
+                  matelas en privilégiant des matériaux naturels comme le crin de cheval et la
+                  laine de mouton. Aujourd’hui encore, cet héritage artisanal guide chacune de
+                  nos décisions&nbsp;: nous sélectionnons avec soin chaque produit et prenons le
+                  temps d’accompagner chaque client afin de trouver la literie qui transformera
+                  ses nuits.
+                </p>
+                <p>
+                  Parce que
+                  <strong>bien dormir ne relève ni du hasard, ni d’un choix standardisé, ni d’un simple clic sur Internet</strong>,
+                  chaque literie mérite d’être choisie avec soin et adaptée à vos besoins. Chez
+                  <strong>Richard La Literie</strong>, nous vous aidons à trouver le matelas et
+                  le sommier qui vous correspondent, pour des nuits vraiment reposantes et un
+                  confort sur mesure.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Carte + coordonnées magasin Crissier -->
+      <section
+        class="about-store-location"
+        aria-labelledby="about-store-location-title"
+        data-store-map
+        data-lat="46.54555"
+        data-lng="6.57555"
+      >
+        <div class="about-store-location__inner layout-wide">
+          <div class="about-store-location__grid">
+            <div class="about-store-location__map-col">
+              <div
+                class="about-store-map"
+                role="region"
+                aria-label="Carte du magasin Richard La Literie à Crissier"
+              >
+                <div class="about-store-map__canvas" data-store-map-canvas></div>
+                <div class="about-store-map__card">
+                  <img
+                    class="about-store-map__photo"
+                    src="/assets/home/storefront.jpg"
+                    alt="Devanture Richard La Literie à Crissier"
+                    width="72"
+                    height="72"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div class="about-store-map__card-body">
+                    <p class="about-store-map__card-line">
+                      <span class="about-store-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" focusable="false">
+                          <path
+                            d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.3 1.2.4 2.5.6 3.8.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.6.6 3.8.1.4 0 .8-.3 1.1l-2.2 2.2Z"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </span>
+                      <a href="tel:+41216340476">021 634 04 76</a>
+                    </p>
+                    <p class="about-store-map__card-line">
+                      <span class="about-store-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" focusable="false">
+                          <circle cx="12" cy="12" r="8.25" stroke="currentColor" stroke-width="1.8" />
+                          <path
+                            d="M12 7.5V12l3 2"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </span>
+                      <span>
+                        Ouvert du lundi au vendredi de 10h à 13h et de 14h à 19h et le samedi de
+                        10h à 19h
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="about-store-location__info">
+              <h2 id="about-store-location-title" class="about-store-location__title">
+                Richard La Literie Crissier
+              </h2>
+              <p class="about-store-location__subtitle">
+                Votre magasin de literie au cœur de Crissier
+              </p>
+
+              <ul class="about-store-location__details">
+                <li>
+                  <span class="about-store-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" focusable="false">
+                      <path
+                        d="M12 21s7-5.2 7-11a7 7 0 1 0-14 0c0 5.8 7 11 7 11Z"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linejoin="round"
+                      />
+                      <circle cx="12" cy="10" r="2.4" stroke="currentColor" stroke-width="1.8" />
+                    </svg>
+                  </span>
+                  <span>Rue des Alpes 2, 1023 Crissier</span>
+                </li>
+                <li>
+                  <span class="about-store-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" focusable="false">
+                      <path
+                        d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.3 1.2.4 2.5.6 3.8.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.6.6 3.8.1.4 0 .8-.3 1.1l-2.2 2.2Z"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </span>
+                  <a href="tel:+41216340476">021 634 04 76</a>
+                </li>
+                <li>
+                  <span class="about-store-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" focusable="false">
+                      <circle cx="12" cy="12" r="8.25" stroke="currentColor" stroke-width="1.8" />
+                      <path
+                        d="M12 7.5V12l3 2"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </span>
+                  <span>
+                    Ouvert du lundi au vendredi de 10h à 13h et de 14h à 19h et le samedi de 10h à
+                    19h
+                  </span>
+                </li>
+              </ul>
+
+              <div class="about-store-location__reviews">
+                <p class="about-store-location__rating">
+                  <span>Les avis de nos clients&nbsp;: 4,8</span>
+                  <span class="about-store-location__stars" aria-hidden="true">★★★★★</span>
+                  <span class="about-store-location__count">(408)</span>
+                </p>
+                <a
+                  class="about-store-location__review-link"
+                  href="https://www.google.com/maps/search/?api=1&amp;query=Richard+La+Literie+Rue+des+Alpes+2+1023+Crissier"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  › À votre tour de laisser un avis
+                </a>
+              </div>
+
+              <a class="btn-green about-store-location__cta" href="/pages/contact.html">
+                Prendre rendez-vous
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slider showroom — images avec marque intégrée -->
+      <section
+        class="about-showroom-slider"
+        aria-roledescription="carousel"
+        aria-label="Showroom Richard La Literie"
+        id="about-showroom-slider"
+        data-showroom-autoplay="true"
+      >
+        <div class="about-showroom-slider__inner layout-wide">
+          <div class="about-showroom-slider__viewport">
+            <div class="about-showroom-slider__track" data-showroom-track>
+              <div class="about-showroom-slider__slide is-active" aria-hidden="false">
+                <img
+                  src="/assets/home/showroom-slide-1.jpg"
+                  alt="Showroom Richard La Literie à Crissier"
+                  width="1024"
+                  height="390"
+                  fetchpriority="high"
+                />
+              </div>
+              <div class="about-showroom-slider__slide" aria-hidden="true">
+                <img
+                  src="/assets/home/hero-slide-bedroom.jpg"
+                  alt="Showroom Richard La Literie — literie et chambres d'exposition"
+                  width="1024"
+                  height="683"
+                  loading="lazy"
+                />
+              </div>
+              <div class="about-showroom-slider__slide" aria-hidden="true">
+                <img
+                  src="/assets/home/hero-slide-wall.jpg"
+                  alt="Showroom Richard La Literie — ambiance chambre"
+                  width="1024"
+                  height="576"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+
+            <div
+              class="about-showroom-slider__pagination"
+              role="tablist"
+              aria-label="Navigation du slider showroom"
+            >
+              <button
+                type="button"
+                class="about-showroom-slider__bullet is-active"
+                data-showroom-index="0"
+                role="tab"
+                aria-label="Slide 1"
+                aria-selected="true"
+              ></button>
+              <button
+                type="button"
+                class="about-showroom-slider__bullet"
+                data-showroom-index="1"
+                role="tab"
+                aria-label="Slide 2"
+                aria-selected="false"
+                tabindex="-1"
+              ></button>
+              <button
+                type="button"
+                class="about-showroom-slider__bullet"
+                data-showroom-index="2"
+                role="tab"
+                aria-label="Slide 3"
+                aria-selected="false"
+                tabindex="-1"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Marques — texte + visuel -->
+      <section class="about-brands-spotlight" aria-labelledby="about-brands-spotlight-title">
+        <div class="about-brands-spotlight__inner layout-wide">
+          <div class="about-brands-spotlight__grid">
+            <div class="about-brands-spotlight__content">
+              <h2 id="about-brands-spotlight-title" class="about-brands-spotlight__title">
+                Chez Richard La Literie à Crissier, retrouvez les plus grandes marques&nbsp;…
+              </h2>
+              <div class="about-brands-spotlight__text">
+                <p>
+                  Richard La Literie a fait le choix de s’entourer de marques reconnues pour leur
+                  exigence, leur qualité de fabrication et leur expertise dans l’univers du sommeil.
+                </p>
+                <p>
+                  Nous privilégions principalement des fabricants suisses, réputés pour leur
+                  précision et leur innovation, tels que Swissflex, Roviva, Hasena, Divina, Tamara-r
+                  et Sleepline. Cette sélection est complétée par Röwa, une référence allemande
+                  incontournable en matière de literie haut de gamme.
+                </p>
+                <p>
+                  Chaque marque est choisie pour son savoir-faire et sa capacité à proposer des
+                  technologies de pointe, des matériaux nobles ou des designs élégants, afin
+                  d’offrir un confort durable et adapté à chacun.
+                </p>
+              </div>
+            </div>
+            <div class="about-brands-spotlight__media">
+              <img
+                src="/assets/home/hero-slide-wall.jpg"
+                alt="Chambre literie marque Roviva"
+                width="1024"
+                height="576"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="about-brands-spotlight__badge">La marque Roviva</span>
+              <img
+                class="about-brands-spotlight__brand-logo"
+                src="/assets/home/brand-roviva-ref.png"
+                alt="Roviva"
+                width="300"
+                height="92"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slider marques (même composant que l’accueil) -->
+      <section class="brands about-brands-slider" aria-label="Les plus grandes marques de literie">
+        <div class="brands__inner layout-wide">
+          <div class="brands__slider-wrap">
+            <button type="button" class="arrow left" aria-label="Marques précédentes">‹</button>
+            <button type="button" class="arrow right" aria-label="Marques suivantes">›</button>
+            <div
+              id="about-brand-row"
+              class="brand-row"
+              data-brand-carousel
+              data-brand-slide-count="9"
+              data-brand-logo="/assets/home/brand-roviva-ref.png"
+              data-brand-href="/pages/brand.html?slug=roviva"
+              aria-roledescription="carousel"
+              aria-label="Les plus grandes marques de literie"
+            ></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA contact — bandeau vert, bouton seul -->
+      <section class="about-contact-cta" aria-label="Contactez-nous">
+        <div class="about-contact-cta__shell layout-wide">
+          <div class="about-contact-cta__band">
+            <a class="about-contact-cta__button" href="/pages/contact.html">Contactez-nous</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="site-footer"></footer>
+    <script type="module" src="/js/app.js"></script>
+  </body>
+</html>

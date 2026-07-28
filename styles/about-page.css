@@ -6,27 +6,9 @@
   background: var(--color-bg);
 }
 
-/* Ancres menu À propos — compenser l'enveloppe fixe */
-.about-page #about-expert,
-.about-page #about-store,
-.about-page #about-premium,
-.about-page #about-products {
-  scroll-margin-top: calc(var(--envelope-offset, var(--envelope-height-desktop)) + 1rem);
-}
-
-.about-page .layout-wide {
-  padding-inline: var(--gutter);
-}
-
-@media (min-width: 768px) {
-  .about-page .layout-wide {
-    padding-inline: var(--gutter-wide);
-  }
-}
-
-/* Espacement titres — uniforme sur toute la page */
+/* Espacement titres — uniforme sur toute la page (serré vers le contenu) */
 .about-page h2 {
-  margin: 0 0 var(--space-8);
+  margin: 0 0 var(--space-5);
 }
 
 /* Exclut les titres des cartes univers — calage identique à l'accueil */
@@ -46,17 +28,49 @@
   text-wrap: pretty;
 }
 
-/* Padding vertical sections */
+/* Padding vertical sections — identique sur toutes les pages À propos */
 .about-founder-story__inner.layout-wide,
+.about-founder-story__inner.layout-content,
+.about-store-location__inner.layout-wide,
+.about-store-location__inner.layout-content,
+.about-showroom-slider__inner.layout-wide,
+.about-showroom-slider__inner.layout-content,
+.about-brands-spotlight__inner.layout-wide,
+.about-brands-spotlight__inner.layout-content,
 .about-split__inner.layout-wide,
-.about-premium__inner.layout-wide {
+.about-split__inner.layout-content,
+.about-premium__inner.layout-wide,
+.about-premium__inner.layout-content,
+.about-reviews__inner.layout-wide,
+.about-reviews__inner.layout-content,
+.about-advice__inner.layout-wide,
+.about-advice__inner.layout-content,
+.about-page .about-univers .univers__inner.layout-wide,
+.about-page .about-univers .univers__inner.layout-content,
+.about-page .store-products-slider__inner.layout-wide {
   padding-block: var(--home-section-padding-y);
 }
 
 @media (min-width: 1024px) {
   .about-founder-story__inner.layout-wide,
+  .about-founder-story__inner.layout-content,
+  .about-store-location__inner.layout-wide,
+  .about-store-location__inner.layout-content,
+  .about-showroom-slider__inner.layout-wide,
+  .about-showroom-slider__inner.layout-content,
+  .about-brands-spotlight__inner.layout-wide,
+  .about-brands-spotlight__inner.layout-content,
   .about-split__inner.layout-wide,
-  .about-premium__inner.layout-wide {
+  .about-split__inner.layout-content,
+  .about-premium__inner.layout-wide,
+  .about-premium__inner.layout-content,
+  .about-reviews__inner.layout-wide,
+  .about-reviews__inner.layout-content,
+  .about-advice__inner.layout-wide,
+  .about-advice__inner.layout-content,
+  .about-page .about-univers .univers__inner.layout-wide,
+  .about-page .about-univers .univers__inner.layout-content,
+  .about-page .store-products-slider__inner.layout-wide {
     padding-block: var(--home-section-padding-y-lg);
   }
 }
@@ -67,13 +81,35 @@
 }
 
 .about-hero__inner {
-  padding-block: var(--space-10) var(--space-8);
+  /* Bas réduit : l’air sous le H1 vient surtout du padding-top de la 1ʳᵉ section */
+  padding-block: var(--space-10) var(--space-4);
   text-align: center;
+}
+
+.about-page .about-hero .breadcrumb {
+  justify-content: flex-start;
+  margin-bottom: var(--space-6);
 }
 
 @media (min-width: 1024px) {
   .about-hero__inner {
-    padding-block: var(--space-12) var(--space-10);
+    padding-block: var(--space-12) var(--space-5);
+  }
+}
+
+/*
+ * Première section après le hero — padding-top réduit sur toutes les pages À propos
+ * pour rapprocher le contenu du titre de page (H1).
+ */
+.about-page .about-hero + section > [class*="__inner"].layout-wide,
+.about-page .about-hero + section > [class*="__inner"].layout-content {
+  padding-top: var(--space-6);
+}
+
+@media (min-width: 1024px) {
+  .about-page .about-hero + section > [class*="__inner"].layout-wide,
+  .about-page .about-hero + section > [class*="__inner"].layout-content {
+    padding-top: var(--space-8);
   }
 }
 
@@ -94,8 +130,11 @@
 }
 
 .rd-page.about-page h2.about-story__title,
+.rd-page.about-page h2.about-store-location__title,
+.rd-page.about-page h2.about-brands-spotlight__title,
 .rd-page.about-page h2.about-split__title,
-.rd-page.about-page h2.about-premium__title {
+.rd-page.about-page h2.about-premium__title,
+.rd-page.about-page h2.about-advice__title {
   font-weight: 700;
 }
 
@@ -117,7 +156,8 @@
 
 @media (min-width: 1024px) {
   .about-founder-story__grid {
-    grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
+    /* Colonne photo + texte élargie (ex-24rem) */
+    grid-template-columns: minmax(0, 36rem) minmax(0, 1fr);
     gap: var(--space-10);
   }
 }
@@ -131,19 +171,24 @@
 
 .about-founder__media {
   width: 100%;
+  overflow: hidden;
 }
 
 .about-founder__media img {
   display: block;
-  width: 100%;
+  /* Légèrement plus large + décalage pour centrer le sujet (à droite dans le fichier) */
+  width: 122%;
   max-width: none;
   height: auto;
+  margin-left: -14%;
   object-fit: cover;
   object-position: center top;
 }
 
 .about-founder__body {
   padding: var(--space-6);
+  /* Texte sous la photo centré */
+  text-align: center;
 }
 
 .about-founder__identity {
@@ -158,6 +203,8 @@
 .about-founder__role {
   font-size: var(--font-size-body-sm);
   font-weight: 600;
+  /* Même vert que l’élément courant du fil d’Ariane */
+  color: var(--color-accent-strong);
 }
 
 .about-founder__name {
@@ -178,6 +225,10 @@
   line-height: var(--line-height-relaxed);
   color: var(--color-text-soft);
   font-style: italic;
+}
+
+.about-founder__quote p + p {
+  margin-top: var(--space-3);
   text-wrap: pretty;
 }
 
@@ -211,6 +262,498 @@
   margin-bottom: 0;
 }
 
+/* --- Magasin : carte + coordonnées --- */
+.about-store-location {
+  background: var(--color-bg);
+}
+
+.about-store-location__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .about-store-location__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-10);
+  }
+}
+
+.about-store-map {
+  position: relative;
+  width: 100%;
+  min-height: 18rem;
+  overflow: hidden;
+  background: var(--color-surface-alt);
+  /* Contient le z-index Leaflet / cartouche pour ne pas passer sous le header sticky */
+  isolation: isolate;
+  z-index: 0;
+}
+
+@media (min-width: 1024px) {
+  .about-store-map {
+    min-height: 22rem;
+  }
+}
+
+.about-store-map__canvas {
+  width: 100%;
+  height: 18rem;
+  z-index: 0;
+}
+
+@media (min-width: 1024px) {
+  .about-store-map__canvas {
+    height: 22rem;
+  }
+}
+
+/* Marqueur Leaflet personnalisé */
+.about-store-map__marker {
+  background: transparent;
+  border: 0;
+}
+
+.about-store-map__pin {
+  display: block;
+  color: #8b2f2f;
+  line-height: 0;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+}
+
+/* Carte info flottante sur la carte (au-dessus des panes Leaflet, contenu par isolation) */
+.about-store-map__card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: min(22rem, calc(100% - 1.5rem));
+  padding: 0.65rem 0.85rem;
+  background: #fff;
+  box-shadow: 0 4px 18px rgba(8, 43, 78, 0.18);
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+}
+
+.about-store-map__photo {
+  flex-shrink: 0;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.about-store-map__card-body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.about-store-map__card-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin: 0;
+  font-size: 0.6875rem;
+  line-height: 1.35;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.about-store-map__card-line a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.about-store-map__card-line a:hover {
+  text-decoration: underline;
+}
+
+.about-store-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.1rem;
+  color: #8b2f2f;
+}
+
+.about-store-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.about-store-location__info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.about-store-location__title {
+  margin: 0;
+  font-family: var(--font-family-base);
+  font-size: clamp(1.25rem, 2.2vw, 1.625rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  text-wrap: pretty;
+}
+
+.about-page h2.about-store-location__title {
+  margin: 0;
+}
+
+.about-store-location__subtitle {
+  margin: 0;
+  font-family: var(--font-family-base);
+  font-size: clamp(0.9375rem, 1.6vw, 1.125rem);
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  text-wrap: pretty;
+}
+
+.about-store-location__details {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.about-store-location__details li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin: 0;
+  font-size: var(--font-size-body-sm);
+  line-height: 1.45;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.about-store-location__details .about-store-icon {
+  width: 1.125rem;
+  height: 1.125rem;
+  margin-top: 0.15rem;
+}
+
+.about-store-location__details a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.about-store-location__details a:hover {
+  text-decoration: underline;
+}
+
+.about-store-location__reviews {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+
+.about-store-location__rating {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.55rem;
+  margin: 0;
+  font-size: var(--font-size-body-sm);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.about-store-location__stars {
+  color: #8b2f2f;
+  letter-spacing: 0.05em;
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.about-store-location__count {
+  font-weight: 500;
+  color: var(--color-text-soft);
+}
+
+.about-store-location__review-link {
+  font-size: var(--font-size-body-sm);
+  font-weight: 700;
+  color: #8b2f2f;
+  text-decoration: none;
+}
+
+.about-store-location__review-link:hover {
+  text-decoration: underline;
+}
+
+.about-store-location__cta {
+  margin-top: var(--space-2);
+}
+
+/* --- Slider showroom (dans le container layout-wide) --- */
+.about-showroom-slider {
+  margin: 0;
+  background: var(--color-bg);
+}
+
+.about-showroom-slider__viewport {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 21 / 8;
+  min-height: 12rem;
+  max-height: 26rem;
+  background: #3a3a3a;
+}
+
+@media (min-width: 1024px) {
+  .about-showroom-slider__viewport {
+    min-height: 16rem;
+    max-height: 30rem;
+  }
+}
+
+.about-showroom-slider__track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.55s ease;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-showroom-slider__track {
+    transition: none;
+  }
+}
+
+.about-showroom-slider__slide {
+  position: relative;
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+}
+
+.about-showroom-slider__slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Puces seules — la marque « Richard La Literie » est dans l’image */
+.about-showroom-slider__pagination {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(0.75rem, 2.5vw, 1.5rem);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transform: translateX(-50%);
+}
+
+.about-showroom-slider__bullet {
+  width: 0.625rem;
+  height: 0.625rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: #fff;
+  cursor: pointer;
+}
+
+.about-showroom-slider__bullet.is-active {
+  background: var(--color-accent-strong);
+}
+
+.about-showroom-slider__bullet:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* --- Spotlight marques (texte + visuel) --- */
+.about-brands-spotlight {
+  background: var(--color-bg);
+}
+
+.about-brands-spotlight__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+  .about-brands-spotlight__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: stretch;
+  }
+}
+
+.about-brands-spotlight__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-5);
+  padding: var(--space-8) var(--space-6);
+  background: #f2f2f0;
+}
+
+@media (min-width: 1024px) {
+  .about-brands-spotlight__content {
+    padding: var(--space-10) var(--space-8);
+  }
+}
+
+.about-brands-spotlight__title {
+  margin: 0;
+  font-family: var(--font-family-base);
+  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  text-wrap: pretty;
+}
+
+.about-page h2.about-brands-spotlight__title {
+  margin: 0;
+}
+
+.about-brands-spotlight__text p {
+  margin: 0 0 var(--space-4);
+  font-size: var(--font-size-body-md);
+  line-height: 1.55;
+  color: var(--color-text-soft);
+  text-wrap: pretty;
+}
+
+.about-brands-spotlight__text p:last-child {
+  margin-bottom: 0;
+}
+
+.about-brands-spotlight__media {
+  position: relative;
+  min-height: 16rem;
+  background: var(--color-surface-alt);
+}
+
+@media (min-width: 1024px) {
+  .about-brands-spotlight__media {
+    min-height: 0;
+  }
+}
+
+.about-brands-spotlight__media > img:first-of-type {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 16rem;
+  object-fit: cover;
+  object-position: center;
+}
+
+@media (min-width: 1024px) {
+  .about-brands-spotlight__media > img:first-of-type {
+    position: absolute;
+    inset: 0;
+    min-height: 0;
+  }
+}
+
+.about-brands-spotlight__badge {
+  position: absolute;
+  top: 1.25rem;
+  left: 0;
+  z-index: 1;
+  padding: 0.55rem 0.9rem;
+  /* Fond blanc légèrement transparent, collé au bord gauche de l’image */
+  background: rgba(255, 255, 255, 0.82);
+  font-family: var(--font-family-base);
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+.about-brands-spotlight__brand-logo {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 1;
+  width: auto;
+  height: 2.75rem;
+  max-width: 42%;
+  object-fit: contain;
+}
+
+/* Slider marques + CTA contact (page expert) */
+.about-page .about-brands-slider.brands {
+  background: var(--color-bg);
+}
+
+.about-page .about-brands-slider .brands__inner.layout-wide {
+  padding-block: var(--home-section-padding-y);
+}
+
+@media (min-width: 1024px) {
+  .about-page .about-brands-slider .brands__inner.layout-wide {
+    padding-block: var(--home-section-padding-y-lg);
+  }
+}
+
+.about-brands-slider__cta {
+  display: flex;
+  justify-content: center;
+  /* Plus d’air entre le carousel et le bouton */
+  margin-top: var(--space-12);
+}
+
+/* Bouton aligné sur le CTA du hero slider homepage */
+.about-brands-slider__contact {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 1.125rem;
+  background: #062f52;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 2px;
+  text-transform: uppercase;
+  font-family: var(--font-family-base);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.01875rem;
+  line-height: 1.2;
+}
+
+.about-brands-slider__contact:hover {
+  background: var(--color-primary-dark);
+  color: #fff;
+  text-decoration: none;
+}
+
 /* --- Split image + texte --- */
 .about-split {
   background: var(--color-bg);
@@ -218,6 +761,11 @@
 
 .about-split + .about-split {
   background: var(--color-surface);
+}
+
+/* Fond blanc forcé (écrase l’alternance surface des blocs consécutifs) */
+.about-split.about-split--bg-white {
+  background: #fff;
 }
 
 .about-split__grid {
@@ -309,10 +857,10 @@
 }
 
 .about-split__pullquote {
-  margin: var(--space-6) 0 0;
-  padding: var(--space-4) var(--space-5);
-  border-left: 3px solid var(--color-accent-strong);
-  background: var(--color-surface-muted);
+  margin: var(--space-4) 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
 }
 
 .about-split__pullquote p {
@@ -325,24 +873,19 @@
 
 /* --- Services premium --- */
 .about-premium {
-  background: var(--color-bg);
+  background: transparent;
 }
 
 .about-premium__boxed {
-  padding: var(--space-8) var(--space-6);
-  border: 1px solid var(--color-border-subtle);
-  background: var(--color-surface);
+  padding: 0;
+  border: none;
+  background: transparent;
   text-align: center;
 }
 
-@media (min-width: 768px) {
-  .about-premium__boxed {
-    padding: var(--space-10) var(--space-8);
-  }
-}
-
+/* Plus d’air entre l’intro et la grille d’icônes */
 .about-premium__header {
-  margin: 0 auto var(--space-12);
+  margin: 0 auto var(--space-16);
 }
 
 .about-premium__title {
@@ -370,7 +913,8 @@
 .about-premium__grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-8);
+  column-gap: var(--space-10);
+  row-gap: var(--space-16);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -385,6 +929,7 @@
 @media (min-width: 1024px) {
   .about-premium__grid {
     grid-template-columns: repeat(6, minmax(0, 1fr));
+    row-gap: 4.5rem;
   }
 
   .about-premium-card:nth-child(1) {
@@ -414,42 +959,32 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 9.5rem;
-  padding: var(--space-10) var(--space-5) var(--space-6);
+  min-height: 10.5rem;
+  padding: var(--space-12) var(--space-5) var(--space-6);
   border: 1px solid var(--color-primary-dark);
   background: var(--color-bg);
 }
 
+/* Pictogramme posé sur le bord — fond blanc sans cadre */
 .about-premium-card__icon {
   position: absolute;
-  top: -1.25rem;
+  top: -1.75rem;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 4.25rem;
+  height: 4.25rem;
   padding: var(--space-2);
   background: var(--color-bg);
-  border: 1px solid var(--color-primary-dark);
-  border-radius: var(--radius-xs);
+  border: none;
 }
 
 .about-premium-card__icon img {
-  width: 2rem;
-  height: 2rem;
+  width: 3.25rem;
+  height: 3.25rem;
   object-fit: contain;
-}
-
-.about-premium-card__icon--badge {
-  font-size: 1.125rem;
-  font-weight: 800;
-  color: var(--color-accent-strong);
-}
-
-.about-premium-card__badge {
-  line-height: 1;
 }
 
 .about-premium-card__text {
@@ -462,23 +997,386 @@
   text-wrap: pretty;
 }
 
-/* --- Univers literie (reprise home) --- */
-.about-page .about-univers {
+/* --- Témoignages Google (placeholder Trustindex) --- */
+.about-reviews {
   background: var(--color-surface);
   margin: 0;
 }
 
-.about-page .about-univers .univers__inner.layout-wide {
-  padding-bottom: var(--home-section-padding-y);
+.about-reviews__header {
+  margin: 0 0 var(--space-5);
+  text-align: center;
 }
 
-@media (min-width: 1024px) {
-  .about-page .about-univers .univers__inner.layout-wide {
-    padding-bottom: var(--home-section-padding-y-lg);
+.about-page h2.about-reviews__title {
+  margin: 0;
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-display-md);
+  font-weight: 700;
+  line-height: var(--line-height-tight);
+  color: var(--color-text);
+  text-wrap: pretty;
+}
+
+.about-reviews__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+}
+
+@media (min-width: 768px) {
+  .about-reviews__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-/* Réinitialise l'espacement h2 global de la page À propos */
+@media (min-width: 1200px) {
+  .about-reviews__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.about-review-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-subtle);
+}
+
+.about-review-card__top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.about-review-card__avatar {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--color-surface-alt);
+  color: var(--color-primary-dark);
+  font-size: var(--font-size-body-sm);
+  font-weight: 700;
+}
+
+.about-review-card__meta {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.about-review-card__author {
+  margin: 0;
+  font-size: var(--font-size-body-sm);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.about-review-card__source {
+  margin: 0.125rem 0 0;
+  font-size: var(--font-size-caption);
+  color: var(--color-text-soft);
+}
+
+.about-review-card__google {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid #dadce0;
+  color: #4285f4;
+  font-family: var(--font-family-sans);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.about-review-card__stars {
+  margin: 0;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  color: #fbbc04;
+  line-height: 1;
+}
+
+.about-review-card__text {
+  margin: 0;
+  font-size: var(--font-size-body-sm);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-soft);
+  text-wrap: pretty;
+}
+
+/* --- Richard La Literie c'est aussi (triptyque) --- */
+.about-page .about-univers {
+  background: var(--color-bg);
+  margin: 0;
+}
+
+/* Titre centré — même rythme vertical que les autres h2 de section */
+.about-page .about-univers .univers__header {
+  margin: 0 0 var(--space-5);
+  text-align: center;
+}
+
 .about-page .about-univers h2 {
-  margin: 0.4375rem 0 0;
+  margin: 0;
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-display-md);
+  font-weight: 700;
+  line-height: var(--line-height-tight);
+  color: var(--color-text);
+  text-wrap: pretty;
+}
+
+/* Trois colonnes sur grand écran (conseils / produits / services) */
+@media (min-width: 1024px) {
+  .about-page .about-univers .univers__cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Plus d’espace avant le lien Découvrir sur le triptyque */
+.about-page .about-univers .ucard__text {
+  margin-bottom: 0;
+}
+
+.about-page .about-univers .ucard__link {
+  margin-top: var(--space-8);
+}
+
+/*
+ * Slider catégories produits (magasin Crissier) —
+ * titre centré + track horizontal + flèches circulaires (maquette).
+ */
+.about-page .store-products-slider {
+  background: #fff;
+  margin: 0;
+}
+
+.about-page .store-products-slider__title {
+  margin: 0 0 var(--space-5);
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-display-md);
+  font-weight: 700;
+  line-height: var(--line-height-tight);
+  color: var(--color-text);
+  text-align: center;
+  text-transform: none;
+  text-wrap: pretty;
+}
+
+.about-page .store-products-slider__wrap {
+  position: relative;
+  padding-inline: 3rem;
+  overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+  .about-page .store-products-slider__wrap {
+    padding-inline: 4.5rem;
+  }
+}
+
+.about-page .store-products-slider__track {
+  display: flex;
+  align-items: stretch;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.about-page .store-products-slider__track::-webkit-scrollbar {
+  display: none;
+}
+
+.about-page .store-products-slider__slide {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: center;
+  /* Espace image → libellé resserré */
+  gap: var(--space-1);
+  width: clamp(8.5rem, 42vw, 11rem);
+  scroll-snap-align: start;
+  text-decoration: none;
+  color: inherit;
+  box-sizing: border-box;
+}
+
+@media (min-width: 1024px) {
+  .about-page .store-products-slider__slide {
+    /* 4 gaps de 1.5rem entre 5 slides visibles */
+    flex: 0 0 calc((100% - 6rem) / 5);
+    width: calc((100% - 6rem) / 5);
+  }
+}
+
+.about-page .store-products-slider__media {
+  display: block;
+  width: 100%;
+  /* Ratio fixe : toutes les vignettes ont la même hauteur visuelle */
+  aspect-ratio: 4 / 3;
+  background: var(--color-surface-alt, #f2f2f0);
+  overflow: hidden;
+}
+
+.about-page .store-products-slider__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.about-page .store-products-slider__label {
+  font-family: var(--font-family-display);
+  font-size: 1.0625rem;
+  font-weight: 800;
+  line-height: var(--line-height-snug);
+  color: var(--color-text);
+  text-transform: lowercase;
+}
+
+.about-page .store-products-slider__slide:hover .store-products-slider__label {
+  color: var(--color-primary);
+}
+
+/* --- Conseils personnalisés sur mesure (blocs éditoriaux) --- */
+.about-advice {
+  background: var(--color-bg);
+}
+
+.about-advice--alt {
+  background: var(--color-surface);
+}
+
+.about-advice--closing {
+  background: var(--color-bg);
+}
+
+.about-advice__boxed {
+  max-width: 48rem;
+}
+
+.about-advice__title {
+  margin: 0 0 var(--space-4);
+  font-family: var(--font-family-base);
+  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  text-wrap: pretty;
+}
+
+.about-page h2.about-advice__title {
+  margin: 0 0 var(--space-4);
+}
+
+.about-advice__subtitle {
+  margin: 0 0 var(--space-5);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-body-md);
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--color-text);
+  text-wrap: pretty;
+}
+
+.about-advice__text p {
+  margin: 0 0 var(--space-4);
+  max-width: none;
+  font-size: var(--font-size-body-md);
+  line-height: 1.55;
+  color: var(--color-text-soft);
+  text-wrap: pretty;
+}
+
+.about-advice__text p:last-child {
+  margin-bottom: 0;
+}
+
+.about-advice__list {
+  margin: 0 0 var(--space-4);
+  padding-left: 1.25rem;
+  color: var(--color-text-soft);
+  font-size: var(--font-size-body-md);
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.about-advice__list li + li {
+  margin-top: var(--space-2);
+}
+
+/*
+ * Bloc CTA contact (pages À propos) —
+ * même containment que la fiche produit (.product-page-shell + .product-advice) :
+ * bandeau vert dans le container, espace après avant le footer.
+ * Pas de padding-top : l’espace amont vient du padding-bottom de la section précédente.
+ */
+.about-page .about-contact-cta {
+  margin: 0;
+  background: transparent;
+}
+
+.about-page .about-contact-cta__shell.layout-wide {
+  padding-top: 0;
+  padding-bottom: var(--space-10);
+}
+
+@media (min-width: 1024px) {
+  .about-page .about-contact-cta__shell.layout-wide {
+    padding-bottom: var(--space-12);
+  }
+}
+
+.about-page .about-contact-cta__band {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: var(--space-8) var(--space-8) var(--space-10);
+  background: linear-gradient(90deg, #dfe9df, #dfe9df);
+  text-align: center;
+}
+
+.about-page .about-contact-cta__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: min(100%, 18.75rem);
+  margin: 0;
+  padding: 0.5625rem var(--space-4);
+  border: 1px solid var(--color-accent-strong);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-accent-strong);
+  text-decoration: none;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-label-caps);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.about-page .about-contact-cta__button:hover {
+  background: rgba(40, 125, 99, 0.08);
+  color: var(--color-accent-strong);
+  text-decoration: none;
 }

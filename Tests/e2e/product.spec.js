@@ -19,7 +19,7 @@ test.describe("Product detail page", () => {
     await expect(homeLink).toHaveCSS("color", "rgb(8, 43, 78)");
     await expect(homeLink).toHaveCSS("font-weight", "400");
     await expect(currentCrumb).toHaveCSS("color", "rgb(40, 125, 99)");
-    await expect(currentCrumb).toHaveCSS("font-weight", "700");
+    await expect(currentCrumb).toHaveCSS("font-weight", "400");
     await expect(page.locator(".product-page-breadcrumb")).toHaveCSS("font-size", "16px");
 
     await expect(page.locator(".single-product__layout")).toBeVisible();
@@ -343,17 +343,20 @@ test.describe("Product detail page", () => {
     await expect(page.locator(".product-advice__lead")).toHaveCSS("font-size", "16px");
     await expect(page.locator("h3.product-advice__title")).toHaveText("Besoin d'un conseil ?");
     await expect(page.locator("h3.product-advice__title")).toHaveCSS("font-weight", "800");
-    // Pictos maquette product/index.html + textes alignés home (magasin / tel)
-    await expect(page.locator(".product-advice__icon").nth(0)).toHaveText("☎");
-    await expect(page.locator(".product-advice__icon").nth(1)).toHaveText("✉");
-    await expect(page.locator(".product-advice__icon").nth(2)).toHaveText("⌂");
+    // Pictogrammes PNG brandés (appel / enveloppe / magasin)
+    const adviceIcons = page.locator(".product-advice__icon img");
+    await expect(adviceIcons.nth(0)).toHaveAttribute("src", "/assets/icons/appel.png");
+    await expect(adviceIcons.nth(1)).toHaveAttribute("src", "/assets/icons/enveloppe.png");
+    await expect(adviceIcons.nth(2)).toHaveAttribute("src", "/assets/icons/magasin.png");
     const iconMetrics = await page.locator(".product-advice__icon").evaluateAll((icons) =>
       icons.map((icon) => {
         const style = getComputedStyle(icon);
+        const img = icon.querySelector("img");
         return {
           fontSize: style.fontSize,
           width: style.width,
-          height: style.height
+          height: style.height,
+          imgWidth: img ? getComputedStyle(img).width : null
         };
       })
     );
@@ -362,6 +365,7 @@ test.describe("Product detail page", () => {
     expect(iconMetrics.every((m) => m.fontSize === iconMetrics[0].fontSize)).toBe(true);
     expect(iconMetrics.every((m) => m.width === iconMetrics[0].width)).toBe(true);
     expect(iconMetrics.every((m) => m.height === iconMetrics[0].height)).toBe(true);
+    expect(iconMetrics.every((m) => m.imgWidth === "40px")).toBe(true);
     await expect(page.locator(".product-advice__card-title").nth(0)).toHaveText("Appelez-nous");
     await expect(page.locator(".product-advice__card-text").nth(0)).toContainText("021 634 04 76");
     await expect(page.locator(".product-advice__card-title").nth(1)).toHaveText("Écrivez-nous");

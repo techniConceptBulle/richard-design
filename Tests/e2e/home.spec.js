@@ -47,7 +47,8 @@ test.describe("Home page", () => {
     const mainNav = page.getByRole("navigation", { name: "Navigation catalogue" });
     await expect(mainNav).toBeVisible();
     await expect(mainNav.getByRole("link", { name: "Matelas", exact: true })).toBeVisible();
-    await expect(mainNav.getByRole("link", { name: "A propos", exact: true })).toBeVisible();
+    await expect(mainNav.locator("span.menu-item__parent")).toHaveText("A propos");
+    await expect(mainNav.getByRole("link", { name: "A propos", exact: true })).toHaveCount(0);
     await expect(mainNav.getByRole("link", { name: "Offre spéciales %", exact: true })).toBeVisible();
     await expect(mainNav.locator(".menu-inner > li")).toHaveCount(8);
 
@@ -133,17 +134,33 @@ test.describe("Home page", () => {
     expect(navHeight).toBeGreaterThan(40);
   });
 
-  test("shows about submenu items and uses green background for active nav page", async ({ page }) => {
+  test("keeps catalogue nav labels on a single line including promo", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
-    await page.goto("/pages/about.html");
+    await page.goto("/");
+
+    const promo = page.locator(".nav-primary .menu-item-promo .menu-link");
+    await expect(promo).toHaveCSS("white-space", "nowrap");
+
+    const lineCount = await promo.evaluate((el) => {
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      return range.getClientRects().length;
+    });
+    expect(lineCount).toBe(1);
+  });
+
+  test("shows about submenu pages and uses green background for active nav page", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto("/pages/expert-literie-crissier.html");
 
     const mainNav = page.getByRole("navigation", { name: "Navigation catalogue" });
     const aboutItem = mainNav.locator(".menu-item--has-children");
     await expect(aboutItem).toBeVisible();
-    const aboutLink = aboutItem.getByRole("link", { name: "A propos", exact: true });
-    await expect(aboutLink).toHaveClass(/menu-link--active/);
-    await expect(aboutLink).toHaveCSS("background-color", "rgb(39, 116, 93)");
-    await expect(aboutLink).toHaveCSS("color", "rgb(255, 255, 255)");
+    const aboutLabel = aboutItem.locator("span.menu-item__parent");
+    await expect(aboutLabel).toHaveText("A propos");
+    await expect(aboutLabel).toHaveClass(/menu-link--active/);
+    await expect(aboutLabel).toHaveCSS("background-color", "rgb(39, 116, 93)");
+    await expect(aboutLabel).toHaveCSS("color", "rgb(255, 255, 255)");
 
     // Desktop : sous-menu visible au survol
     await aboutItem.hover();
@@ -152,19 +169,20 @@ test.describe("Home page", () => {
       exact: true
     });
     await expect(expertLink).toBeVisible();
+    await expect(expertLink).toHaveAttribute("href", "/pages/expert-literie-crissier.html");
     await expect(
-      aboutItem.getByRole("link", { name: "Votre magasin à Crissier", exact: true })
-    ).toBeVisible();
+      aboutItem.getByRole("link", { name: "Votre magasin de matelas à Crissier", exact: true })
+    ).toHaveAttribute("href", "/pages/magasin-crissier.html");
     await expect(
       aboutItem.getByRole("link", { name: "Nos services premium", exact: true })
-    ).toBeVisible();
+    ).toHaveAttribute("href", "/pages/services-premium.html");
     await expect(
-      aboutItem.getByRole("link", { name: "Nos produits de literie", exact: true })
-    ).toBeVisible();
+      aboutItem.getByRole("link", { name: "Nos conseils personnalisés sur mesure", exact: true })
+    ).toHaveAttribute("href", "/pages/produits-literie.html");
 
     await aboutItem.getByRole("link", { name: "Nos services premium", exact: true }).click();
-    await expect(page).toHaveURL(/#about-premium/);
-    await expect(page.locator("#about-premium")).toBeVisible();
+    await expect(page).toHaveURL(/\/pages\/services-premium\.html$/);
+    await expect(page.getByRole("heading", { name: "Nos services premium", level: 1 })).toBeVisible();
   });
 
   test("positions about submenu below the primary nav bar", async ({ page }) => {
@@ -354,7 +372,7 @@ test.describe("Home page", () => {
     });
     expect(sectionPadding.top).toBeCloseTo(80, 0);
     expect(sectionPadding.bottom).toBeCloseTo(80, 0);
-    expect(sectionPadding.left).toBeCloseTo(38, 0);
+    expect(sectionPadding.left).toBeCloseTo(32, 0);
 
     await expect(matelasCard.locator(".ucard__title")).toHaveCSS("font-size", "18px");
     await expect(matelasCard.locator(".ucard__text")).toHaveCSS("font-size", "16px");
@@ -399,19 +417,20 @@ test.describe("Home page", () => {
     await expect(footer.locator(".footer-global__title").first()).toHaveCSS("font-weight", "700");
   });
 
-  test("uses maquette unicode service icons and enlarged labels", async ({ page }) => {
+  test("uses branded PNG service icons and enlarged labels", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto("/");
 
-    // Section services — ordre + pictos capture maquette (☾ ▣ ♙ ♢)
+    // Section services — ordre + pictogrammes PNG brandés
     const services = page.locator(".services .service");
     await expect(services).toHaveCount(4);
 
-    const serviceIcons = page.locator(".services .service .sico");
-    await expect(serviceIcons.nth(0)).toHaveText("☾");
-    await expect(serviceIcons.nth(1)).toHaveText("▣");
-    await expect(serviceIcons.nth(2)).toHaveText("♙");
-    await expect(serviceIcons.nth(3)).toHaveText("♢");
+    const serviceIcons = page.locator(".services .service .sico img");
+    await expect(serviceIcons).toHaveCount(4);
+    await expect(serviceIcons.nth(0)).toHaveAttribute("src", "/assets/icons/essai-a-domicile.png");
+    await expect(serviceIcons.nth(1)).toHaveAttribute("src", "/assets/icons/livraison-rapide.png");
+    await expect(serviceIcons.nth(2)).toHaveAttribute("src", "/assets/icons/conseils.png");
+    await expect(serviceIcons.nth(3)).toHaveAttribute("src", "/assets/icons/garantie-satisfaction.png");
 
     await expect(services.nth(0)).toContainText(/Essai à domicile/i);
     await expect(services.nth(1)).toContainText(/Livraison, installation/i);
@@ -421,23 +440,86 @@ test.describe("Home page", () => {
     const labelSize = await services.nth(0).evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
     expect(labelSize).toBeCloseTo(14, 0);
 
-    const iconSize = await serviceIcons.nth(0).evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
+    const iconSize = await serviceIcons.nth(0).evaluate((el) => el.getBoundingClientRect().width);
     expect(iconSize).toBeCloseTo(40, 0);
+
+    // Grille services — 4 blocs répartis sur toute la largeur du shell
+    const gridMetrics = await page.locator(".services__grid").evaluate((el) => {
+      const style = getComputedStyle(el);
+      const rect = el.getBoundingClientRect();
+      const items = [...el.querySelectorAll(".service")].map((item) =>
+        item.getBoundingClientRect()
+      );
+      const parent = el.closest(".services__inner");
+      const parentStyle = parent ? getComputedStyle(parent) : null;
+      const parentRect = parent?.getBoundingClientRect();
+      return {
+        justify: style.justifyContent,
+        width: rect.width,
+        parentContentWidth: parentRect
+          ? parentRect.width -
+            parseFloat(parentStyle.paddingLeft) -
+            parseFloat(parentStyle.paddingRight)
+          : 0,
+        firstLeft: Math.round(items[0]?.left ?? 0),
+        lastRight: Math.round(items[items.length - 1]?.right ?? 0),
+        shellLeft: Math.round(rect.left),
+        shellRight: Math.round(rect.right),
+      };
+    });
+    expect(gridMetrics.justify).toBe("space-between");
+    expect(gridMetrics.width).toBeCloseTo(gridMetrics.parentContentWidth, 0);
+    expect(gridMetrics.firstLeft).toBeCloseTo(gridMetrics.shellLeft, 0);
+    expect(gridMetrics.lastRight).toBeCloseTo(gridMetrics.shellRight, 0);
   });
 
-  test("uses larger maquette unicode icons for history facts", async ({ page }) => {
+  test("shows founder history image entirely without crop", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto("/");
 
-    // Pictos homepage/index.html (☆ ♙ ⌂ ⌖), agrandis
-    const factIcons = page.locator(".history__fact-icon");
-    await expect(factIcons).toHaveCount(4);
-    await expect(factIcons.nth(0)).toHaveText("☆");
-    await expect(factIcons.nth(1)).toHaveText("♙");
-    await expect(factIcons.nth(2)).toHaveText("⌂");
-    await expect(factIcons.nth(3)).toHaveText("⌖");
+    const metrics = await page.locator(".history__media img").evaluate((img) => {
+      const style = getComputedStyle(img);
+      const rect = img.getBoundingClientRect();
+      const naturalRatio = img.naturalWidth / img.naturalHeight;
+      const displayRatio = rect.width / rect.height;
+      return {
+        objectFit: style.objectFit,
+        naturalRatio,
+        displayRatio,
+      };
+    });
 
-    const iconSize = await factIcons.nth(0).evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
-    expect(iconSize).toBeCloseTo(32, 0);
+    expect(metrics.objectFit).toBe("contain");
+    expect(metrics.displayRatio).toBeCloseTo(metrics.naturalRatio, 1);
+  });
+
+  test("uses branded PNG icons for history facts", async ({ page }) => {
+    await page.goto("/");
+
+    // Quatre pictogrammes PNG brandés (faits clés)
+    const factIcons = page.locator(".history__fact-icon img");
+    await expect(factIcons).toHaveCount(4);
+    await expect(factIcons.nth(0)).toHaveAttribute("src", "/assets/icons/expertise.png");
+    await expect(factIcons.nth(1)).toHaveAttribute(
+      "src",
+      "/assets/icons/entreprise-familiale.png"
+    );
+    await expect(factIcons.nth(2)).toHaveAttribute("src", "/assets/icons/magasin.png");
+    await expect(factIcons.nth(3)).toHaveAttribute(
+      "src",
+      "/assets/icons/broche-de-localisation.png"
+    );
+
+    const iconSize = await factIcons.nth(0).evaluate((el) => el.getBoundingClientRect().width);
+    expect(iconSize).toBeCloseTo(36, 0);
+  });
+
+  test("uses magasin pictogram on home store card", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.locator(".store-card .icon-box img")).toHaveAttribute(
+      "src",
+      "/assets/icons/magasin.png"
+    );
   });
 
   test("section h2 titles share history typography", async ({ page }) => {
@@ -494,6 +576,23 @@ test.describe("Home page", () => {
     await expect(section.locator(".store-card")).toContainText("Rue des Alpes 2");
     await expect(section.locator(".store-card a[href*='google.com/maps']")).toBeVisible();
     await expect(section.locator(".store-img")).toHaveAttribute("src", /storefront/);
+
+    // Adresse à gauche ; téléphone + itinéraire à droite
+    const storeCardLayout = await section.locator(".store-card").evaluate((card) => {
+      const actions = card.querySelector(".store-card__actions");
+      const address = card.querySelector(".store-card__address");
+      if (!actions || !address) return null;
+      const a = actions.getBoundingClientRect();
+      const b = address.getBoundingClientRect();
+      return {
+        actionsLeft: Math.round(a.left),
+        addressLeft: Math.round(b.left),
+        addressAlign: getComputedStyle(address).textAlign,
+      };
+    });
+    expect(storeCardLayout).not.toBeNull();
+    expect(storeCardLayout.addressLeft).toBeLessThan(storeCardLayout.actionsLeft);
+    expect(storeCardLayout.addressAlign).toBe("left");
 
     // 3 blocs égaux (~⅓) ; image collée haut/bas ; carte inset ; padding col. 1 & 3
     const layout = await page.evaluate(() => {
@@ -594,31 +693,29 @@ test.describe("Home page", () => {
     await expect(slider).toHaveAttribute("data-hero-active-index", "0");
   });
 
-  test("brand carousel shows Roviva slides and scrolls on navigation", async ({ page }) => {
+  test("brand logos grid shows four equal featured brands without slider", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto("/");
 
     const brandRow = page.locator("#home-brand-row");
     const slides = brandRow.locator(".brand-row__slide");
-    await expect(slides).toHaveCount(9);
-    await expect(brandRow.locator(".brand-row__logo").first()).toHaveAttribute("src", /brand-roviva-ref/);
+    await expect(slides).toHaveCount(4);
+    await expect(page.locator(".brands--static .brands__slider-wrap")).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Marques suivantes" })).toHaveCount(0);
 
-    const logoHeight = await brandRow.locator(".brand-row__logo").first().evaluate((el) => {
-      const style = getComputedStyle(el);
-      return parseFloat(style.maxHeight);
-    });
-    expect(logoHeight).toBeGreaterThanOrEqual(70);
+    await expect(brandRow.locator('a[href*="slug=roviva"]')).toBeVisible();
+    await expect(brandRow.locator('a[href*="slug=selecta"]')).toBeVisible();
+    await expect(brandRow.locator('a[href*="slug=rowa"]')).toBeVisible();
+    await expect(brandRow.locator('a[href*="slug=swissflex"]')).toBeVisible();
 
-    const scrollBefore = await brandRow.evaluate((el) => el.scrollLeft);
-    await page.getByRole("button", { name: "Marques suivantes" }).click();
-    await expect
-      .poll(async () => brandRow.evaluate((el) => el.scrollLeft))
-      .toBeGreaterThan(scrollBefore);
-
-    await page.getByRole("button", { name: "Marques précédentes" }).click();
-    await expect
-      .poll(async () => brandRow.evaluate((el) => el.scrollLeft))
-      .toBeLessThanOrEqual(scrollBefore + 2);
+    const sizes = await slides.evaluateAll((nodes) =>
+      nodes.map((node) => {
+        const rect = node.getBoundingClientRect();
+        return { width: Math.round(rect.width), height: Math.round(rect.height) };
+      })
+    );
+    expect(sizes.every((size) => size.width === sizes[0].width)).toBe(true);
+    expect(sizes.every((size) => size.height === sizes[0].height)).toBe(true);
   });
 
   test("history and univers sections share the same horizontal alignment", async ({ page }) => {

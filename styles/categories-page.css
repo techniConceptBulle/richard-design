@@ -11,47 +11,20 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
-  padding-inline: var(--gutter);
+  /* padding-inline : hérité de .layout-wide */
   padding-bottom: var(--space-8);
 }
 
 @media (min-width: 768px) {
   .category-archive-page .category-page-shell {
-    padding-inline: var(--gutter-wide);
     gap: var(--space-6);
     padding-bottom: var(--space-10);
   }
 }
 
 .category-archive-breadcrumb {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
+  /* Hérite de .breadcrumb (base.css) */
   margin: 0 0 1.125rem;
-  /* Fil d’Ariane agrandi (était caption 0.75rem) */
-  font-size: var(--font-size-body-md);
-  color: #082b4e;
-}
-
-.category-archive-breadcrumb a {
-  color: #082b4e;
-  text-decoration: none;
-  font-weight: 400;
-}
-
-.category-archive-breadcrumb a:hover {
-  text-decoration: underline;
-}
-
-/* Page active en vert (inversé vs. Accueil autrefois en accent) */
-.category-archive-breadcrumb .breadcrumb__current {
-  color: var(--color-accent-strong);
-  font-weight: 700;
-}
-
-.category-archive-breadcrumb .breadcrumb__separator {
-  color: #6b7378;
 }
 
 .category-archive-header {

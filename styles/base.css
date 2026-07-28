@@ -125,17 +125,63 @@ small {
   margin-top: 80px;
 }
 
+/* Shells de page — une seule largeur + gouttières unifiées */
+.layout-wide,
+.layout-content,
 .container {
   width: 100%;
-  max-width: var(--content-max-width);
+  max-width: var(--layout-max-width);
   margin-inline: auto;
-  padding-inline: var(--space-4);
+  box-sizing: border-box;
+  padding-inline: var(--gutter);
 }
 
 @media (min-width: 768px) {
+  .layout-wide,
+  .layout-content,
   .container {
-    padding-inline: var(--space-6);
+    padding-inline: var(--gutter-md);
   }
+}
+
+@media (min-width: 1280px) {
+  .layout-wide,
+  .layout-content,
+  .container {
+    padding-inline: var(--gutter-lg);
+  }
+}
+
+/* Fil d'Ariane — style partagé toutes pages */
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1.125rem;
+  font-size: var(--font-size-body-md);
+  color: #082b4e;
+  text-align: left;
+}
+
+.breadcrumb a {
+  color: #082b4e;
+  text-decoration: none;
+  font-weight: 400;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb .breadcrumb__current {
+  color: var(--color-accent-strong);
+  font-weight: 400;
+}
+
+.breadcrumb .breadcrumb__separator {
+  color: #6b7378;
+  font-weight: 400;
 }
 
 /* Cartes & blocs */

@@ -25,6 +25,7 @@ describe("footer-config", () => {
   it("defines three link columns with product labels", () => {
     expect(FOOTER_LINK_COLUMNS).toHaveLength(3);
     expect(FOOTER_LINK_COLUMNS[0].links[0].label).toBe("À propos");
+    expect(FOOTER_LINK_COLUMNS[0].links[0].href).toBe("/pages/expert-literie-crissier.html");
     expect(FOOTER_LINK_COLUMNS[1].links[0].label).toBe("Offres du moment");
   });
 

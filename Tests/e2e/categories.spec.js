@@ -27,7 +27,7 @@ test.describe("Category archive page", () => {
     await expect(homeLink).toHaveCSS("font-weight", "400");
     await expect(currentCrumb).toHaveText("Matelas");
     await expect(currentCrumb).toHaveCSS("color", "rgb(40, 125, 99)");
-    await expect(currentCrumb).toHaveCSS("font-weight", "700");
+    await expect(currentCrumb).toHaveCSS("font-weight", "400");
     await expect(page.locator(".category-archive-breadcrumb")).toHaveCSS("font-size", "16px");
 
     await expect(page.locator("#category-title")).toHaveText("Matelas");

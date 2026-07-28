@@ -1,0 +1,9 @@
+<!--
+  Icne camion  options de livraison / installation (fiche produit).
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+  <path d="M1 7h12v10H1V7Z" stroke="#082b4e" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M13 10h4l3 3v4h-7v-7Z" stroke="#082b4e" stroke-width="1.5" stroke-linejoin="round"/>
+  <circle cx="5.5" cy="17.5" r="1.5" stroke="#082b4e" stroke-width="1.5"/>
+  <circle cx="17.5" cy="17.5" r="1.5" stroke="#082b4e" stroke-width="1.5"/>
+</svg>

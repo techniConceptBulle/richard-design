@@ -14,6 +14,10 @@ import {
   initCheckoutPage
 } from "./render.js";
 import { initCartBadge } from "./cart.js";
+import { initStoreMaps } from "./store-map.js";
+import { initShowroomSlider } from "./showroom-slider.js";
+import { initBrandCarousel } from "./brand-carousel.js";
+import { initStoreProductsSlider } from "./store-products-slider.js";
 
 async function initPage() {
   renderSharedLayout();
@@ -42,6 +46,14 @@ async function initPage() {
       break;
     case "checkout":
       await initCheckoutPage();
+      break;
+    case "about-expert":
+      await initStoreMaps();
+      initShowroomSlider();
+      initBrandCarousel();
+      break;
+    case "about-store":
+      initStoreProductsSlider();
       break;
     default:
       break;

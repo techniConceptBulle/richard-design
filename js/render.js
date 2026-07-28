@@ -23,6 +23,14 @@ import {
   renderCategoryProductSaleBadges,
   renderProductStarRating
 } from "./category-card.js";
+import {
+  buildBrandBodyHtml,
+  buildBrandGalleryHtml,
+  buildBrandLogoLinkHtml,
+  buildBrandsGridHtml,
+  getFeaturedBrands
+} from "./brands-page.js";
+import { initBrandGalleryLightbox, normalizeBrandGalleryItems } from "./brand-gallery.js";
 
 /* HEADER / FOOTER PARTAGÉS — structure alignée sur richard2026 (envelope) */
 
@@ -37,29 +45,28 @@ const SUBMENU_CHEVRON_SVG = `<svg viewBox="0 0 12 8" fill="none" aria-hidden="tr
 const TOPBAR_LINKS = [
   { href: "/pages/contact.html", label: "Magasin à Crissier" },
   { href: "/pages/advice.html", label: "Conseils personnalisés" },
-  { href: "/pages/about.html", label: "Services" }
+  { href: "/pages/services-premium.html", label: "Services" }
 ];
 
 const PRIMARY_NAV_ITEMS = [
   {
-    href: "/pages/about.html",
     label: "A propos",
     children: [
       {
-        href: "/pages/about.html#about-expert",
+        href: "/pages/expert-literie-crissier.html",
         label: "L'expert de la literie à Crissier"
       },
       {
-        href: "/pages/about.html#about-store",
-        label: "Votre magasin à Crissier"
+        href: "/pages/magasin-crissier.html",
+        label: "Votre magasin de matelas à Crissier"
       },
       {
-        href: "/pages/about.html#about-premium",
+        href: "/pages/services-premium.html",
         label: "Nos services premium"
       },
       {
-        href: "/pages/about.html#about-products",
-        label: "Nos produits de literie"
+        href: "/pages/produits-literie.html",
+        label: "Nos conseils personnalisés sur mesure"
       }
     ]
   },
@@ -132,6 +139,15 @@ function initSiteEnvelope(headerEl) {
     });
   });
 
+  // Sur mobile, un clic sur le libellé parent ouvre aussi le sous-menu
+  menu.querySelectorAll("span.menu-item__parent").forEach((label) => {
+    label.addEventListener("click", () => {
+      const parent = label.closest(".menu-item--has-children");
+      const toggle = parent?.querySelector(":scope > .menu-item__trigger .submenu-toggle");
+      toggle?.click();
+    });
+  });
+
   menu.querySelectorAll(".menu-link").forEach((link) => {
     link.addEventListener("click", closeMenu);
   });
@@ -143,16 +159,19 @@ function initSiteEnvelope(headerEl) {
 
 /**
  * Construit le HTML d'un item de navigation catalogue (avec sous-menu éventuel).
+ * Les parents avec enfants (ex. À propos) ne sont pas des pages : libellé + sous-menu uniquement.
  */
 function renderPrimaryNavItem(item, isNavItemActive) {
   const { href, label, sale, children } = item;
-  const activeClass = isNavItemActive(href) ? " menu-link--active" : "";
   const promoClass = sale ? " menu-item-promo" : "";
 
   if (!children?.length) {
+    const activeClass = isNavItemActive(href) ? " menu-link--active" : "";
     return `<li class="${promoClass.trim()}"><a href="${href}" class="menu-link${activeClass}">${label}</a></li>`;
   }
 
+  const parentActive = children.some((child) => isNavItemActive(child.href));
+  const activeClass = parentActive ? " menu-link--active" : "";
   const submenuId = "nav-submenu-about";
   const childLinks = children
     .map((child) => {
@@ -164,7 +183,7 @@ function renderPrimaryNavItem(item, isNavItemActive) {
   return `
     <li class="menu-item--has-children">
       <div class="menu-item__trigger">
-        <a href="${href}" class="menu-link menu-item__parent${activeClass}">${label}</a>
+        <span class="menu-link menu-item__parent${activeClass}">${label}</span>
         <button
           type="button"
           class="submenu-toggle"
@@ -199,7 +218,7 @@ export function renderSharedLayout() {
         return targetSlug === currentSlug;
       }
 
-      // Ancres À propos : actif seulement si le hash correspond
+      // Ancres : actif seulement si le hash correspond
       if (targetUrl.hash) {
         return currentUrl.hash === targetUrl.hash;
       }
@@ -314,7 +333,8 @@ export function renderSharedLayout() {
 
 export async function initHomePage() {
   initHeroSlider();
-  initBrandCarousel();
+  const brands = await getBrands();
+  initBrandCarousel(document, { featuredBrands: getFeaturedBrands(brands) });
 }
 
 async function renderHomeMainCategories() {
@@ -1244,48 +1264,7 @@ export async function initBrandsPage() {
   const grid = document.getElementById("brands-grid");
   if (!grid) return;
   const brands = await getBrands();
-  const displayBrands = [...brands];
-  const demoBrands = [
-    {
-      id: "huesler-nest",
-      name: "Hüsler Nest",
-      slug: "huesler-nest",
-      country: "Suisse",
-      description: "Literie naturelle avec matériaux respirants et soutien ergonomique.",
-      logo: "/assets/icons/brand-roviva.png"
-    },
-    {
-      id: "lattoflex",
-      name: "Lattoflex",
-      slug: "lattoflex",
-      country: "Allemagne",
-      description: "Systèmes de couchage orientés confort dynamique et alignement du dos.",
-      logo: "/assets/icons/brand-roviva.png"
-    }
-  ];
-
-  demoBrands.forEach((demo) => {
-    if (!displayBrands.some((brand) => brand.id === demo.id) && displayBrands.length < 8) {
-      displayBrands.push(demo);
-    }
-  });
-
-  grid.innerHTML = displayBrands
-    .map(
-      (brand) => `
-      <a href="/pages/brand.html?slug=${encodeURIComponent(brand.slug)}" class="brand-card">
-        <div class="brand-card-image">
-          <img src="${brand.logo || getBrandImageUrl(brand)}" alt="${brand.name}" />
-        </div>
-        <div class="brand-card-content">
-          <h2 class="brand-card-name">${brand.name}</h2>
-          <p class="brand-card-country">${brand.country || "Suisse"}</p>
-          <p class="brand-card-description">${brand.description || ""}</p>
-        </div>
-      </a>
-    `
-    )
-    .join("");
+  grid.innerHTML = buildBrandsGridHtml(brands);
 }
 
 /* PAGE MARQUE DÉTAILLÉE */
@@ -1295,69 +1274,28 @@ export async function initBrandPage() {
   if (!slug) return;
 
   const titleEl = document.getElementById("brand-title");
-  const descriptionEl = document.getElementById("brand-description");
-  const metaEl = document.getElementById("brand-meta");
-  const gridEl = document.getElementById("brand-products-grid");
-  if (!titleEl || !descriptionEl || !metaEl || !gridEl) return;
+  const breadcrumbEl = document.getElementById("brand-breadcrumb-current");
+  const logoEl = document.getElementById("brand-logo");
+  const bodyEl = document.getElementById("brand-body");
+  const galleryEl = document.getElementById("brand-gallery-slot");
+  const lightboxRoot = document.getElementById("brand-lightbox-root");
+  if (!titleEl || !logoEl || !bodyEl || !galleryEl) return;
 
-  const [brand, products] = await Promise.all([
-    getBrandBySlug(slug),
-    getProducts()
-  ]);
+  const brand = await getBrandBySlug(slug);
   if (!brand) return;
 
   titleEl.textContent = brand.name;
-  descriptionEl.textContent =
-    brand.description || "Marque partenaire de Richard SA.";
-
-  metaEl.innerHTML = brand.website
-    ? `<span>Origine : ${brand.country || "—"} · Site : <a href="${
-        brand.website
-      }" target="_blank" rel="noreferrer">${brand.website}</a></span>`
-    : `<span>Origine : ${brand.country || "—"}</span>`;
-
-  const filtered = products.filter((p) => p.brandId === brand.id);
-  if (!filtered.length) {
-    gridEl.innerHTML =
-      '<div class="category-products-empty">Aucun produit associé à cette marque pour le moment.</div>';
-    return;
+  document.title = `${brand.name} | Richard Design`;
+  if (breadcrumbEl) {
+    breadcrumbEl.textContent = brand.name;
   }
 
-  gridEl.innerHTML = filtered
-    .map((product) => {
-      const currentPrice = getProductMinimumPrice(product);
-      const comparePrice = getProductComparePrice(product);
-      const hasSale = productHasPromotion(product);
-      const productImage = product.images && product.images.length 
-        ? getProductImageUrl(product, product.images[0])
-        : getProductImageUrl(product, null);
-      return `
-        <a href="/pages/product.html?slug=${encodeURIComponent(
-          product.slug
-        )}" class="card card-clickable">
-          <div class="card-image">
-            <img src="${productImage}" alt="${product.name}" />
-            ${hasSale ? `<span class="product-badge-sale">-${getProductDiscountPercent(product)}%</span>` : ""}
-          </div>
-          <div class="card-content">
-            <div class="card-meta">Produit</div>
-            <h3 class="card-title">${product.name}</h3>
-            <p class="card-description">${product.shortDescription || ""}</p>
-            <div class="card-price">
-              ${
-                hasSale
-                  ? `
-                      <span class="price price-old">${formatPriceCHF(comparePrice)}</span>
-                      <span class="price price-new">${formatPriceCHF(currentPrice)}</span>
-                    `
-                  : `<span class="price">${formatPriceCHF(currentPrice)}</span>`
-              }
-            </div>
-          </div>
-        </a>
-      `;
-    })
-    .join("");
+  logoEl.innerHTML = buildBrandLogoLinkHtml(brand);
+  bodyEl.innerHTML = buildBrandBodyHtml(brand);
+  galleryEl.innerHTML = buildBrandGalleryHtml(brand);
+
+  const galleryItems = normalizeBrandGalleryItems(brand.gallery, brand.name);
+  initBrandGalleryLightbox(galleryEl, lightboxRoot, galleryItems, brand.name);
 }
 
 /* PAGE PRODUIT DÉTAILLÉE */
@@ -2050,6 +1988,10 @@ export function renderCartServiceOptionsBlock(selectedOptions = {}) {
   `;
 }
 
+/**
+ * Bloc conseil fiche produit (téléphone / e-mail / magasin).
+ * Pictogrammes PNG brandés — panier non concerné.
+ */
 function renderProductAdviceSection() {
   return `
     <section class="product-advice advice" aria-label="Besoin d'un conseil">
@@ -2057,21 +1999,27 @@ function renderProductAdviceSection() {
       <p class="product-advice__lead">Nous serions ravis de vous conseiller personnellement</p>
       <div class="product-advice__grid contact-grid">
         <div class="product-advice__card contact">
-          <span class="product-advice__icon" aria-hidden="true">☎</span>
+          <span class="product-advice__icon" aria-hidden="true">
+            <img src="/assets/icons/appel.png" alt="" width="40" height="40" loading="lazy" decoding="async">
+          </span>
           <div class="product-advice__content">
             <strong class="product-advice__card-title">Appelez-nous</strong>
             <span class="product-advice__card-text"><a href="tel:+41216340476">021 634 04 76</a></span>
           </div>
         </div>
         <div class="product-advice__card contact">
-          <span class="product-advice__icon" aria-hidden="true">✉</span>
+          <span class="product-advice__icon" aria-hidden="true">
+            <img src="/assets/icons/enveloppe.png" alt="" width="40" height="40" loading="lazy" decoding="async">
+          </span>
           <div class="product-advice__content">
             <strong class="product-advice__card-title">Écrivez-nous</strong>
             <span class="product-advice__card-text"><a href="mailto:info@richard-decoration.ch">info@richard-decoration.ch</a></span>
           </div>
         </div>
         <div class="product-advice__card contact">
-          <span class="product-advice__icon" aria-hidden="true">⌂</span>
+          <span class="product-advice__icon" aria-hidden="true">
+            <img src="/assets/icons/magasin.png" alt="" width="40" height="40" loading="lazy" decoding="async">
+          </span>
           <div class="product-advice__content">
             <strong class="product-advice__card-title">Venez-nous rencontrer</strong>
             <span class="product-advice__card-text">Richard La Literie<br>Rue des Alpes 2<br>1023 Crissier</span>

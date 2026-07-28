@@ -73,7 +73,7 @@ test.describe("Global footer", () => {
     const footer = page.locator(".footer-global");
     await expect(footer.getByRole("link", { name: "À propos", exact: true })).toHaveAttribute(
       "href",
-      "/pages/about.html"
+      "/pages/expert-literie-crissier.html"
     );
     await expect(footer.getByRole("link", { name: "Offres du moment", exact: true })).toBeVisible();
     await expect(footer.getByRole("link", { name: "Politique de confidentialité" })).toHaveAttribute(

@@ -29,7 +29,7 @@ export const FOOTER_LINK_COLUMNS = [
   {
     title: "Navigation",
     links: [
-      { href: "/pages/about.html", label: "À propos" },
+      { href: "/pages/expert-literie-crissier.html", label: "À propos" },
       { href: "/pages/category.html?slug=matelas", label: "Matelas" },
       { href: "/pages/category.html?slug=sommier", label: "Sommiers" }
     ]

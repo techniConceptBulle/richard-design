@@ -1,9 +1,310 @@
 [
   {
+    "id": "roviva",
+    "name": "Roviva",
+    "slug": "roviva",
+    "country": "Suisse",
+    "featured": true,
+    "sortOrder": 1,
+    "description": "Literie suisse premium, reconnue pour son confort et la qualité de fabrication.",
+    "logo": "/assets/images/brands/roviva/logo.jpg",
+    "cardImage": "/assets/images/brands/roviva/card.jpg",
+    "website": "https://www.roviva.ch/fr/",
+    "headline": "Depuis 1748, la passion suisse d'un sommeil naturellement sain",
+    "sections": [
+      {
+        "title": null,
+        "paragraphs": [
+          "Depuis près de 280 ans, Roviva poursuit une même ambition : offrir un sommeil plus sain, plus naturel et plus réparateur.",
+          "Fondée en 1748 à Wangen an der Aare, au cœur de la Suisse, l'entreprise est aujourd'hui dirigée par la neuvième génération de la famille Roth. L'une des plus anciennes manufactures de literie d'Europe est restée fidèle à ses origines, à son site de production et à une même philosophie : associer tradition, innovation et qualité suisse pour créer des systèmes de couchage conçus pour durer."
+        ]
+      },
+      {
+        "title": "Une manufacture où le savoir-faire se transmet",
+        "paragraphs": [
+          "Chez Roviva, chaque matelas et chaque sommier est le fruit du travail d'une équipe d'environ 65 collaborateurs, qui perpétuent avec passion un savoir-faire transmis depuis neuf générations.",
+          "Conception, développement, fabrication et contrôle qualité sont réunis au sein de la manufacture suisse. Cette maîtrise permet à Roviva de porter une attention particulière à chaque détail, depuis le choix des matériaux jusqu'à l'assemblage final. Derrière chaque produit se trouvent des femmes et des hommes qui partagent la même exigence : fabriquer une literie d'une qualité irréprochable."
+        ]
+      },
+      {
+        "title": "Un environnement de sommeil naturellement sain",
+        "paragraphs": [
+          "Pour Roviva, bien dormir ne dépend pas uniquement du soutien du corps. La qualité du sommeil passe également par un environnement de couchage sain, respirant et équilibré.",
+          "C'est pourquoi la marque sélectionne des matériaux capables de favoriser une excellente circulation de l'air, de réguler naturellement la température et l'humidité et de procurer un climat de sommeil agréable en toute saison.",
+          "Les matelas Dream-away peuvent notamment être équipés de housses garnies de pure laine vierge suisse, de laine d'alpaga ou de soie de Tussah. Ces fibres naturelles offrent un accueil particulièrement confortable tout en contribuant à un climat de couchage naturellement équilibré.",
+          "Certaines housses intègrent également la technologie exclusive SilverSkin. De minuscules ions d'argent sont brodés dans le textile afin de limiter naturellement le développement des bactéries, des acariens et des champignons, contribuant ainsi à préserver durablement un environnement de sommeil plus sain."
+        ]
+      },
+      {
+        "title": "Une innovation au service du confort",
+        "paragraphs": [
+          "Depuis toujours, Roviva fait évoluer ses technologies pour mieux accompagner les mouvements du corps.",
+          "Les systèmes exclusifs Contour et Swiss Balance Support, présents sur certains sommiers de la marque, illustrent parfaitement cette philosophie. Ils permettent d'adapter le soutien aux différentes zones du corps et d'accompagner naturellement les mouvements du dormeur afin de favoriser un alignement harmonieux de la colonne vertébrale.",
+          "Chez Roviva, l'innovation n'est jamais une finalité. Elle est toujours pensée pour améliorer durablement la qualité du sommeil."
+        ]
+      },
+      {
+        "title": "Pourquoi Richard La Literie a choisi Roviva ?",
+        "paragraphs": [
+          "Nous avons choisi Roviva parce que cette manufacture représente tout ce que nous recherchons chez un fabricant : une histoire familiale unique, une fabrication exclusivement suisse, une véritable passion du métier et une recherche permanente du sommeil idéal.",
+          "Depuis près de 280 ans, Roviva conçoit ses matelas et ses sommiers avec la même exigence : offrir un confort durable, un soutien précis et un environnement de sommeil naturellement sain. Des valeurs que nous partageons pleinement et que nous sommes heureux de vous faire découvrir chez Richard La Literie."
+        ]
+      }
+    ],
+    "gallery": [
+      {
+        "src": "/assets/images/brands/roviva/gallery/collaborateurs-roviva.jpg",
+        "alt": "Collaborateurs Roviva en manufacture"
+      },
+      {
+        "src": "/assets/images/brands/roviva/gallery/showroom-roviva.jpg",
+        "alt": "Showroom Roviva"
+      },
+      {
+        "src": "/assets/images/brands/roviva/gallery/lit_roviva.jpg",
+        "alt": "Lit Roviva"
+      },
+      {
+        "src": "/assets/images/brands/roviva/gallery/roviva-matelas-dream-away-imperial.jpg",
+        "alt": "Matelas Roviva Dream-away Imperial"
+      },
+      {
+        "src": "/assets/images/brands/roviva/gallery/sommier-roviva.jpg",
+        "alt": "Sommier Roviva"
+      }
+    ]
+  },
+  {
+    "id": "selecta",
+    "name": "Selecta",
+    "slug": "selecta",
+    "country": "Allemagne",
+    "featured": true,
+    "sortOrder": 2,
+    "description": "Selecta by Röwa : matelas et sommiers haut de gamme conçus comme un véritable système de couchage.",
+    "logo": "/assets/images/brands/selecta/logo.jpg",
+    "cardImage": "/assets/images/brands/selecta/card.jpg",
+    "website": "https://www.selecta-matratzen.com/en/home",
+    "headline": "Plus de 100 ans de savoir-faire au service de votre sommeil",
+    "sections": [
+      {
+        "title": null,
+        "paragraphs": [
+          "Depuis 1914, Röwa développe des systèmes de couchage avec une conviction forte : ce n'est pas au dormeur de s'adapter à son lit, mais au lit de s'adapter au dormeur.",
+          "Installée à Mössingen, en Allemagne, cette entreprise familiale est aujourd'hui reconnue comme l'une des grandes manufactures européennes de literie haut de gamme. Chaque matelas et chaque sommier sont conçus comme les éléments d'un véritable système de couchage, pensé pour offrir un soutien précis, un confort durable et une ergonomie naturelle."
+        ]
+      },
+      {
+        "title": "La manufacture du sommeil",
+        "paragraphs": [
+          "Röwa se définit comme « Die Bettenmacher », les fabricants de lits. Plus qu'une signature, c'est une philosophie.",
+          "Là où de nombreux fabricants assemblent des composants provenant de différents fournisseurs, Röwa maîtrise l'essentiel de sa fabrication au sein de sa propre manufacture. Cette exigence garantit une qualité constante et une parfaite cohérence entre chaque élément du système de couchage.",
+          "Le bois occupe une place essentielle dans cette démarche. Pour ses sommiers, Röwa utilise du hêtre issu de forêts gérées durablement, dont elle assure elle-même la gestion responsable afin de préserver durablement cette ressource naturelle. Les cadres sont ensuite assemblés en hêtre massif par chevilles en bois et collage, sans vis ni charnières métalliques dans la structure du cadre. Ce savoir-faire traditionnel confère aux sommiers une robustesse, une stabilité et une longévité remarquables."
+        ]
+      },
+      {
+        "title": "Selecta by Röwa : la même expertise, la même exigence",
+        "paragraphs": [
+          "Les matelas et sommiers que nous proposons sont commercialisés sous la marque Selecta by Röwa.",
+          "Développés et fabriqués par Röwa, ils bénéficient du même savoir-faire, de la même recherche ergonomique et des mêmes exigences de qualité que les produits portant le nom Röwa.",
+          "L'innovation fait également partie de l'ADN de la marque. Les matelas en mousse Selecta by Röwa intègrent des polyols d'origine végétale issus du soja, en remplacement d'une partie des matières premières d'origine fossile. Cette technologie contribue à préserver les performances de la mousse — élasticité, résilience et durabilité — tout en s'inscrivant dans une démarche de fabrication plus naturelle et responsable.",
+          "Conçus pour fonctionner ensemble, les matelas et sommiers Selecta by Röwa forment un véritable système de couchage, offrant un soutien précis, une excellente répartition des points de pression et un confort durable."
+        ]
+      },
+      {
+        "title": "Le sommier Röwa",
+        "paragraphs": [
+          "En complément de la collection Selecta by Röwa, nous proposons également le sommier Röwa, disponible en version fixe, avec relève tête et pieds ou en versions motorisées.",
+          "Grâce à sa structure en hêtre massif, à son assemblage traditionnel et à sa suspension de haute précision, il permet au matelas d'exprimer pleinement ses qualités ergonomiques et accompagne naturellement chacun de vos mouvements pendant le sommeil."
+        ]
+      },
+      {
+        "title": "Pourquoi Richard La Literie a choisi Röwa & Selecta by Röwa ?",
+        "paragraphs": [
+          "Nous avons choisi Röwa et Selecta by Röwa pour une raison simple : cette manufacture partage notre vision de la literie.",
+          "Depuis plus d'un siècle, Röwa privilégie la qualité des matériaux, la maîtrise de la fabrication et la durabilité plutôt que les effets de mode. Cette exigence se retrouve dans chacun de ses produits et nous permet de vous proposer des systèmes de couchage conçus pour offrir un confort durable, nuit après nuit."
+        ]
+      }
+    ],
+    "gallery": [
+      {
+        "src": "/assets/images/brands/selecta/gallery/systeme-rowa.jpg",
+        "alt": "Système de couchage Selecta by Röwa"
+      },
+      {
+        "src": "/assets/images/brands/selecta/gallery/matelas-rowa-2.jpg",
+        "alt": "Matelas Selecta by Röwa"
+      },
+      {
+        "src": "/assets/images/brands/selecta/gallery/matelas-rowa-3.jpg",
+        "alt": "Matelas Selecta by Röwa — détail"
+      },
+      {
+        "src": "/assets/images/brands/selecta/gallery/sommier-rowa-2.jpg",
+        "alt": "Sommier Röwa"
+      },
+      {
+        "src": "/assets/images/brands/selecta/gallery/bois-rowa-3.jpg",
+        "alt": "Bois de hêtre Röwa"
+      }
+    ]
+  },
+  {
+    "id": "rowa",
+    "name": "Röwa",
+    "slug": "rowa",
+    "country": "Allemagne",
+    "featured": true,
+    "sortOrder": 3,
+    "description": "Manufacture allemande de literie haut de gamme, « Die Bettenmacher » depuis 1914.",
+    "logo": "/assets/images/brands/rowa/logo.jpg",
+    "cardImage": "/assets/images/brands/rowa/card.jpg",
+    "website": "https://roewa.com/de-CH/startseite",
+    "headline": "Plus de 100 ans de savoir-faire au service de votre sommeil",
+    "sections": [
+      {
+        "title": null,
+        "paragraphs": [
+          "Depuis 1914, Röwa développe des systèmes de couchage avec une conviction forte : ce n'est pas au dormeur de s'adapter à son lit, mais au lit de s'adapter au dormeur.",
+          "Installée à Mössingen, en Allemagne, cette entreprise familiale est aujourd'hui reconnue comme l'une des grandes manufactures européennes de literie haut de gamme. Chaque matelas et chaque sommier sont conçus comme les éléments d'un véritable système de couchage, pensé pour offrir un soutien précis, un confort durable et une ergonomie naturelle."
+        ]
+      },
+      {
+        "title": "La manufacture du sommeil",
+        "paragraphs": [
+          "Röwa se définit comme « Die Bettenmacher », les fabricants de lits. Plus qu'une signature, c'est une philosophie.",
+          "Là où de nombreux fabricants assemblent des composants provenant de différents fournisseurs, Röwa maîtrise l'essentiel de sa fabrication au sein de sa propre manufacture. Cette exigence garantit une qualité constante et une parfaite cohérence entre chaque élément du système de couchage.",
+          "Le bois occupe une place essentielle dans cette démarche. Pour ses sommiers, Röwa utilise du hêtre issu de forêts gérées durablement, dont elle assure elle-même la gestion responsable afin de préserver durablement cette ressource naturelle. Les cadres sont ensuite assemblés en hêtre massif par chevilles en bois et collage, sans vis ni charnières métalliques dans la structure du cadre. Ce savoir-faire traditionnel confère aux sommiers une robustesse, une stabilité et une longévité remarquables."
+        ]
+      },
+      {
+        "title": "Selecta by Röwa : la même expertise, la même exigence",
+        "paragraphs": [
+          "Les matelas et sommiers que nous proposons sont commercialisés sous la marque Selecta by Röwa.",
+          "Développés et fabriqués par Röwa, ils bénéficient du même savoir-faire, de la même recherche ergonomique et des mêmes exigences de qualité que les produits portant le nom Röwa.",
+          "L'innovation fait également partie de l'ADN de la marque. Les matelas en mousse Selecta by Röwa intègrent des polyols d'origine végétale issus du soja, en remplacement d'une partie des matières premières d'origine fossile. Cette technologie contribue à préserver les performances de la mousse — élasticité, résilience et durabilité — tout en s'inscrivant dans une démarche de fabrication plus naturelle et responsable.",
+          "Conçus pour fonctionner ensemble, les matelas et sommiers Selecta by Röwa forment un véritable système de couchage, offrant un soutien précis, une excellente répartition des points de pression et un confort durable."
+        ]
+      },
+      {
+        "title": "Le sommier Röwa",
+        "paragraphs": [
+          "En complément de la collection Selecta by Röwa, nous proposons également le sommier Röwa, disponible en version fixe, avec relève tête et pieds ou en versions motorisées.",
+          "Grâce à sa structure en hêtre massif, à son assemblage traditionnel et à sa suspension de haute précision, il permet au matelas d'exprimer pleinement ses qualités ergonomiques et accompagne naturellement chacun de vos mouvements pendant le sommeil."
+        ]
+      },
+      {
+        "title": "Pourquoi Richard La Literie a choisi Röwa & Selecta by Röwa ?",
+        "paragraphs": [
+          "Nous avons choisi Röwa et Selecta by Röwa pour une raison simple : cette manufacture partage notre vision de la literie.",
+          "Depuis plus d'un siècle, Röwa privilégie la qualité des matériaux, la maîtrise de la fabrication et la durabilité plutôt que les effets de mode. Cette exigence se retrouve dans chacun de ses produits et nous permet de vous proposer des systèmes de couchage conçus pour offrir un confort durable, nuit après nuit."
+        ]
+      }
+    ],
+    "gallery": [
+      {
+        "src": "/assets/images/brands/rowa/gallery/systeme-rowa.jpg",
+        "alt": "Système de couchage Röwa"
+      },
+      {
+        "src": "/assets/images/brands/rowa/gallery/matelas-rowa-2.jpg",
+        "alt": "Matelas Röwa / Selecta"
+      },
+      {
+        "src": "/assets/images/brands/rowa/gallery/matelas-rowa-3.jpg",
+        "alt": "Matelas Röwa / Selecta — détail"
+      },
+      {
+        "src": "/assets/images/brands/rowa/gallery/sommier-rowa-2.jpg",
+        "alt": "Sommier Röwa"
+      },
+      {
+        "src": "/assets/images/brands/rowa/gallery/bois-rowa-3.jpg",
+        "alt": "Bois de hêtre Röwa"
+      }
+    ]
+  },
+  {
+    "id": "swissflex",
+    "name": "Swissflex",
+    "slug": "swissflex",
+    "country": "Suisse",
+    "featured": true,
+    "sortOrder": 4,
+    "description": "Solutions de sommeil ergonomiques avec technologies de couchage évolutives.",
+    "logo": "/assets/images/brands/swissflex/logo.png",
+    "cardImage": "/assets/images/brands/swissflex/card.jpg",
+    "website": "https://www.swissflex.com/ch-fr/home",
+    "headline": "L'ingénierie suisse au service d'un confort de sommeil d'exception",
+    "sections": [
+      {
+        "title": null,
+        "paragraphs": [
+          "Depuis plus de 75 ans, Swissflex imagine, développe et perfectionne des systèmes de couchage qui repoussent les standards du confort. Née en Suisse en 1949, la marque s'est imposée comme l'une des références européennes de la literie haut de gamme grâce à une philosophie simple : innover sans cesse pour offrir un sommeil toujours plus confortable, plus ergonomique et plus durable.",
+          "Chez Swissflex, chaque matelas, chaque sommier et chaque lit sont pensés pour fonctionner en parfaite harmonie afin de créer un véritable système de couchage, où chaque élément contribue à la qualité de votre sommeil."
+        ]
+      },
+      {
+        "title": "Une marque qui réinvente le confort",
+        "paragraphs": [
+          "Depuis ses débuts, Swissflex est animée par un véritable esprit de pionnier. La marque est à l'origine de nombreuses innovations qui ont marqué l'univers de la literie, comme les célèbres lattes ondulées rouges, le premier sommier sans cadre, la technologie bridge® ou encore les matelas intégrant la mousse Gomtex® Gel. Ces développements illustrent une même volonté : améliorer continuellement l'ergonomie du couchage et l'adapter toujours plus précisément à la morphologie du dormeur.",
+          "Chez Swissflex, l'innovation n'est jamais un effet de mode. Chaque technologie est développée pour apporter un bénéfice concret : un meilleur soutien, une répartition plus homogène des pressions, une liberté de mouvement accrue et un confort durable, nuit après nuit."
+        ]
+      },
+      {
+        "title": "Un couchage anatomique d'une précision remarquable",
+        "paragraphs": [
+          "La philosophie Swissflex repose sur une idée essentielle : le confort naît de l'équilibre parfait entre le soutien et l'allègement des points de pression.",
+          "Les matelas Gomtex® Gel offrent une élasticité ponctuelle exceptionnelle et accompagnent naturellement les mouvements du corps tout en procurant une agréable sensation de fraîcheur. Les matelas Hybrid associent quant à eux ressorts ensachés et mousses haute performance afin de réunir le meilleur des deux technologies : un soutien dynamique, une excellente ventilation et un confort particulièrement précis.",
+          "Associés aux sommiers Swissflex, ces matelas permettent au corps de conserver un alignement naturel tout au long de la nuit, quelles que soient la morphologie ou la position de sommeil."
+        ]
+      },
+      {
+        "title": "Le système Swissflex : chaque élément travaille ensemble",
+        "paragraphs": [
+          "Chez Swissflex, un excellent matelas ne peut révéler tout son potentiel qu'avec un sommier conçu pour fonctionner avec lui.",
+          "Les sommiers Swissflex, notamment ceux équipés de la technologie exclusive bridge®, s'adaptent individuellement aux différentes zones du corps et travaillent en parfaite synergie avec le matelas. Cette approche permet d'obtenir un soutien particulièrement précis et une sensation de couchage d'une grande fluidité.",
+          "C'est cette conception globale du lit qui fait depuis de nombreuses années la réputation de Swissflex auprès des dormeurs les plus exigeants."
+        ]
+      },
+      {
+        "title": "Pourquoi Richard La Literie a choisi Swissflex ?",
+        "paragraphs": [
+          "Nous avons choisi Swissflex parce que cette marque incarne parfaitement l'excellence suisse dans le domaine de la literie.",
+          "Son sens de l'innovation, la qualité de ses matériaux, la précision de ses technologies et sa capacité à concevoir de véritables systèmes de couchage en font une référence incontournable pour celles et ceux qui recherchent un confort de très haut niveau.",
+          "Choisir Swissflex, c'est faire le choix d'une literie conçue avec la rigueur de l'ingénierie suisse, où chaque innovation est pensée pour améliorer durablement la qualité de votre sommeil."
+        ]
+      }
+    ],
+    "gallery": [
+      {
+        "src": "/assets/images/brands/swissflex/gallery/systeme-swissflex.webp",
+        "alt": "Système de couchage Swissflex"
+      },
+      {
+        "src": "/assets/images/brands/swissflex/gallery/matelas-swissflex-versa-24-geltex.jpg",
+        "alt": "Matelas Swissflex Versa 24 Geltex"
+      },
+      {
+        "src": "/assets/images/brands/swissflex/gallery/sommier-swissflex.webp",
+        "alt": "Sommier Swissflex"
+      },
+      {
+        "src": "/assets/images/brands/swissflex/gallery/sommier-swissflex-uni-20-75rf-ergo-plus-2moteurs.jpg",
+        "alt": "Sommier Swissflex motorisé"
+      },
+      {
+        "src": "/assets/images/brands/swissflex/gallery/lit-swissflex.webp",
+        "alt": "Lit Swissflex"
+      }
+    ]
+  },
+  {
     "id": "bico",
     "name": "Bico",
     "slug": "bico",
     "country": "Suisse",
+    "featured": false,
     "description": "Marque suisse emblématique, reconnue pour ses matelas et sommiers de très haute qualité.",
     "logo": "/assets/icons/brand-roviva.png",
     "website": "https://www.bico.ch"
@@ -13,6 +314,7 @@
     "name": "Superba",
     "slug": "superba",
     "country": "Suisse",
+    "featured": false,
     "description": "Spécialiste du matelas suisse, avec un savoir-faire centenaire.",
     "logo": "/assets/icons/brand-roviva.png",
     "website": "https://www.superba.ch"
@@ -22,8 +324,9 @@
     "name": "Tempur",
     "slug": "tempur",
     "country": "Danemark",
+    "featured": false,
     "description": "Référence mondiale en mousse à mémoire de forme haute densité.",
-    "logo": "/assets/icons/brand-roviva.png",
+    "logo": "/assets/icons/brand-tempur.svg",
     "website": "https://www.tempur.com"
   },
   {
@@ -31,44 +334,19 @@
     "name": "Hasena",
     "slug": "hasena",
     "country": "Suisse",
+    "featured": false,
     "description": "Lits et cadres de lit design, personnalisables et durables.",
-    "logo": "/assets/icons/brand-roviva.png",
+    "logo": "/assets/icons/brand-hasena.svg",
     "website": "https://www.hasenabeds.com"
-  },
-  {
-    "id": "roviva",
-    "name": "Roviva",
-    "slug": "roviva",
-    "country": "Suisse",
-    "description": "Literie suisse premium, reconnue pour son confort et la qualité de fabrication.",
-    "logo": "/assets/icons/brand-roviva.png",
-    "website": "https://www.roviva.ch"
-  },
-  {
-    "id": "dunlopillo",
-    "name": "Dunlopillo",
-    "slug": "dunlopillo",
-    "country": "Suisse",
-    "description": "Matelas techniques reconnus pour l’équilibre entre accueil moelleux et soutien durable.",
-    "logo": "/assets/icons/brand-roviva.png",
-    "website": "https://www.dunlopillo.ch"
-  },
-  {
-    "id": "swissflex",
-    "name": "Swissflex",
-    "slug": "swissflex",
-    "country": "Suisse",
-    "description": "Solutions de sommeil ergonomiques avec technologies de couchage évolutives.",
-    "logo": "/assets/icons/brand-roviva.png",
-    "website": "https://www.swissflex.com"
   },
   {
     "id": "richard-sa",
     "name": "Richard SA",
     "slug": "richard-sa",
     "country": "Suisse",
+    "featured": false,
     "description": "Sélection exclusive Richard SA : produits développés avec nos partenaires suisses.",
-    "logo": "/assets/icons/brand-roviva.png",
+    "logo": "/assets/icons/brand-richard.svg",
     "website": "https://www.richard-sa.ch"
   }
 ]

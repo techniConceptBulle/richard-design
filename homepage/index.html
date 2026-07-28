@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Richard La Literie – Home slide 1</title>
+<style>
+:root{
+  --blue:#002b4d;
+  --blue2:#053757;
+  --green:#2f8b69;
+  --sage:#dfe9df;
+  --beige:#f5efe6;
+  --beige2:#fbf8f3;
+  --text:#082b4e;
+  --muted:#5c6b75;
+  --border:#e8ded2;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:#fff;
+  font-family:Arial,Helvetica,sans-serif;
+  color:var(--text);
+}
+
+.page{
+  width:1080px;
+  margin:0 auto;
+  background:#fff;
+  box-shadow:0 0 0 1px #eee;
+}
+
+/* Header */
+.header{
+  height:96px;
+  display:grid;
+  grid-template-columns:226px 1fr 280px;
+  align-items:start;
+  padding:14px 42px 10px;
+  background:#fff;
+}
+
+.logo{
+  width:125px;
+  height:auto;
+  display:block;
+}
+
+.search{
+  height:38px;
+  margin-top:12px;
+  border:1px solid #cfcfcf;
+  border-radius:2px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 14px;
+  color:#777;
+  font-size:12px;
+}
+
+.search .glass{
+  font-size:24px;
+  color:#0a2f4e;
+  line-height:1;
+}
+
+.head-actions{
+  display:flex;
+  gap:28px;
+  justify-content:flex-end;
+  text-align:center;
+  font-size:10px;
+  color:#092d4b;
+  margin-top:3px;
+}
+
+.head-actions .ico{
+  font-size:24px;
+  display:block;
+  margin-bottom:3px;
+  line-height:1;
+}
+
+.nav{
+  height:42px;
+  background:var(--blue);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.nav a{
+  height:42px;
+  display:flex;
+  align-items:center;
+  padding:0 30px;
+  color:#fff;
+  text-decoration:none;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.25px;
+}
+
+.nav a.sale{
+  background:linear-gradient(90deg,#1d7a63,#16795f);
+  padding:0 45px;
+}
+
+/* Hero */
+.hero{
+  height:353px;
+  display:grid;
+  grid-template-columns:390px 1fr;
+  background:#fff;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero-left{
+  position:relative;
+  padding:38px 0 0 80px;
+  background:#fff;
+}
+
+.hero-left:before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  width:18px;
+  background:#278968;
+}
+
+.hero-left:after{
+  content:"";
+  position:absolute;
+  left:18px;
+  top:0;
+  bottom:0;
+  width:18px;
+  background:#cfe2d4;
+}
+
+.hero h1{
+  font-family:Georgia,serif;
+  font-size:40px;
+  line-height:1.03;
+  margin:0 0 18px;
+  color:#082b4e;
+}
+
+.hero p{
+  font-size:13px;
+  line-height:1.55;
+  margin:0 0 12px;
+  color:#092b4a;
+  font-weight:600;
+}
+
+.btn{
+  display:inline-block;
+  padding:14px 18px;
+  background:#062f52;
+  color:#fff;
+  text-decoration:none;
+  border-radius:2px;
+  text-transform:uppercase;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.3px;
+}
+
+.dots{
+  position:absolute;
+  left:215px;
+  bottom:10px;
+  display:flex;
+  gap:8px;
+}
+
+.dots span{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:#d9d9d9;
+}
+
+.dots span:first-child{
+  background:#063255;
+}
+
+.hero-photo{
+  width:100%;
+  height:353px;
+  object-fit:cover;
+  object-position:center;
+}
+
+/* Services */
+.services{
+  height:76px;
+  background:#f7f2eb;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  align-items:center;
+  padding:0 70px;
+  gap:50px;
+}
+
+.service{
+  display:flex;
+  gap:16px;
+  align-items:center;
+  font-size:12px;
+  font-weight:700;
+  color:#062b4b;
+}
+
+.service .sico{
+  font-size:28px;
+  font-weight:400;
+}
+
+/* History */
+.history{
+  display:grid;
+  grid-template-columns:436px 1fr 210px;
+  gap:36px;
+  padding:18px 0 36px;
+  background:#fff;
+  align-items:start;
+  clear:both;
+}
+
+.history img{
+  width:436px;
+  height:254px;
+  object-fit:cover;
+}
+
+.eyebrow{
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.8px;
+  text-transform:uppercase;
+  color:#27745d;
+  margin-top:14px;
+}
+
+.history h2{
+  font-family:Georgia,serif;
+  font-size:28px;
+  line-height:1.15;
+  margin:8px 0 13px;
+  color:#082b4e;
+}
+
+.underline{
+  width:48px;
+  height:2px;
+  background:#2b8b6a;
+  margin:0 0 14px;
+}
+
+.history p{
+  font-size:12px;
+  line-height:1.45;
+  margin:0 0 10px;
+  color:#24384a;
+}
+
+.btn-outline{
+  display:inline-block;
+  border:1px solid var(--blue);
+  color:var(--blue);
+  text-decoration:none;
+  padding:12px 15px;
+  font-size:10px;
+  font-weight:700;
+  text-transform:uppercase;
+}
+
+.facts{
+  background:#f5efe6;
+  margin-top:18px;
+  height:236px;
+  padding:18px 24px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.fact{
+  display:grid;
+  grid-template-columns:28px 1fr;
+  gap:14px;
+  align-items:center;
+  font-size:12px;
+  font-weight:700;
+}
+
+.fact .ficon{
+  font-size:24px;
+  color:#082b4e;
+}
+
+/* Univers */
+.univers{
+  background:#fbf8f3;
+  padding:28px 80px 22px;
+  clear:both;
+}
+
+.univers .sub{
+  color:#27745d;
+  text-transform:uppercase;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.6px;
+}
+
+.univers h2{
+  font-family:Georgia,serif;
+  font-size:28px;
+  margin:7px 0 14px;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:20px;
+}
+
+.ucard{
+  background:#fff;
+  border:1px solid #ddd4c8;
+  text-align:center;
+}
+
+.ucard img{
+  width:100%;
+  height:102px;
+  object-fit:cover;
+  display:block;
+}
+
+.ucard h3{
+  font-family:Georgia,serif;
+  font-size:17px;
+  margin:12px 0 8px;
+}
+
+.ucard p{
+  font-size:10.5px;
+  line-height:1.35;
+  margin:0 12px 10px;
+  color:#24384a;
+  min-height:42px;
+}
+
+.link{
+  font-size:10px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.3px;
+  margin-bottom:12px;
+}
+
+/* Brands */
+.brands{
+  height:126px;
+  background:#f5efe6;
+  text-align:center;
+  position:relative;
+  padding-top:16px;
+}
+
+.brands h3{
+  font-size:10px;
+  letter-spacing:.8px;
+  text-transform:uppercase;
+  margin:0 0 22px;
+  color:#082b4e;
+}
+
+.brand-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 105px;
+}
+
+.brand-row img{
+  max-height:50px;
+  max-width:125px;
+  object-fit:contain;
+}
+
+.arrow{
+  position:absolute;
+  top:59px;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:#fff;
+  border:1px solid #eee;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:26px;
+  color:#999;
+}
+
+.arrow.left{
+  left:24px;
+}
+
+.arrow.right{
+  right:24px;
+}
+
+/* Appointment */
+.appointment{
+  height:220px;
+  display:grid;
+  grid-template-columns:410px 350px 1fr;
+  background:#062f52;
+  color:#fff;
+}
+
+.appt-left{
+  height:220px;
+  display:grid;
+  grid-template-columns:52px 1fr;
+  gap:16px;
+  align-items:start;
+  padding:28px 34px 22px 58px;
+}
+
+.cal-icon{
+  width:38px;
+  height:38px;
+  margin-top:2px;
+  color:#fff;
+}
+
+.cal-icon svg{
+  width:100%;
+  height:100%;
+  display:block;
+}
+
+.appt-kicker{
+  font-size:10px;
+  line-height:1;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+  color:#d4c7b7;
+  font-weight:800;
+  margin-bottom:6px;
+}
+
+.appt-left h2{
+  font-family:Georgia,serif;
+  font-size:23px;
+  line-height:1.08;
+  margin:0 0 10px;
+}
+
+.appt-left p{
+  font-size:10.5px;
+  line-height:1.35;
+  margin:0 0 13px;
+  font-weight:700;
+}
+
+.btn-green{
+  display:inline-block;
+  background:#2b8b69;
+  color:#fff;
+  text-decoration:none;
+  font-size:10px;
+  font-weight:800;
+  text-transform:uppercase;
+  padding:11px 20px;
+  border-radius:2px;
+}
+
+.store-img{
+  width:350px;
+  height:220px;
+  object-fit:cover;
+}
+
+.store-card{
+  background:#fff;
+  color:#0a2d4d;
+  min-height:172px;
+  margin:24px 28px 24px 34px;
+  padding:24px 28px;
+}
+
+.store-card h3{
+  font-size:11px;
+  text-transform:uppercase;
+  margin:0 0 14px;
+}
+
+.store-card p{
+  font-size:11px;
+  line-height:1.4;
+  margin:0 0 10px;
+  font-weight:700;
+}
+
+.store-card a{
+  font-size:10px;
+  text-transform:uppercase;
+  color:#082b4e;
+  font-weight:800;
+}
+
+.icon-box{
+  font-size:26px;
+  float:left;
+  margin-right:12px;
+}
+
+.footer{
+  height:58px;
+  background:#fff;
+}
+</style>
+</head>
+<body>
+  <main class="page">
+    <header class="header">
+      <img class="logo" src="assets/logo.png" alt="Richard La Literie">
+      <div class="search"><span>Rechercher un produit, une marque...</span><span class="glass">⌕</span></div>
+      <div class="head-actions">
+        <div><span class="ico">▣</span>Prendre rendez-vous</div>
+        <div><span class="ico">♙</span>Mon compte</div>
+        <div><span class="ico">▢</span>Panier</div>
+      </div>
+    </header>
+    <nav class="nav">
+      <a href="#">MARQUES</a><a href="#">MATELAS</a><a href="#">SOMMIERS</a><a href="#">LITS</a><a href="#">LITERIE</a><a href="#">CONSEILS</a><a class="sale" href="#">OFFRES SPÉCIALES %</a>
+    </nav>
+    <section class="hero">
+      <div class="hero-left">
+        <h1>Le confort<br>commence ici.</h1>
+        <p>Depuis 1933 à Crissier, nous vous guidons<br>vers la literie idéale, adaptée à vos besoins<br>et à votre budget.</p>
+        <p>Des marques reconnues, un conseil expert,<br>pour des nuits vraiment réparatrices.</p>
+        <a class="btn" href="#">Découvrir nos produits</a>
+        <div class="dots"><span></span><span></span><span></span></div>
+      </div>
+      <img class="hero-photo" src="assets/hero-bed.jpg" alt="Chambre avec lit">
+    </section>
+    <section class="services">
+      <div class="service"><span class="sico">☾</span><span>Essai à domicile<br>avant achat</span></div>
+      <div class="service"><span class="sico">▣</span><span>Livraison, installation<br>et recyclage</span></div>
+      <div class="service"><span class="sico">♙</span><span>Conseils personnalisés,<br>sur mesure</span></div>
+      <div class="service"><span class="sico">♢</span><span>Garantie<br>100% satisfaction</span></div>
+    </section>
+    <section class="history">
+      <img src="assets/expert.jpg" alt="Expert literie Richard">
+      <div>
+        <div class="eyebrow">Depuis 1933 à Crissier</div>
+        <h2>L’expert de la literie,<br>une histoire de famille</h2>
+        <div class="underline"></div>
+        <p>Trois générations d’experts passionnés vous accompagnent pour trouver la literie qui transformera vos nuits.</p>
+        <p><strong>Jean-Marc Richard et son équipe</strong> vous accueillent dans notre magasin à Crissier pour vous conseiller avec écoute et expertise.</p>
+        <a class="btn-outline" href="#">En savoir plus sur notre histoire</a>
+      </div>
+      <aside class="facts">
+        <div class="fact"><span class="ficon">☆</span><span>90 ans<br>d’expertise</span></div>
+        <div class="fact"><span class="ficon">♙</span><span>Entreprise<br>familiale</span></div>
+        <div class="fact"><span class="ficon">⌂</span><span>Magasin à<br>Crissier</span></div>
+        <div class="fact"><span class="ficon">⌖</span><span>À deux pas<br>de Lausanne</span></div>
+      </aside>
+    </section>
+    <section class="univers">
+      <div class="sub">Trouvez votre confort idéal</div>
+      <h2>Nos univers literie</h2>
+      <div class="cards">
+        <article class="ucard"><img src="assets/cat-matelas.jpg"><h3>Matelas</h3><p>Soutien, accueil, technologies : trouvez le matelas qui vous correspond.</p><div class="link">Découvrir →</div></article>
+        <article class="ucard"><img src="assets/cat-sommiers.jpg"><h3>Sommiers</h3><p>La base d’un bon sommeil. Fixes, relevables ou électriques.</p><div class="link">Découvrir →</div></article>
+        <article class="ucard"><img src="assets/cat-lits.jpg"><h3>Lits</h3><p>Design et confort, pour une chambre qui vous ressemble.</p><div class="link">Découvrir →</div></article>
+        <article class="ucard"><img src="assets/cat-literie.jpg"><h3>Literie</h3><p>Oreillers, duvets, linge de lit : la touche finale pour des nuits parfaites.</p><div class="link">Découvrir →</div></article>
+        <article class="ucard"><img src="assets/cat-conseils.jpg"><h3>Conseils</h3><p>Guides, astuces et conseils de nos experts pour bien choisir.</p><div class="link">Découvrir →</div></article>
+      </div>
+    </section>
+    <section class="brands">
+      <div class="arrow left">‹</div><div class="arrow right">›</div>
+      <h3>Les plus grandes marques de literie</h3>
+      <div class="brand-row">
+        <img src="assets/brand-roviva.png" alt="Roviva"><img src="assets/brand-swissflex.png" alt="Swissflex"><img src="assets/brand-hasena.png" alt="Hasena"><img src="assets/brand-sleepline.png" alt="Sleepline"><img src="assets/brand-rowa.png" alt="Röwa"><img src="assets/brand-divina.png" alt="Divina">
+      </div>
+    </section>
+    <section class="appointment">
+      <div class="appt-left">
+        <span class="cal-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="4.5" width="18" height="17" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M7 2.5v4M17 2.5v4M3 9h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01M16 17h.01" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <div class="appt-content">
+          <div class="appt-kicker">Prenez rendez-vous</div>
+          <h2>Un conseil personnalisé<br>rien que pour vous</h2>
+          <p>Profitez d’un moment privilégié avec un expert<br>pour trouver la literie parfaitement adaptée à<br>vos besoins.</p>
+          <a class="btn-green" href="#">Prendre rendez-vous</a>
+        </div>
+      </div>
+      <img class="store-img" src="assets/storefront.jpg" alt="Magasin Richard La Literie">
+      <div class="store-card"><span class="icon-box">⌖</span><h3>Notre magasin</h3><p>Richard La Literie<br>Rue des Alpes 2<br>1023 Crissier</p><p>021 634 04 76</p><a href="#">Voir l’itinéraire</a></div>
+    </section>
+  </main>
+</body>
+</html>

@@ -14,18 +14,23 @@
   <body class="page" data-page="brands">
     <header id="site-header"></header>
     <main class="page-main layout-main">
-      <div class="container category-page-shell">
+      <div class="category-page-shell layout-wide">
+        <nav class="breadcrumb" aria-label="Fil d'Ariane">
+          <a href="/">Accueil</a>
+          <span class="breadcrumb__separator" aria-hidden="true">›</span>
+          <span class="breadcrumb__current">Marques</span>
+        </nav>
         <section class="category-hero">
           <div class="category-hero-copy">
             <h1>Nos marques partenaires</h1>
             <p class="category-hero-description">
-              Découvrez les marques sélectionnées par Richard SA et accédez à leurs collections
-              dédiées pour comparer facilement les modèles.
+              Découvrez les marques sélectionnées par Richard La Literie et explorez
+              leur univers, leur savoir-faire et leurs systèmes de couchage.
             </p>
           </div>
         </section>
 
-        <section class="content-card content-card--soft">
+        <section class="brands-showcase" aria-label="Marques mises en avant">
           <div id="brands-grid" class="brands-grid"></div>
         </section>
       </div>
@@ -33,5 +38,4 @@
     <footer id="site-footer"></footer>
     <script type="module" src="/js/app.js"></script>
   </body>
-  </html>
-
+</html>

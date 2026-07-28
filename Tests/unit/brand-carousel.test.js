@@ -3,6 +3,8 @@
  */
 import { describe, expect, it } from "vitest";
 import {
+  buildFeaturedBrandSlidesHtml,
+  buildRepeatedBrandSlidesHtml,
   getBrandCarouselScrollStep,
   syncBrandCarouselArrows
 } from "../../js/brand-carousel.js";
@@ -44,5 +46,49 @@ describe("brand-carousel", () => {
     syncBrandCarouselArrows(container, prev, next);
     expect(prev.disabled).toBe(false);
     expect(next.disabled).toBe(true);
+  });
+
+  it("builds featured brand slides linking to brand pages", () => {
+    const html = buildFeaturedBrandSlidesHtml([
+      {
+        id: "roviva",
+        name: "Roviva",
+        slug: "roviva",
+        featured: true,
+        sortOrder: 1,
+        logo: "/assets/images/brands/roviva/logo.jpg"
+      },
+      {
+        id: "swissflex",
+        name: "Swissflex",
+        slug: "swissflex",
+        featured: true,
+        sortOrder: 2,
+        logo: "/assets/images/brands/swissflex/logo.png"
+      },
+      { id: "bico", name: "Bico", slug: "bico", featured: false, logo: "/x.png" }
+    ]);
+
+    expect(html).toContain('href="/pages/brand.html?slug=roviva"');
+    expect(html).toContain('href="/pages/brand.html?slug=swissflex"');
+    expect(html).toContain("/assets/images/brands/roviva/logo.jpg");
+    expect(html).toContain("/assets/images/brands/swissflex/logo.png");
+    expect(html).not.toContain("bico");
+  });
+
+  it("returns empty featured slides when no featured brands", () => {
+    expect(buildFeaturedBrandSlidesHtml([{ featured: false }])).toBe("");
+    expect(buildFeaturedBrandSlidesHtml(null)).toBe("");
+  });
+
+  it("builds repeated legacy slides for expert page", () => {
+    const html = buildRepeatedBrandSlidesHtml(
+      2,
+      "/assets/home/brand-roviva-ref.png",
+      "/pages/brand.html?slug=roviva",
+      "Roviva"
+    );
+    expect(html.match(/brand-row__slide/g)).toHaveLength(2);
+    expect(html).toContain("/assets/home/brand-roviva-ref.png");
   });
 });

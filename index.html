@@ -59,21 +59,29 @@
       <section class="services">
         <div class="services__inner layout-wide">
           <ul class="services__grid">
-            <!-- Pictos + ordre repris de la maquette (capture services) -->
+            <!-- Pictogrammes PNG brandés (assets/icons) — ordre maquette -->
             <li class="service">
-              <span class="sico" aria-hidden="true">☾</span>
+              <span class="sico" aria-hidden="true">
+                <img src="/assets/icons/essai-a-domicile.png" alt="" width="40" height="40" loading="lazy" decoding="async">
+              </span>
               <span>Essai à domicile<br>avant achat</span>
             </li>
             <li class="service">
-              <span class="sico" aria-hidden="true">▣</span>
+              <span class="sico" aria-hidden="true">
+                <img src="/assets/icons/livraison-rapide.png" alt="" width="40" height="40" loading="lazy" decoding="async">
+              </span>
               <span>Livraison, installation<br>et recyclage</span>
             </li>
             <li class="service">
-              <span class="sico" aria-hidden="true">♙</span>
+              <span class="sico" aria-hidden="true">
+                <img src="/assets/icons/conseils.png" alt="" width="40" height="40" loading="lazy" decoding="async">
+              </span>
               <span>Conseils personnalisés,<br>sur mesure</span>
             </li>
             <li class="service">
-              <span class="sico" aria-hidden="true">♢</span>
+              <span class="sico" aria-hidden="true">
+                <img src="/assets/icons/garantie-satisfaction.png" alt="" width="40" height="40" loading="lazy" decoding="async">
+              </span>
               <span>Garantie<br>100% satisfaction</span>
             </li>
           </ul>
@@ -94,24 +102,32 @@
                 <p>Trois générations d'experts passionnés vous accompagnent pour trouver la literie qui transformera vos nuits.</p>
                 <p><strong>Jean-Marc Richard et son équipe</strong> vous accueillent dans notre magasin à Crissier pour vous conseiller avec écoute et expertise.</p>
               </div>
-              <a class="btn-outline" href="/pages/about.html">En savoir plus sur notre histoire</a>
+              <a class="btn-outline" href="/pages/expert-literie-crissier.html">En savoir plus sur notre histoire</a>
             </div>
             <aside class="history__facts" aria-label="Faits clés">
-              <!-- Pictos repris de la maquette homepage/index.html -->
+              <!-- Pictogrammes PNG brandés (assets/icons) -->
               <div class="history__fact">
-                <span class="history__fact-icon" aria-hidden="true">☆</span>
+                <span class="history__fact-icon" aria-hidden="true">
+                  <img src="/assets/icons/expertise.png" alt="" width="36" height="36" loading="lazy" decoding="async">
+                </span>
                 <span>90 ans d'expertise</span>
               </div>
               <div class="history__fact">
-                <span class="history__fact-icon" aria-hidden="true">♙</span>
+                <span class="history__fact-icon" aria-hidden="true">
+                  <img src="/assets/icons/entreprise-familiale.png" alt="" width="36" height="36" loading="lazy" decoding="async">
+                </span>
                 <span>Entreprise familiale</span>
               </div>
               <div class="history__fact">
-                <span class="history__fact-icon" aria-hidden="true">⌂</span>
+                <span class="history__fact-icon" aria-hidden="true">
+                  <img src="/assets/icons/magasin.png" alt="" width="36" height="36" loading="lazy" decoding="async">
+                </span>
                 <span>Magasin à Crissier</span>
               </div>
               <div class="history__fact">
-                <span class="history__fact-icon" aria-hidden="true">⌖</span>
+                <span class="history__fact-icon" aria-hidden="true">
+                  <img src="/assets/icons/broche-de-localisation.png" alt="" width="36" height="36" loading="lazy" decoding="async">
+                </span>
                 <span>À deux pas de Lausanne</span>
               </div>
             </aside>
@@ -150,22 +166,15 @@
         </div>
       </section>
 
-      <section class="brands">
+      <section class="brands brands--static">
         <div class="brands__inner layout-wide">
           <h2>Les plus grandes marques de literie</h2>
-          <div class="brands__slider-wrap">
-            <button type="button" class="arrow left" aria-label="Marques précédentes">‹</button>
-            <button type="button" class="arrow right" aria-label="Marques suivantes">›</button>
-            <div
-              id="home-brand-row"
-              class="brand-row"
-              data-brand-slide-count="9"
-              data-brand-logo="/assets/home/brand-roviva-ref.png"
-              data-brand-href="/pages/brand.html?slug=roviva"
-              aria-roledescription="carousel"
-              aria-label="Les plus grandes marques de literie"
-            ></div>
-          </div>
+          <div
+            id="home-brand-row"
+            class="brand-row brand-row--grid"
+            data-brand-source="featured"
+            aria-label="Les plus grandes marques de literie"
+          ></div>
         </div>
       </section>
 
@@ -201,19 +210,23 @@
             <div class="store-card-wrap">
               <aside class="store-card">
                 <div class="store-card__header">
-                  <span class="icon-box" aria-hidden="true">⌖</span>
+                  <span class="icon-box" aria-hidden="true">
+                    <img src="/assets/icons/magasin.png" alt="" width="36" height="36" loading="lazy" decoding="async">
+                  </span>
                   <h3>Notre magasin</h3>
                 </div>
                 <div class="store-card__body">
-                  <p>Richard La Literie<br>Rue des Alpes 2<br>1023 Crissier</p>
-                  <p><a href="tel:+41216340476">021 634 04 76</a></p>
+                  <p class="store-card__address">Richard La Literie<br>Rue des Alpes 2<br>1023 Crissier</p>
+                  <div class="store-card__actions">
+                    <p class="store-card__phone"><a href="tel:+41216340476">021 634 04 76</a></p>
+                    <a
+                      class="store-card__link"
+                      href="https://www.google.com/maps/search/?api=1&amp;query=Rue+des+Alpes+2%2C+1023+Crissier"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >Voir l’itinéraire</a>
+                  </div>
                 </div>
-                <a
-                  class="store-card__link"
-                  href="https://www.google.com/maps/search/?api=1&amp;query=Rue+des+Alpes+2%2C+1023+Crissier"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >Voir l’itinéraire</a>
               </aside>
             </div>
           </div>
