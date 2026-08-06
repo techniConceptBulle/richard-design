@@ -2,7 +2,7 @@
 title: 'Migrate repository to Bitbucket'
 type: 'chore'
 created: '2026-08-06'
-status: 'in-progress'
+status: 'done'
 baseline_commit: '86bbbd0de8ec20d19c993ed0ee506737b1e093b0'
 context: []
 ---
@@ -60,12 +60,12 @@ context: []
 ## Tasks & Acceptance
 
 **Execution:**
-- [ ] Guide Bitbucket UI (one step at a time) — create private empty repo `richard-design` — get workspace + clone URL
-- [ ] `.gitignore` -- add `test-results/` -- keep ephemeral artifacts out of git
-- [ ] Stage `.agents/`, `_bmad/`, `_bmad-output/`, `.gitignore` (+ this spec if under `_bmad-output`) -- commit with enterprise French prefix when human confirms
-- [ ] `git remote` -- rename `origin` → `github`; add Bitbucket URL as `origin`
-- [ ] `git push -u origin main` -- publish history to Bitbucket
-- [ ] Verify with `git remote -v` and Bitbucket web UI -- confirm files/history visible
+- [x] Guide Bitbucket UI (one step at a time) — create private empty repo `richard-design` — get workspace + clone URL
+- [x] `.gitignore` -- add `test-results/` -- keep ephemeral artifacts out of git
+- [x] Stage `.agents/`, `_bmad/`, `_bmad-output/`, `.gitignore` (+ this spec if under `_bmad-output`) -- commit with enterprise French prefix when human confirms
+- [x] `git remote` -- rename `origin` → `github`; add Bitbucket URL as `origin`
+- [x] `git push -u origin main` -- publish history to Bitbucket
+- [x] Verify with `git remote -v` and Bitbucket web UI -- confirm files/history visible
 
 **Acceptance Criteria:**
 - Given a Bitbucket account and chosen workspace, when the human finishes the guided create flow, then a private empty `richard-design` repo exists and its clone URL is known.
@@ -84,3 +84,18 @@ context: []
 
 **Manual checks (if no CLI):**
 - Bitbucket repo Settings → Access: Private; Source: latest commit visible with BMAD folders
+
+## Suggested Review Order
+
+**Ignore hygiene**
+
+- Ephemeral Playwright output excluded from the migration commit
+  [`.gitignore:3`](../../.gitignore#L3)
+
+**Migration tracking**
+
+- Deferred GitHub drift and follow-ups captured for later
+  [`deferred-work.md:1`](deferred-work.md#L1)
+
+- Spec tasks and remotes acceptance criteria for the cutover
+  [`spec-migrate-bitbucket.md:69`](spec-migrate-bitbucket.md#L69)
