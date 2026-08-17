@@ -35,14 +35,24 @@ export function getCategoryUrl(slug) {
 }
 
 /**
- * Extrait le slug catégorie depuis /categorie/{slug}.html (ou sans .html), ou ?slug=.
- * Le chemin prime ; le query n'est lu que sur category.html (legacy).
+ * Extrait le slug catégorie depuis data-category-slug, /categorie/{slug}.html, ou ?slug=.
+ * Le dataset (pages générées) prime : utile derrière un proxy (ex. Huddlekit).
  * @param {{ pathname?: string, search?: string }} [locationLike=window.location]
+ * @param {{ body?: { dataset?: DOMStringMap } }} [documentLike=document]
  * @returns {string|undefined}
  */
-export function getCategorySlugFromLocation(locationLike = window.location) {
+export function getCategorySlugFromLocation(
+  locationLike = typeof window !== "undefined" ? window.location : undefined,
+  documentLike = typeof document !== "undefined" ? document : undefined
+) {
+  const fromDataset = documentLike?.body?.dataset?.categorySlug;
+  if (fromDataset) {
+    return fromDataset;
+  }
+
   const pathname = locationLike?.pathname || "";
-  const pathMatch = pathname.match(/^\/categorie\/([^/]+?)(?:\.html)?\/?$/);
+  // Pas d'ancre ^ : accepte un préfixe de chemin (proxy)
+  const pathMatch = pathname.match(/\/categorie\/([^/]+?)(?:\.html)?\/?$/);
   if (pathMatch?.[1]) {
     try {
       return decodeURIComponent(pathMatch[1]);

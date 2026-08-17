@@ -4,7 +4,8 @@
 import { describe, expect, it } from "vitest";
 import {
   emitCategoryStaticPages,
-  getCategoryStaticPagePaths
+  getCategoryStaticPagePaths,
+  injectCategorySlugAttribute
 } from "../../js/category-static-pages.js";
 import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -24,12 +25,30 @@ describe("getCategoryStaticPagePaths", () => {
   });
 });
 
+describe("injectCategorySlugAttribute", () => {
+  it("adds data-category-slug on category body", () => {
+    const html = '<body class="page" data-page="category">';
+    expect(injectCategorySlugAttribute(html, "matelas")).toContain(
+      'data-page="category" data-category-slug="matelas"'
+    );
+  });
+
+  it("returns original html when slug is empty", () => {
+    const html = '<body data-page="category">';
+    expect(injectCategorySlugAttribute(html, "")).toBe(html);
+  });
+});
+
 describe("emitCategoryStaticPages", () => {
-  it("writes category.html copies under dist/categorie/", () => {
+  it("writes category.html copies with data-category-slug", () => {
     const root = mkdtempSync(join(tmpdir(), "rd-cat-pages-"));
     const outDir = join(root, "dist");
     mkdirSync(join(outDir, "pages"), { recursive: true });
-    writeFileSync(join(outDir, "pages/category.html"), "<html>category</html>", "utf8");
+    writeFileSync(
+      join(outDir, "pages/category.html"),
+      '<html><body class="page" data-page="category"></body></html>',
+      "utf8"
+    );
     const categoriesPath = join(root, "categories.json");
     writeFileSync(
       categoriesPath,
@@ -40,11 +59,10 @@ describe("emitCategoryStaticPages", () => {
     const written = emitCategoryStaticPages(outDir, categoriesPath);
 
     expect(written).toEqual(["categorie/matelas.html", "categorie/lit.html"]);
-    expect(readFileSync(join(outDir, "categorie/matelas.html"), "utf8")).toBe(
-      "<html>category</html>"
-    );
-    expect(readFileSync(join(outDir, "categorie/lit.html"), "utf8")).toBe(
-      "<html>category</html>"
+    const matelasHtml = readFileSync(join(outDir, "categorie/matelas.html"), "utf8");
+    expect(matelasHtml).toContain('data-category-slug="matelas"');
+    expect(readFileSync(join(outDir, "categorie/lit.html"), "utf8")).toContain(
+      'data-category-slug="lit"'
     );
 
     rmSync(root, { recursive: true, force: true });

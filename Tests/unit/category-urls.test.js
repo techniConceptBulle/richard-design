@@ -72,4 +72,22 @@ describe("getCategorySlugFromLocation", () => {
       })
     ).toBe("lit");
   });
+
+  it("reads data-category-slug from document body first", () => {
+    expect(
+      getCategorySlugFromLocation(
+        { pathname: "/proxy/weird", search: "" },
+        { body: { dataset: { categorySlug: "matelas" } } }
+      )
+    ).toBe("matelas");
+  });
+
+  it("reads slug when pathname has a proxy prefix", () => {
+    expect(
+      getCategorySlugFromLocation({
+        pathname: "/proxy/view/categorie/sommier.html",
+        search: ""
+      })
+    ).toBe("sommier");
+  });
 });
