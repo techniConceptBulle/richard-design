@@ -14,7 +14,15 @@ import {
   getBrandBySlug,
   getProductBySlug
 } from "./data.js";
-import { formatPriceCHF, parseQueryParams, getProductImageUrl, getCategoryImageUrl, getBrandImageUrl } from "./utils.js";
+import {
+  formatPriceCHF,
+  parseQueryParams,
+  getProductImageUrl,
+  getCategoryImageUrl,
+  getBrandImageUrl,
+  getCategoryUrl,
+  getCategorySlugFromLocation
+} from "./utils.js";
 import { filterProductsBySearchTerm } from "./search.js";
 import { addToCart, getCartItems, getCartServiceOptions, saveCartItems, saveCartServiceOptions } from "./cart.js";
 import {
@@ -70,11 +78,11 @@ const PRIMARY_NAV_ITEMS = [
       }
     ]
   },
-  { href: "/pages/category.html?slug=matelas", label: "Matelas" },
-  { href: "/pages/category.html?slug=sommier", label: "Sommiers" },
-  { href: "/pages/category.html?slug=lit", label: "Lits" },
-  { href: "/pages/category.html?slug=literie", label: "Literie" },
-  { href: "/pages/category.html?slug=liquidation", label: "Offre spéciales %", sale: true },
+  { href: getCategoryUrl("matelas"), label: "Matelas" },
+  { href: getCategoryUrl("sommier"), label: "Sommiers" },
+  { href: getCategoryUrl("lit"), label: "Lits" },
+  { href: getCategoryUrl("literie"), label: "Literie" },
+  { href: getCategoryUrl("liquidation"), label: "Offre spéciales %", sale: true },
   { href: "/pages/brands.html", label: "Marques" },
   { href: "/pages/advice.html", label: "Conseils" }
 ];
@@ -209,14 +217,19 @@ export function renderSharedLayout() {
     const currentUrl = new URL(window.location.href);
     const isNavItemActive = (href) => {
       const targetUrl = new URL(href, window.location.origin);
-      if (currentUrl.pathname !== targetUrl.pathname) return false;
+      const targetCategorySlug = getCategorySlugFromLocation(targetUrl);
+      const currentCategorySlug = getCategorySlugFromLocation(currentUrl);
 
-      const targetSlug = targetUrl.searchParams.get("slug");
-      const currentSlug = currentUrl.searchParams.get("slug");
-
-      if (targetSlug) {
-        return targetSlug === currentSlug;
+      // Liens catégorie : comparer les slugs (chemin /categorie/... ou ?slug= legacy)
+      if (targetCategorySlug || currentCategorySlug) {
+        return Boolean(
+          targetCategorySlug &&
+            currentCategorySlug &&
+            targetCategorySlug === currentCategorySlug
+        );
       }
+
+      if (currentUrl.pathname !== targetUrl.pathname) return false;
 
       // Ancres : actif seulement si le hash correspond
       if (targetUrl.hash) {
@@ -346,9 +359,7 @@ async function renderHomeMainCategories() {
   container.innerHTML = mainCategories
     .map(
       (cat) => `
-      <a href="/pages/category.html?slug=${encodeURIComponent(
-        cat.slug
-      )}" class="category-panel">
+      <a href="${getCategoryUrl(cat.slug)}" class="category-panel">
         <div class="category-panel-background">
           <img src="${getCategoryImageUrl(cat)}" alt="${cat.name}" />
           <div class="category-panel-overlay"></div>
@@ -876,7 +887,8 @@ function renderCategoryProductCard(product) {
 }
 
 export async function initCategoryPage() {
-  const { slug, q } = parseQueryParams();
+  const { q } = parseQueryParams();
+  const slug = getCategorySlugFromLocation();
   const searchTerm = (q || "").trim().toLowerCase();
 
   const titleEl = document.getElementById("category-title");
@@ -2171,7 +2183,7 @@ export async function initProductPage() {
       ${categoryAncestors
         .map(
           (entry) =>
-            `<span class="breadcrumb__separator" aria-hidden="true">›</span><a href="/pages/category.html?slug=${encodeURIComponent(entry.slug)}">${entry.name}</a>`
+            `<span class="breadcrumb__separator" aria-hidden="true">›</span><a href="${getCategoryUrl(entry.slug)}">${entry.name}</a>`
         )
         .join("")}
       <span class="breadcrumb__separator" aria-hidden="true">›</span>

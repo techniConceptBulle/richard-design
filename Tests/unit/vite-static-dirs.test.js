@@ -20,6 +20,16 @@ describe("vite static copy dirs", () => {
     expect(source).not.toContain("'product'");
   });
 
+  it("rewrites /categorie/{slug} to category.html in dev and preview", () => {
+    const source = readFileSync(viteConfigPath, "utf8");
+
+    expect(source).toContain("categoryPrettyUrlPlugin");
+    expect(source).toContain("configurePreviewServer");
+    expect(source).toContain("/pages/category.html");
+    expect(source).toContain("/categorie/");
+    expect(source).toContain("bareRoot");
+  });
+
   it("skips missing directories during copy", () => {
     const source = readFileSync(viteConfigPath, "utf8");
 

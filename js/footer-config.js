@@ -30,14 +30,14 @@ export const FOOTER_LINK_COLUMNS = [
     title: "Navigation",
     links: [
       { href: "/pages/expert-literie-crissier.html", label: "À propos" },
-      { href: "/pages/category.html?slug=matelas", label: "Matelas" },
-      { href: "/pages/category.html?slug=sommier", label: "Sommiers" }
+      { href: "/categorie/matelas", label: "Matelas" },
+      { href: "/categorie/sommier", label: "Sommiers" }
     ]
   },
   {
     title: "Literie",
     links: [
-      { href: "/pages/category.html?slug=liquidation", label: "Offres du moment" },
+      { href: "/categorie/liquidation", label: "Offres du moment" },
       { href: "/pages/brands.html", label: "Marques" },
       { href: "/pages/advice.html", label: "Conseils" }
     ]

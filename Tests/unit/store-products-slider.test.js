@@ -11,8 +11,8 @@ describe("initStoreProductsSlider", () => {
         <button type="button" class="arrow left"></button>
         <button type="button" class="arrow right"></button>
         <div id="store-products-slider" class="store-products-slider__track">
-          <a class="store-products-slider__slide" href="/pages/category.html?slug=lit"></a>
-          <a class="store-products-slider__slide" href="/pages/category.html?slug=matelas"></a>
+          <a class="store-products-slider__slide" href="/categorie/lit"></a>
+          <a class="store-products-slider__slide" href="/categorie/matelas"></a>
         </div>
       </div>
     `;

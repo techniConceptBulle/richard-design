@@ -16,7 +16,7 @@ test.describe("Category archive page", () => {
 
   test("renders centered header, toolbar and rich product cards", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
-    await page.goto("/pages/category.html?slug=matelas");
+    await page.goto("/categorie/matelas");
 
     await expect(page).toHaveTitle(/Matelas.*Richard La Literie/i);
 
@@ -211,9 +211,17 @@ test.describe("Category archive page", () => {
     expect(columns.split(" ").length).toBeGreaterThanOrEqual(4);
   });
 
-  test("clear filters button resets active filters", async ({ page }) => {
+  test("legacy category.html?slug= still renders the listing", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto("/pages/category.html?slug=matelas");
+
+    await expect(page.locator("#category-title")).toHaveText("Matelas");
+    await expect(page.locator("#category-products-grid .category-product-card").first()).toBeVisible();
+  });
+
+  test("clear filters button resets active filters", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto("/categorie/matelas");
 
     const brandSelect = page.locator('[data-filter-key="brand"]');
     if ((await brandSelect.count()) === 0) {

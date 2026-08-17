@@ -51,8 +51,39 @@ function copyStaticDirsPlugin() {
   }
 }
 
+/**
+ * Réécrit /categorie/{slug} vers pages/category.html (dev + preview).
+ * Inclut /categorie et /categorie/ (slug manquant -> shell vide).
+ * L'URL navigateur reste /categorie/... ; le HTML servi contient data-page="category".
+ */
+function categoryPrettyUrlPlugin() {
+  /** @param {import('http').IncomingMessage} req */
+  function rewriteCategoryPath(req, _res, next) {
+    const rawUrl = req.url || ''
+    const pathOnly = rawUrl.split('?')[0]
+    const withSlug = pathOnly.match(/^\/categorie\/([^/]+)\/?$/)
+    const bareRoot = pathOnly === '/categorie' || pathOnly === '/categorie/'
+    if (withSlug || bareRoot) {
+      const queryIndex = rawUrl.indexOf('?')
+      const query = queryIndex >= 0 ? rawUrl.slice(queryIndex) : ''
+      req.url = `/pages/category.html${query}`
+    }
+    next()
+  }
+
+  return {
+    name: 'category-pretty-urls',
+    configureServer(server) {
+      server.middlewares.use(rewriteCategoryPath)
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use(rewriteCategoryPath)
+    }
+  }
+}
+
 export default defineConfig({
-  plugins: [copyStaticDirsPlugin()],
+  plugins: [copyStaticDirsPlugin(), categoryPrettyUrlPlugin()],
   server: {
     port: 3000,
     open: true

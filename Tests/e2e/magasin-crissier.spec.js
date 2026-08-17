@@ -92,11 +92,11 @@ test.describe("Magasin Crissier page", () => {
 
     const slides = section.locator(".store-products-slider__slide");
     await expect(slides).toHaveCount(5);
-    await expect(slides.nth(0)).toHaveAttribute("href", "/pages/category.html?slug=lit");
-    await expect(slides.nth(1)).toHaveAttribute("href", "/pages/category.html?slug=matelas");
-    await expect(slides.nth(2)).toHaveAttribute("href", "/pages/category.html?slug=sommier");
-    await expect(slides.nth(3)).toHaveAttribute("href", "/pages/category.html?slug=duvets");
-    await expect(slides.nth(4)).toHaveAttribute("href", "/pages/category.html?slug=oreillers");
+    await expect(slides.nth(0)).toHaveAttribute("href", "/categorie/lit");
+    await expect(slides.nth(1)).toHaveAttribute("href", "/categorie/matelas");
+    await expect(slides.nth(2)).toHaveAttribute("href", "/categorie/sommier");
+    await expect(slides.nth(3)).toHaveAttribute("href", "/categorie/duvets");
+    await expect(slides.nth(4)).toHaveAttribute("href", "/categorie/oreillers");
 
     await expect(slides.nth(0).locator(".store-products-slider__label")).toHaveText("lits");
     await expect(slides.nth(1).locator(".store-products-slider__label")).toHaveText("matelas");

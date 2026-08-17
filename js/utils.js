@@ -22,6 +22,45 @@ export function parseQueryParams(search = window.location.search) {
   return result;
 }
 
+/**
+ * Construit l'URL publique d'une catégorie (/categorie/{slug}).
+ * @param {string} slug - Identifiant URL de la catégorie
+ * @returns {string}
+ */
+export function getCategoryUrl(slug) {
+  if (!slug) {
+    return "/categorie/";
+  }
+  return `/categorie/${encodeURIComponent(String(slug))}`;
+}
+
+/**
+ * Extrait le slug catégorie depuis le pathname /categorie/... ou le query ?slug=.
+ * Le chemin prime ; le query n'est lu que sur category.html (legacy).
+ * @param {{ pathname?: string, search?: string }} [locationLike=window.location]
+ * @returns {string|undefined}
+ */
+export function getCategorySlugFromLocation(locationLike = window.location) {
+  const pathname = locationLike?.pathname || "";
+  const pathMatch = pathname.match(/^\/categorie\/([^/]+)\/?$/);
+  if (pathMatch?.[1]) {
+    try {
+      return decodeURIComponent(pathMatch[1]);
+    } catch {
+      return pathMatch[1];
+    }
+  }
+
+  // Legacy : ?slug= uniquement sur la page catégorie (slash final toléré)
+  if (/\/category\.html\/?$/.test(pathname)) {
+    const search = locationLike?.search || "";
+    const params = new URLSearchParams(search);
+    return params.get("slug") || undefined;
+  }
+
+  return undefined;
+}
+
 export function getProductImagePlaceholder(productName, color = "#007E9E") {
   const nameLower = (productName || "").toLowerCase();
   let svg = "";

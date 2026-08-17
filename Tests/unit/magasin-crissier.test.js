@@ -4,6 +4,7 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { getCategorySlugFromLocation } from "../../js/utils.js";
 
 const html = readFileSync(
   resolve(process.cwd(), "pages/magasin-crissier.html"),
@@ -88,11 +89,11 @@ describe("magasin-crissier page structure", () => {
     expect(html).toContain('aria-roledescription="carousel"');
     expect(html).toContain('aria-label="Catégories précédentes"');
     expect(html).toContain('aria-label="Catégories suivantes"');
-    expect(html).toContain('href="/pages/category.html?slug=lit"');
-    expect(html).toContain('href="/pages/category.html?slug=matelas"');
-    expect(html).toContain('href="/pages/category.html?slug=sommier"');
-    expect(html).toContain('href="/pages/category.html?slug=duvets"');
-    expect(html).toContain('href="/pages/category.html?slug=oreillers"');
+    expect(html).toContain('href="/categorie/lit"');
+    expect(html).toContain('href="/categorie/matelas"');
+    expect(html).toContain('href="/categorie/sommier"');
+    expect(html).toContain('href="/categorie/duvets"');
+    expect(html).toContain('href="/categorie/oreillers"');
     expect(html).toMatch(/store-products-slider__label">lits</);
     expect(html).toMatch(/store-products-slider__label">matelas</);
     expect(html).toMatch(/store-products-slider__label">sommier</);
@@ -112,7 +113,8 @@ describe("magasin-crissier page structure", () => {
 
     expect(hrefs).toHaveLength(5);
     for (const href of hrefs) {
-      const slug = new URL(href, "http://localhost").searchParams.get("slug");
+      const url = new URL(href, "http://localhost");
+      const slug = getCategorySlugFromLocation(url);
       expect(knownSlugs.has(slug)).toBe(true);
     }
   });
