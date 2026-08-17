@@ -23,7 +23,7 @@ export function parseQueryParams(search = window.location.search) {
 }
 
 /**
- * Construit l'URL publique d'une catégorie (/categorie/{slug}).
+ * Construit l'URL publique d'une catégorie (/categorie/{slug}.html).
  * @param {string} slug - Identifiant URL de la catégorie
  * @returns {string}
  */
@@ -31,18 +31,18 @@ export function getCategoryUrl(slug) {
   if (!slug) {
     return "/categorie/";
   }
-  return `/categorie/${encodeURIComponent(String(slug))}`;
+  return `/categorie/${encodeURIComponent(String(slug))}.html`;
 }
 
 /**
- * Extrait le slug catégorie depuis le pathname /categorie/... ou le query ?slug=.
+ * Extrait le slug catégorie depuis /categorie/{slug}.html (ou sans .html), ou ?slug=.
  * Le chemin prime ; le query n'est lu que sur category.html (legacy).
  * @param {{ pathname?: string, search?: string }} [locationLike=window.location]
  * @returns {string|undefined}
  */
 export function getCategorySlugFromLocation(locationLike = window.location) {
   const pathname = locationLike?.pathname || "";
-  const pathMatch = pathname.match(/^\/categorie\/([^/]+)\/?$/);
+  const pathMatch = pathname.match(/^\/categorie\/([^/]+?)(?:\.html)?\/?$/);
   if (pathMatch?.[1]) {
     try {
       return decodeURIComponent(pathMatch[1]);

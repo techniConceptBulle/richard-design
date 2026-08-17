@@ -52,7 +52,7 @@ function copyStaticDirsPlugin() {
 }
 
 /**
- * Réécrit /categorie/{slug} vers pages/category.html (dev + preview).
+ * Réécrit /categorie/{slug}.html (et variante sans .html) vers pages/category.html.
  * Inclut /categorie et /categorie/ (slug manquant -> shell vide).
  * L'URL navigateur reste /categorie/... ; le HTML servi contient data-page="category".
  */
@@ -61,7 +61,7 @@ function categoryPrettyUrlPlugin() {
   function rewriteCategoryPath(req, _res, next) {
     const rawUrl = req.url || ''
     const pathOnly = rawUrl.split('?')[0]
-    const withSlug = pathOnly.match(/^\/categorie\/([^/]+)\/?$/)
+    const withSlug = pathOnly.match(/^\/categorie\/([^/]+?)(?:\.html)?\/?$/)
     const bareRoot = pathOnly === '/categorie' || pathOnly === '/categorie/'
     if (withSlug || bareRoot) {
       const queryIndex = rawUrl.indexOf('?')

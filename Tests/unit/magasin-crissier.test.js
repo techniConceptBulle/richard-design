@@ -89,11 +89,11 @@ describe("magasin-crissier page structure", () => {
     expect(html).toContain('aria-roledescription="carousel"');
     expect(html).toContain('aria-label="Catégories précédentes"');
     expect(html).toContain('aria-label="Catégories suivantes"');
-    expect(html).toContain('href="/categorie/lit"');
-    expect(html).toContain('href="/categorie/matelas"');
-    expect(html).toContain('href="/categorie/sommier"');
-    expect(html).toContain('href="/categorie/duvets"');
-    expect(html).toContain('href="/categorie/oreillers"');
+    expect(html).toContain('href="/categorie/lit.html"');
+    expect(html).toContain('href="/categorie/matelas.html"');
+    expect(html).toContain('href="/categorie/sommier.html"');
+    expect(html).toContain('href="/categorie/duvets.html"');
+    expect(html).toContain('href="/categorie/oreillers.html"');
     expect(html).toMatch(/store-products-slider__label">lits</);
     expect(html).toMatch(/store-products-slider__label">matelas</);
     expect(html).toMatch(/store-products-slider__label">sommier</);

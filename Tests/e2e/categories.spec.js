@@ -16,7 +16,7 @@ test.describe("Category archive page", () => {
 
   test("renders centered header, toolbar and rich product cards", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
-    await page.goto("/categorie/matelas");
+    await page.goto("/categorie/matelas.html");
 
     await expect(page).toHaveTitle(/Matelas.*Richard La Literie/i);
 
@@ -221,7 +221,7 @@ test.describe("Category archive page", () => {
 
   test("clear filters button resets active filters", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
-    await page.goto("/categorie/matelas");
+    await page.goto("/categorie/matelas.html");
 
     const brandSelect = page.locator('[data-filter-key="brand"]');
     if ((await brandSelect.count()) === 0) {

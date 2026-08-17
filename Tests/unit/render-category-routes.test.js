@@ -1,5 +1,5 @@
 /**
- * Tests unitaires — rewrite Render pour les URLs /categorie/{slug}.
+ * Tests unitaires — rewrite Render pour les URLs /categorie/{slug}.html.
  */
 import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
@@ -12,11 +12,12 @@ const renderYamlPath = resolve(
 );
 
 describe("render.yaml category pretty URLs", () => {
-  it("rewrites /categorie and /categorie/* to category.html", () => {
+  it("rewrites /categorie/*.html and /categorie/* to category.html", () => {
     const source = readFileSync(renderYamlPath, "utf8");
 
     expect(source).toContain("type: rewrite");
     expect(source).toContain("source: /categorie");
+    expect(source).toContain("source: /categorie/*.html");
     expect(source).toContain("source: /categorie/*");
     expect(source).toContain("destination: /pages/category.html");
   });
