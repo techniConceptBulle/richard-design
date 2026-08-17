@@ -73,13 +73,36 @@ describe("getCategorySlugFromLocation", () => {
     ).toBe("lit");
   });
 
-  it("reads data-category-slug from document body first", () => {
+  it("reads data-category-slug only when readDocumentSlug is enabled", () => {
+    const originalDocument = globalThis.document;
+    globalThis.document = {
+      body: { dataset: { categorySlug: "matelas" } }
+    };
+
+    expect(
+      getCategorySlugFromLocation({ pathname: "/proxy/weird", search: "" })
+    ).toBeUndefined();
     expect(
       getCategorySlugFromLocation(
         { pathname: "/proxy/weird", search: "" },
-        { body: { dataset: { categorySlug: "matelas" } } }
+        { readDocumentSlug: true }
       )
     ).toBe("matelas");
+
+    globalThis.document = originalDocument;
+  });
+
+  it("does not apply document slug when parsing a different href pathname", () => {
+    const originalDocument = globalThis.document;
+    globalThis.document = {
+      body: { dataset: { categorySlug: "lit" } }
+    };
+
+    expect(
+      getCategorySlugFromLocation({ pathname: "/categorie/matelas.html", search: "" })
+    ).toBe("matelas");
+
+    globalThis.document = originalDocument;
   });
 
   it("reads slug when pathname has a proxy prefix", () => {

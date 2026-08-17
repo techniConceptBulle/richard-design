@@ -35,19 +35,24 @@ export function getCategoryUrl(slug) {
 }
 
 /**
- * Extrait le slug catégorie depuis data-category-slug, /categorie/{slug}.html, ou ?slug=.
- * Le dataset (pages générées) prime : utile derrière un proxy (ex. Huddlekit).
+ * Extrait le slug catégorie depuis le pathname /categorie/{slug}.html, ou ?slug=.
+ * Optionnellement lit data-category-slug sur document.body (page générée / proxy).
  * @param {{ pathname?: string, search?: string }} [locationLike=window.location]
- * @param {{ body?: { dataset?: DOMStringMap } }} [documentLike=document]
+ * @param {{ readDocumentSlug?: boolean }} [options]
  * @returns {string|undefined}
  */
 export function getCategorySlugFromLocation(
   locationLike = typeof window !== "undefined" ? window.location : undefined,
-  documentLike = typeof document !== "undefined" ? document : undefined
+  options = {}
 ) {
-  const fromDataset = documentLike?.body?.dataset?.categorySlug;
-  if (fromDataset) {
-    return fromDataset;
+  const { readDocumentSlug = false } = options;
+
+  // Uniquement pour la page courante — jamais pour parser un href du menu
+  if (readDocumentSlug && typeof document !== "undefined") {
+    const fromDataset = document.body?.dataset?.categorySlug;
+    if (fromDataset) {
+      return fromDataset;
+    }
   }
 
   const pathname = locationLike?.pathname || "";

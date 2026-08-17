@@ -218,7 +218,9 @@ export function renderSharedLayout() {
     const isNavItemActive = (href) => {
       const targetUrl = new URL(href, window.location.origin);
       const targetCategorySlug = getCategorySlugFromLocation(targetUrl);
-      const currentCategorySlug = getCategorySlugFromLocation(currentUrl);
+      const currentCategorySlug = getCategorySlugFromLocation(currentUrl, {
+        readDocumentSlug: true
+      });
 
       // Liens catégorie : comparer les slugs (chemin /categorie/... ou ?slug= legacy)
       if (targetCategorySlug || currentCategorySlug) {
@@ -888,7 +890,7 @@ function renderCategoryProductCard(product) {
 
 export async function initCategoryPage() {
   const { q } = parseQueryParams();
-  const slug = getCategorySlugFromLocation();
+  const slug = getCategorySlugFromLocation(undefined, { readDocumentSlug: true });
   const searchTerm = (q || "").trim().toLowerCase();
 
   const titleEl = document.getElementById("category-title");
