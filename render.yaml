@@ -4,3 +4,12 @@ services:
     runtime: static
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
+    # Pretty URLs catégories : le navigateur garde /categorie/{slug},
+    # Render sert pages/category.html (slug lu côté client).
+    routes:
+      - type: rewrite
+        source: /categorie
+        destination: /pages/category.html
+      - type: rewrite
+        source: /categorie/*
+        destination: /pages/category.html

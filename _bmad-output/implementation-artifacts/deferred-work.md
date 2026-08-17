@@ -7,5 +7,5 @@
 
 ## From spec-category-pretty-urls (2026-08-17)
 
-- **Production host rewrite:** Vite covers only `configureServer` / `configurePreviewServer`. Static deploy needs an equivalent `/categorie/:slug` -> `pages/category.html` rewrite (Ask First before adding `.htaccess` / nginx / `_redirects`).
 - **E2E nav-active:** No Playwright assertion that Matelas nav is `menu-link--active` on `/categorie/matelas` (logic present in `renderSharedLayout`).
+- ~~**Production host rewrite:**~~ Done in `render.yaml` (`/categorie` + `/categorie/*` -> `/pages/category.html`).
