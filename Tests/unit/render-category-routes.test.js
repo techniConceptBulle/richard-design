@@ -12,14 +12,14 @@ const renderYamlPath = resolve(
 );
 
 describe("render.yaml category pretty URLs", () => {
-  it("rewrites /categorie/*.html and /categorie/* to category.html", () => {
+  it("rewrites extensionless /categorie/* as fallback", () => {
     const source = readFileSync(renderYamlPath, "utf8");
 
     expect(source).toContain("type: rewrite");
     expect(source).toContain("source: /categorie");
-    expect(source).toContain("source: /categorie/*.html");
     expect(source).toContain("source: /categorie/*");
     expect(source).toContain("destination: /pages/category.html");
+    expect(source).not.toContain("source: /categorie/*.html");
   });
 
   it("keeps static publish path on dist", () => {

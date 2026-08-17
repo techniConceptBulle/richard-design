@@ -30,6 +30,13 @@ describe("vite static copy dirs", () => {
     expect(source).toContain("bareRoot");
   });
 
+  it("emits physical /categorie/{slug}.html files after build", () => {
+    const source = readFileSync(viteConfigPath, "utf8");
+
+    expect(source).toContain("emitCategoryStaticPages");
+    expect(source).toContain("data/categories.json");
+  });
+
   it("skips missing directories during copy", () => {
     const source = readFileSync(viteConfigPath, "utf8");
 

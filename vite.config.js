@@ -3,6 +3,7 @@ import { existsSync, readdirSync, statSync } from 'node:fs'
 import { cp } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { emitCategoryStaticPages } from './js/category-static-pages.js'
 
 const rootDir = dirname(fileURLToPath(import.meta.url))
 
@@ -47,6 +48,8 @@ function copyStaticDirsPlugin() {
         }
         await cp(src, resolve(outDir, dir), { recursive: true })
       }
+      // Fichiers physiques /categorie/{slug}.html pour Render (pas de rewrite .html)
+      emitCategoryStaticPages(outDir, resolve(rootDir, 'data/categories.json'))
     }
   }
 }
