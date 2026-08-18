@@ -12,3 +12,7 @@
 
 - **E2E nav-active:** No Playwright assertion that Matelas nav is `menu-link--active` on `/categorie/matelas` (logic present in `renderSharedLayout`).
 - ~~**Production host rewrite:**~~ Done in `render.yaml` (`/categorie` + `/categorie/*` -> `/pages/category.html`).
+
+## From spec-nav-home-magasin-tweaks (2026-08-18)
+
+- **CSS mort `.appointment`:** Les règles `.rd-page .appointment*` / `.store-card*` restent dans [richard-design.css](../../styles/richard-design.css) après remplacement du bloc accueil par `.product-advice`. Nettoyage hors scope de cette passe.

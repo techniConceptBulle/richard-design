@@ -306,8 +306,8 @@ body.nav-open {
 .nav-primary__inner {
   max-width: var(--layout-max-width);
   margin: 0 auto;
-  /* Point 2 debrief : bandeau bleu élargi en hauteur */
-  padding: 0.55rem var(--gutter);
+  /* Bandeau bleu plus épais (~+8px par côté vs 0.55rem) */
+  padding: 1.05rem var(--gutter);
   display: flex;
   align-items: stretch;
   justify-content: flex-end;
@@ -473,8 +473,8 @@ body.nav-open {
 
 @media (min-width: 768px) {
   .nav-primary__inner {
-    /* Padding vertical conservé ; horizontal réduit pour les libellés */
-    padding: 0.55rem 0.75rem;
+    /* Padding vertical 1.05rem ; horizontal réduit pour les libellés */
+    padding: 1.05rem 0.75rem;
   }
 
   .burger {
@@ -508,7 +508,7 @@ body.nav-open {
     align-items: center;
     justify-content: center;
     /* Étire chaque item sur toute la hauteur du bandeau (padding inclus) */
-    margin-block: -0.55rem;
+    margin-block: -1.05rem;
   }
 
   .nav-primary .menu-item--has-children {
@@ -520,8 +520,8 @@ body.nav-open {
     align-items: center;
     justify-content: center;
     width: 100%;
-    /* Padding vertical d’origine ; horizontal réduit */
-    padding: 0.65rem 0.25rem;
+    /* Padding vertical augmenté avec le bandeau ; horizontal réduit */
+    padding: 1.15rem 0.25rem;
     font-size: 0.875rem;
     font-weight: 800;
     letter-spacing: 0.04em;
@@ -622,7 +622,7 @@ body.nav-open {
 
 @media (min-width: 1280px) {
   .nav-primary__inner {
-    padding: 0.55rem 1rem;
+    padding: 1.05rem 1rem;
   }
 }
 

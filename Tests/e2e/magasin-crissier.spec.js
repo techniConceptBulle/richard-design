@@ -27,7 +27,7 @@ test.describe("Magasin Crissier page", () => {
     await expect(splits.nth(2)).toHaveClass(/about-split--image-left/);
 
     await expect(splits.nth(0).locator(".about-split__title")).toContainText(
-      "Pourquoi essayer son matelas en magasin"
+      "Pourquoi acheter son matelas en magasin"
     );
     await expect(splits.nth(1).locator(".about-split__title")).toContainText(
       "Essayer son matelas, un indispensable"
@@ -98,11 +98,16 @@ test.describe("Magasin Crissier page", () => {
     await expect(slides.nth(3)).toHaveAttribute("href", "/categorie/duvets.html");
     await expect(slides.nth(4)).toHaveAttribute("href", "/categorie/oreillers.html");
 
-    await expect(slides.nth(0).locator(".store-products-slider__label")).toHaveText("lits");
-    await expect(slides.nth(1).locator(".store-products-slider__label")).toHaveText("matelas");
-    await expect(slides.nth(2).locator(".store-products-slider__label")).toHaveText("sommier");
-    await expect(slides.nth(3).locator(".store-products-slider__label")).toHaveText("duvet");
-    await expect(slides.nth(4).locator(".store-products-slider__label")).toHaveText("oreiller");
+    await expect(slides.nth(0).locator(".store-products-slider__label")).toHaveText("Lits");
+    await expect(slides.nth(1).locator(".store-products-slider__label")).toHaveText("Matelas");
+    await expect(slides.nth(2).locator(".store-products-slider__label")).toHaveText("Sommier");
+    await expect(slides.nth(3).locator(".store-products-slider__label")).toHaveText("Duvet");
+    await expect(slides.nth(4).locator(".store-products-slider__label")).toHaveText("Oreiller");
+
+    const labelTransform = await slides.nth(0).locator(".store-products-slider__label").evaluate(
+      (el) => getComputedStyle(el).textTransform
+    );
+    expect(labelTransform).not.toBe("lowercase");
 
     await expect(section.locator(".arrow.left")).toBeVisible();
     await expect(section.locator(".arrow.right")).toBeVisible();

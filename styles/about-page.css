@@ -1245,7 +1245,6 @@
   font-weight: 800;
   line-height: var(--line-height-snug);
   color: var(--color-text);
-  text-transform: lowercase;
 }
 
 .about-page .store-products-slider__slide:hover .store-products-slider__label {

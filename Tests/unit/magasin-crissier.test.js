@@ -20,9 +20,9 @@ describe("magasin-crissier page structure", () => {
     expect(html).toContain('class="breadcrumb__current">Votre magasin de matelas à Crissier</span>');
   });
 
-  it("does not include the green store kicker", () => {
-    expect(html).not.toContain("about-split__kicker");
-    expect(html).not.toContain("Votre magasin de literie à Crissier");
+  it("uses buy-in-store wording in the first split title", () => {
+    expect(html).toContain("Pourquoi acheter son matelas en magasin");
+    expect(html).not.toContain("Pourquoi essayer son matelas en magasin");
   });
 
   it("orders three split blocks as left, right, left", () => {
@@ -94,11 +94,12 @@ describe("magasin-crissier page structure", () => {
     expect(html).toContain('href="/categorie/sommier.html"');
     expect(html).toContain('href="/categorie/duvets.html"');
     expect(html).toContain('href="/categorie/oreillers.html"');
-    expect(html).toMatch(/store-products-slider__label">lits</);
-    expect(html).toMatch(/store-products-slider__label">matelas</);
-    expect(html).toMatch(/store-products-slider__label">sommier</);
-    expect(html).toMatch(/store-products-slider__label">duvet</);
-    expect(html).toMatch(/store-products-slider__label">oreiller</);
+    expect(html).toMatch(/store-products-slider__label">Lits</);
+    expect(html).toMatch(/store-products-slider__label">Matelas</);
+    expect(html).toMatch(/store-products-slider__label">Sommier</);
+    expect(html).toMatch(/store-products-slider__label">Duvet</);
+    expect(html).toMatch(/store-products-slider__label">Oreiller</);
+    expect(html).not.toMatch(/store-products-slider__label">lits</);
     expect(html).not.toContain("univers__cards--store-five");
   });
 
@@ -140,6 +141,12 @@ describe("magasin-crissier page structure", () => {
     );
     expect(css).not.toMatch(
       /\.about-page\s+\.store-products-slider__title\s*\{[^}]*text-transform:\s*uppercase/s
+    );
+  });
+
+  it("does not force slider category labels to lowercase", () => {
+    expect(css).not.toMatch(
+      /\.about-page\s+\.store-products-slider__label\s*\{[^}]*text-transform:\s*lowercase/s
     );
   });
 

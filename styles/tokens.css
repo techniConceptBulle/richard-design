@@ -114,9 +114,9 @@
   --shadow-elevated: 0 18px 36px rgba(8, 43, 78, 0.08);
 
   /* Hauteurs enveloppe fixe — repli CSS avant mesure JS (envelope-offset.js) */
-  /* Recalées après agrandissement logo (1) + bandeau nav (2) */
-  --envelope-height-mobile: 14.75rem;
-  --envelope-height-desktop: 11.25rem;
+  /* Recalées après agrandissement logo (1) + bandeau nav (2) + bandeau +16px (3) */
+  --envelope-height-mobile: 15.75rem;
+  --envelope-height-desktop: 12.25rem;
   --header-height-mobile: 5.75rem;
   --header-height-desktop: 6rem;
   --topbar-height: 2.375rem;

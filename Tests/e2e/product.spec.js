@@ -73,8 +73,18 @@ test.describe("Product detail page", () => {
     await expect(mediumChip).toBeVisible();
     await mediumChip.click();
     await expect(mediumChip).toHaveClass(/is-active/);
-    await expect(mediumChip).toHaveCSS("border-top-color", "rgb(8, 43, 78)");
-    await expect(mediumChip).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+    await expect(mediumChip).toHaveCSS("background-color", "rgb(39, 116, 93)");
+    await expect(mediumChip).toHaveCSS("color", "rgb(255, 255, 255)");
+    await expect(mediumChip).toHaveCSS("border-top-color", "rgb(39, 116, 93)");
+
+    const firmChip = page.locator('.product-chip[data-option-key="firmness"][data-option-value="firm"]');
+    await expect(firmChip).not.toHaveClass(/is-active/);
+    await expect(firmChip).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+
+    const sizeSelect = page.locator('.product-option-card__select[data-option-key="size"]');
+    await expect(sizeSelect).toHaveClass(/is-selected/);
+    await expect(sizeSelect).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+    await expect(sizeSelect).toHaveCSS("color", "rgb(8, 43, 78)");
   });
 
   test("switches gallery image when thumbnail is clicked", async ({ page }) => {
@@ -284,18 +294,26 @@ test.describe("Product detail page", () => {
       const h1 = document.querySelector(".product_title");
       const brandLogo = document.querySelector(".product-brand__logo");
       const header = document.querySelector(".product-summary__header");
+      const panel = document.querySelector(".product-summary-panel");
+      const shell = document.querySelector(".product-page-shell");
       const price = document.querySelector(".price-display");
       const options = document.querySelector(".product-options");
-      if (!name || !h1 || !brandLogo || !header || !price || !options) return null;
+      if (!name || !h1 || !brandLogo || !header || !panel || !shell || !price || !options) return null;
       const nameRect = name.getBoundingClientRect();
       const titleRect = h1.getBoundingClientRect();
       const logoRect = brandLogo.getBoundingClientRect();
+      const headerRect = header.getBoundingClientRect();
+      const panelRect = panel.getBoundingClientRect();
+      const shellRect = shell.getBoundingClientRect();
       const priceRect = price.getBoundingClientRect();
       const optionsRect = options.getBoundingClientRect();
       return {
         nameAboveTitle: nameRect.bottom <= titleRect.top + 2,
         logoRightOfTitle: logoRect.left >= titleRect.right - 4,
         logoInHeader: header.contains(brandLogo),
+        logoInsideHeader: logoRect.right <= headerRect.right + 1,
+        logoInsidePanel: logoRect.right <= panelRect.right + 1,
+        logoInsideShell: logoRect.right <= shellRect.right + 1,
         brandToTitleGap: titleRect.top - nameRect.bottom,
         titleToPriceGap: priceRect.top - titleRect.bottom,
         priceToOptionsGap: optionsRect.top - priceRect.bottom
@@ -305,6 +323,9 @@ test.describe("Product detail page", () => {
     expect(positions.nameAboveTitle).toBe(true);
     expect(positions.logoRightOfTitle).toBe(true);
     expect(positions.logoInHeader).toBe(true);
+    expect(positions.logoInsideHeader).toBe(true);
+    expect(positions.logoInsidePanel).toBe(true);
+    expect(positions.logoInsideShell).toBe(true);
     expect(positions.brandToTitleGap).toBeLessThan(12);
     expect(positions.titleToPriceGap).toBeGreaterThanOrEqual(12);
     expect(positions.priceToOptionsGap).toBeGreaterThanOrEqual(20);
