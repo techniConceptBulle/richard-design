@@ -8,8 +8,12 @@ import {
   buildBrandLogoLinkHtml,
   buildBrandTileHtml,
   buildBrandsGridHtml,
+  buildSelectaBrandPageHtml,
+  buildSelectaProductsSectionHtml,
   escapeHtml,
-  getFeaturedBrands
+  getFeaturedBrands,
+  getSelectaPageProducts,
+  isSelectaBrandPage
 } from "../../js/brands-page.js";
 
 describe("brands-page helpers", () => {
@@ -142,5 +146,119 @@ describe("brands-page helpers", () => {
       "&lt;script&gt;&quot;x&quot;&amp;&#39;"
     );
     expect(escapeHtml(null)).toBe("");
+  });
+});
+
+describe("selecta brand page helpers", () => {
+  const selectaBrand = {
+    slug: "selecta",
+    name: "Selecta",
+    selectaPage: {
+      hero: { image: "/hero.jpg", logo: "/logo.jpg", logoAlt: "Selecta" },
+      manufacture: { title: "La manufacture du sommeil", image: "/wood.jpg", paragraphs: ["Texte"] },
+      people: { title: "Artisans", images: [{ src: "/a.jpg", alt: "A" }], paragraphs: ["P"] },
+      expertise: { title: "Selecta by Röwa : la même expertise", image: "/assets/marques/matelas-rowa-3.jpg", paragraphs: ["E"] },
+      base: { title: "Le sommier Röwa", image: "/assets/marques/sommier-rowa-radio-m4memory.jpg", paragraphs: ["S"] },
+      products: { title: "Découvrez notre sélection Röwa", allLabel: "Voir tous les produits Röwa & Selecta by Röwa" },
+      why: { title: "Pourquoi Richard", icon: "/p.png", paragraphs: ["W"] },
+      cta: {
+        title: "Besoin de conseils personnalisés ?",
+        text: "Prenez rendez-vous avec l'un de nos experts.",
+        buttonLabel: "Prendre rendez-vous",
+        buttonHref: "/pages/contact.html"
+      }
+    }
+  };
+
+  const sampleProducts = [
+    {
+      slug: "selecta-s5",
+      name: "Selecta S5",
+      brandId: "selecta",
+      shortDescription: "Le confort naturellement équilibré",
+      price: 1760,
+      images: ["/assets/marques/matelas-rowa-2.jpg"]
+    },
+    {
+      slug: "rowa-n",
+      name: "Röwa N",
+      brandId: "rowa",
+      price: 2140,
+      images: ["/assets/marques/sommier-rowa-2.jpg"]
+    },
+    { slug: "roviva-x", name: "Roviva X", brandId: "roviva", price: 100 }
+  ];
+
+  it("detects the selecta layout from the brand slug", () => {
+    expect(isSelectaBrandPage(selectaBrand)).toBe(true);
+    expect(isSelectaBrandPage({ slug: "selecta" })).toBe(false);
+    expect(isSelectaBrandPage({ slug: "rowa" })).toBe(false);
+    expect(isSelectaBrandPage(null)).toBe(false);
+  });
+
+  it("filters selecta and rowa products and caps the list", () => {
+    const filtered = getSelectaPageProducts(sampleProducts, 4);
+    expect(filtered.map((item) => item.slug)).toEqual(["selecta-s5", "rowa-n"]);
+    expect(getSelectaPageProducts(sampleProducts, 1)).toHaveLength(1);
+  });
+
+  it("returns an empty list when products are missing", () => {
+    expect(getSelectaPageProducts(null)).toEqual([]);
+    expect(getSelectaPageProducts(undefined)).toEqual([]);
+    expect(getSelectaPageProducts([])).toEqual([]);
+  });
+
+  it("renders the all-products control as a button without href", () => {
+    const html = buildSelectaProductsSectionHtml(
+      selectaBrand.selectaPage.products,
+      '<article class="category-product-card">Selecta S5</article>'
+    );
+    expect(html).toContain("category-products-grid");
+    expect(html).toContain("product-related-header");
+    expect(html).toContain('type="button"');
+    expect(html).toContain("selecta-products__all");
+    expect(html).toContain("Voir tous les produits Röwa &amp; Selecta by Röwa");
+    expect(html).not.toMatch(/<button[^>]*href=/);
+  });
+
+  it("hides the products section when the catalogue is empty", () => {
+    expect(buildSelectaProductsSectionHtml(selectaBrand.selectaPage.products, "")).toBe("");
+    expect(buildSelectaProductsSectionHtml(selectaBrand.selectaPage.products, null)).toBe("");
+  });
+
+  it("builds the selecta layout blocks and contact CTA", () => {
+    const html = buildSelectaBrandPageHtml(selectaBrand, '<article class="category-product-card"></article>');
+    expect(html).toContain("selecta-hero");
+    expect(html).toMatch(/selecta-hero__inner[\s\S]*selecta-hero__image/);
+    expect(html).toContain("La manufacture du sommeil");
+    expect(html).toContain("Selecta by Röwa : la même expertise");
+    expect(html).toContain("Le sommier Röwa");
+    expect(html).toContain("/assets/marques/sommier-rowa-radio-m4memory.jpg");
+    expect(html).toContain("/assets/marques/matelas-rowa-3.jpg");
+    expect(html).toContain("selecta-split__media--cutout");
+    expect(html).toContain("selecta-section--sommier");
+    expect(html).toContain("selecta-cta__button");
+    expect(html).toContain('href="/pages/contact.html"');
+    expect(html).toContain("Prendre rendez-vous");
+  });
+
+  it("omits empty image sources from the selecta markup", () => {
+    const html = buildSelectaBrandPageHtml(
+      {
+        slug: "selecta",
+        name: "Selecta",
+        selectaPage: {
+          manufacture: { title: "La manufacture du sommeil" },
+          cta: { buttonHref: "/pages/contact.html", buttonLabel: "Prendre rendez-vous" }
+        }
+      },
+      []
+    );
+    expect(html).not.toContain('src=""');
+    expect(html).not.toContain("selecta-hero__badge");
+  });
+
+  it("does not build the selecta layout for other brands", () => {
+    expect(buildSelectaBrandPageHtml({ slug: "roviva", name: "Roviva" }, [])).toBe("");
   });
 });

@@ -40,7 +40,10 @@ import {
   buildBrandGalleryHtml,
   buildBrandLogoLinkHtml,
   buildBrandsGridHtml,
-  getFeaturedBrands
+  buildSelectaBrandPageHtml,
+  getFeaturedBrands,
+  getSelectaPageProducts,
+  isSelectaBrandPage
 } from "./brands-page.js";
 import { initBrandGalleryLightbox, normalizeBrandGalleryItems } from "./brand-gallery.js";
 
@@ -1285,23 +1288,34 @@ export async function initBrandPage() {
   const slug = getBrandSlugFromLocation(undefined, { readDocumentSlug: true });
   if (!slug) return;
 
+  const article = document.getElementById("brand-detail");
   const titleEl = document.getElementById("brand-title");
   const breadcrumbEl = document.getElementById("brand-breadcrumb-current");
   const logoEl = document.getElementById("brand-logo");
   const bodyEl = document.getElementById("brand-body");
   const galleryEl = document.getElementById("brand-gallery-slot");
   const lightboxRoot = document.getElementById("brand-lightbox-root");
-  if (!titleEl || !logoEl || !bodyEl || !galleryEl) return;
+  if (!article || !titleEl || !logoEl || !bodyEl || !galleryEl) return;
 
   const brand = await getBrandBySlug(slug);
   if (!brand) return;
 
-  titleEl.textContent = brand.name;
   document.title = `${brand.name} | Richard Design`;
   if (breadcrumbEl) {
     breadcrumbEl.textContent = brand.name;
   }
 
+  if (isSelectaBrandPage(brand)) {
+    const products = await getProducts().catch(() => []);
+    const selectaProducts = getSelectaPageProducts(products);
+    const productsHtml = selectaProducts.map((item) => renderCategoryProductCard(item)).join("");
+    article.classList.add("brand-detail--selecta");
+    document.body.classList.add("page--selecta-brand");
+    article.innerHTML = buildSelectaBrandPageHtml(brand, productsHtml);
+    return;
+  }
+
+  titleEl.textContent = brand.name;
   logoEl.innerHTML = buildBrandLogoLinkHtml(brand);
   bodyEl.innerHTML = buildBrandBodyHtml(brand);
   galleryEl.innerHTML = buildBrandGalleryHtml(brand);

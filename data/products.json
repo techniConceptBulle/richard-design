@@ -845,5 +845,69 @@
     "images": [
       "/assets/images/products/minimal-4369856_1920.jpg"
     ]
+  },
+  {
+    "id": "selecta-s5",
+    "name": "Selecta S5",
+    "slug": "selecta-s5",
+    "brandId": "selecta",
+    "categoryId": "matelas",
+    "type": "simple",
+    "shortDescription": "Le confort naturellement équilibré",
+    "description": "Matelas Selecta S5 by Röwa — exemple catalogue pour la page marque Selecta.",
+    "badges": [],
+    "liquidation": false,
+    "price": 1760,
+    "images": [
+      "/assets/marques/matelas-rowa-2.jpg"
+    ]
+  },
+  {
+    "id": "selecta-s7",
+    "name": "Selecta S7",
+    "slug": "selecta-s7",
+    "brandId": "selecta",
+    "categoryId": "matelas",
+    "type": "simple",
+    "shortDescription": "Soutien précis et mousse au soja",
+    "description": "Matelas Selecta S7 by Röwa — exemple catalogue pour la page marque Selecta.",
+    "badges": [],
+    "liquidation": false,
+    "price": 1980,
+    "images": [
+      "/assets/marques/matelas-rowa-3.jpg"
+    ]
+  },
+  {
+    "id": "rowa-n",
+    "name": "Röwa N",
+    "slug": "rowa-n",
+    "brandId": "rowa",
+    "categoryId": "sommier",
+    "type": "simple",
+    "shortDescription": "Le sommier en hêtre massif",
+    "description": "Sommier Röwa N — exemple catalogue pour la page marque Selecta.",
+    "badges": [],
+    "liquidation": false,
+    "price": 2140,
+    "images": [
+      "/assets/marques/sommier-rowa-2.jpg"
+    ]
+  },
+  {
+    "id": "rowa-radio-m4",
+    "name": "Röwa Radio M4",
+    "slug": "rowa-radio-m4",
+    "brandId": "rowa",
+    "categoryId": "sommier",
+    "type": "simple",
+    "shortDescription": "Sommier motorisé à haute précision",
+    "description": "Sommier Röwa Radio M4 — exemple catalogue pour la page marque Selecta.",
+    "badges": [],
+    "liquidation": false,
+    "price": 2890,
+    "images": [
+      "/assets/marques/sommier-rowa-radio-m4memory.jpg"
+    ]
   }
 ]

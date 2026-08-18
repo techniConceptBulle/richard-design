@@ -85,6 +85,121 @@
     "logo": "/assets/images/brands/selecta/logo.jpg",
     "cardImage": "/assets/images/brands/selecta/card.jpg",
     "website": "https://www.selecta-matratzen.com/en/home",
+    "selectaPage": {
+      "hero": {
+        "image": "/assets/marques/selecta.png",
+        "imageAlt": "Literie Selecta by Röwa, sommier réglable",
+        "logo": "",
+        "logoAlt": "Selecta"
+      },
+      "manufacture": {
+        "title": "La manufacture du sommeil",
+        "image": "/assets/marques/bois-rowa-3.jpg",
+        "imageAlt": "Bois de hêtre en manufacture Röwa",
+        "paragraphs": [
+          "Röwa se définit comme « Die Bettenmacher », les fabricants de lits. Plus qu'une signature, c'est une philosophie.",
+          "Là où de nombreux fabricants assemblent des composants provenant de différents fournisseurs, Röwa maîtrise l'essentiel de sa fabrication au sein de sa propre manufacture. Cette exigence garantit une qualité constante et une parfaite cohérence entre chaque élément du système de couchage.",
+          "Le bois occupe une place essentielle dans cette démarche. Pour ses sommiers, Röwa utilise du hêtre issu de forêts gérées durablement, dont elle assure elle-même la gestion responsable. Les cadres sont assemblés en hêtre massif par chevilles en bois et collage, sans vis ni charnières métalliques."
+        ],
+        "features": [
+          {
+            "icon": "/assets/marques/arbre.png",
+            "title": "Fabrication intégrée",
+            "text": "Maîtrise de la fabrication, du bois à la mousse."
+          },
+          {
+            "icon": "/assets/marques/feuille.png",
+            "title": "Gestion responsable du hêtre",
+            "text": "Forêts gérées durablement, dont Röwa assure elle-même la gestion."
+          },
+          {
+            "icon": "/assets/marques/assemblage.png",
+            "title": "Assemblage traditionnel",
+            "text": "Cadres en hêtre massif par chevilles et collage, sans vis ni charnières métalliques."
+          },
+          {
+            "icon": "/assets/marques/panneau-de-localisation.png",
+            "title": "Fabrication à Mössingen",
+            "text": "Un savoir-faire allemand depuis plus d'un siècle."
+          }
+        ]
+      },
+      "people": {
+        "title": "Une manufacture animée par les femmes et les hommes",
+        "images": [
+          {
+            "src": "/assets/marques/matelas-rowa-2.jpg",
+            "alt": "Façonnage d'un matelas Selecta by Röwa"
+          },
+          {
+            "src": "/assets/marques/matelas-rowa-3.jpg",
+            "alt": "Assemblage d'un cadre de sommier Röwa"
+          }
+        ],
+        "paragraphs": [
+          "Chez Röwa, la technologie accompagne le geste des artisans. Chaque sommier et chaque matelas sont fabriqués avec une attention particulière portée aux détails pour offrir un confort durable et une qualité constante.",
+          "Depuis plus d'un siècle, chaque produit Röwa est fabriqué avec la même exigence de qualité et de précision."
+        ]
+      },
+      "expertise": {
+        "title": "Selecta by Röwa : la même expertise",
+        "image": "/assets/marques/matelas-rowa-3.jpg",
+        "imageAlt": "Assemblage d'un matelas Selecta by Röwa",
+        "paragraphs": [
+          "Les matelas Selecta by Röwa sont développés et fabriqués par Röwa. Leur mousse intègre des polyols d'origine végétale issus du soja afin d'allier confort, durabilité et démarche plus responsable.",
+          "Conçus avec les sommiers Röwa, ils forment un véritable système de couchage offrant un soutien précis, une excellente répartition des points de pression et un confort durable."
+        ],
+        "features": [
+          {
+            "icon": "/assets/marques/mousse-soja.png",
+            "title": "Mousse au soja",
+            "text": "Une mousse plus naturelle et responsable."
+          },
+          {
+            "icon": "/assets/marques/ergonomie.png",
+            "title": "Ergonomie",
+            "text": "Un soutien précis, adapté au dormeur."
+          },
+          {
+            "icon": "/assets/marques/confort.png",
+            "title": "Confort durable",
+            "text": "Une excellente répartition des points de pression."
+          },
+          {
+            "icon": "/assets/marques/lit-double.png",
+            "title": "Système complet",
+            "text": "Matelas et sommiers conçus pour fonctionner ensemble."
+          }
+        ]
+      },
+      "base": {
+        "title": "Le sommier Röwa",
+        "image": "/assets/marques/sommier-rowa-radio-m4memory.jpg",
+        "imageAlt": "Sommier Röwa motorisé en hêtre massif",
+        "paragraphs": [
+          "Disponible en version fixe, à relève tête et pieds ou motorisée, le sommier Röwa associe une structure en hêtre massif, un assemblage traditionnel et une suspension de haute précision pour accompagner naturellement chacun de vos mouvements pendant le sommeil."
+        ]
+      },
+      "products": {
+        "title": "Découvrez notre sélection Röwa",
+        "allLabel": "Voir tous les produits Röwa & Selecta by Röwa"
+      },
+      "why": {
+        "title": "Pourquoi Richard La Literie a choisi Röwa & Selecta by Röwa ?",
+        "icon": "/assets/marques/personnes.png",
+        "iconAlt": "L'équipe Richard La Literie",
+        "paragraphs": [
+          "Nous avons choisi Röwa et Selecta by Röwa pour une raison simple : cette manufacture partage notre vision de la literie.",
+          "Depuis plus d'un siècle, Röwa privilégie la qualité des matériaux, la maîtrise de la fabrication et la durabilité plutôt que les effets de mode. Cette exigence se retrouve dans chacun de ses produits et nous permet de proposer des systèmes de couchage conçus pour offrir un confort durable, nuit après nuit."
+        ]
+      },
+      "cta": {
+        "title": "Besoin de conseils personnalisés ?",
+        "text": "Prenez rendez-vous avec l'un de nos experts.",
+        "buttonLabel": "Prendre rendez-vous",
+        "buttonHref": "/pages/contact.html"
+      }
+    },
     "headline": "Plus de 100 ans de savoir-faire au service de votre sommeil",
     "sections": [
       {

@@ -1594,6 +1594,7 @@
 }
 
 .brand-detail__header {
+  position: relative;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -1646,6 +1647,7 @@
   margin: -1px;
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
 }

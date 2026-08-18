@@ -1,0 +1,447 @@
+/**
+ * Page marque Selecta — layout blocs (hero, splits, pictos, produits, CTA).
+ * Isolé derrière .page--selecta-brand / .brand-detail--selecta.
+ * Fond de chaque bande : pleine largeur viewport.
+ * Contenu (image hero, textes, grilles) : même largeur que l’accueil (layout-wide).
+ */
+
+.page--selecta-brand .page-main {
+  overflow-x: clip;
+}
+
+/* Colle le CTA au footer : annule le padding-bottom du shell marque (40px dès 1024px). */
+.page--selecta-brand[data-page="brand"] .category-page-shell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-bottom: 0;
+}
+
+.page--selecta-brand #site-footer {
+  margin-top: 0;
+}
+
+.page--selecta-brand .footer-global {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.brand-detail--selecta {
+  flex: 1;
+  gap: 0;
+  padding-block: 0;
+  width: 100%;
+  max-width: none;
+}
+
+/* H1 conservé pour l’accessibilité, masqué visuellement (le logo porte la marque). */
+.brand-detail--selecta .selecta-brand__title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Bandeau plein écran depuis le shell layout-wide. */
+.selecta-hero,
+.selecta-section,
+.selecta-cta {
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  box-sizing: border-box;
+}
+
+.selecta-section__inner,
+.selecta-hero__inner,
+.selecta-cta__inner {
+  width: 100%;
+  max-width: var(--layout-max-width);
+  margin-inline: auto;
+  box-sizing: border-box;
+  padding-inline: var(--gutter);
+}
+
+@media (min-width: 768px) {
+  .selecta-section__inner,
+  .selecta-hero__inner,
+  .selecta-cta__inner {
+    padding-inline: var(--gutter-md);
+  }
+}
+
+@media (min-width: 1280px) {
+  .selecta-section__inner,
+  .selecta-hero__inner,
+  .selecta-cta__inner {
+    padding-inline: var(--gutter-lg);
+  }
+}
+
+.selecta-hero {
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  padding-bottom: var(--home-section-padding-y);
+}
+
+.selecta-hero__inner {
+  position: relative;
+}
+
+.selecta-hero__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+}
+
+.selecta-hero__badge {
+  position: absolute;
+  left: 50%;
+  top: 85%;
+  transform: translate(-50%, -50%);
+  background: var(--color-bg);
+  padding: var(--space-6) var(--space-10);
+  box-shadow: 0 8px 32px rgba(8, 43, 78, 0.12);
+}
+
+.selecta-hero__logo {
+  display: block;
+  width: min(16rem, 70vw);
+  height: auto;
+  max-height: 5.5rem;
+  object-fit: contain;
+  margin-inline: auto;
+}
+
+.selecta-section {
+  padding-block: var(--home-section-padding-y);
+  background: var(--color-bg);
+}
+
+.selecta-section--surface {
+  background: var(--color-surface);
+}
+
+@media (min-width: 1024px) {
+  .selecta-hero {
+    padding-bottom: var(--home-section-padding-y-lg);
+  }
+
+  .selecta-section {
+    padding-block: var(--home-section-padding-y-lg);
+  }
+}
+
+.selecta-section__title {
+  margin: 0 0 var(--space-5);
+  font-family: var(--font-family-display);
+  font-size: clamp(1.5rem, 2.4vw, 2.125rem);
+  font-weight: 700;
+  line-height: var(--line-height-snug);
+  color: var(--color-text);
+}
+
+.selecta-section__text {
+  margin: 0 0 var(--space-4);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-body-md);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-soft);
+}
+
+.selecta-section__text:last-child {
+  margin-bottom: 0;
+}
+
+.selecta-split {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+  align-items: center;
+}
+
+.selecta-split__media img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.selecta-split__media--pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.selecta-split__media--pair img {
+  aspect-ratio: 1 / 1;
+}
+
+/* Recadre le blanc studio du JPEG 4/3 pour coller au rythme des autres splits. */
+.selecta-split__media--cutout img {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Padding un peu plus serre : la photo garde encore de l'air autour du cadre. */
+.selecta-section--sommier {
+  position: relative;
+  z-index: 1;
+  padding-block: var(--space-6);
+  box-shadow:
+    0 -4px 10px -6px rgba(8, 43, 78, 0.05),
+    0 4px 10px -6px rgba(8, 43, 78, 0.05);
+}
+
+@media (min-width: 1024px) {
+  .selecta-section--sommier {
+    padding-block: var(--space-8);
+  }
+}
+
+@media (min-width: 1024px) {
+  .selecta-split {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-12);
+  }
+
+  .selecta-section--image-right .selecta-split__content {
+    order: 1;
+  }
+
+  .selecta-section--image-right .selecta-split__media {
+    order: 2;
+  }
+}
+
+.selecta-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6) var(--space-5);
+  list-style: none;
+  margin: var(--space-10) 0 0;
+  padding: 0;
+}
+
+@media (min-width: 1024px) {
+  .selecta-features {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .selecta-split__content .selecta-features {
+    grid-template-columns: 1fr 1fr;
+    margin-top: var(--space-8);
+  }
+}
+
+.selecta-feature {
+  text-align: center;
+}
+
+.selecta-feature__icon {
+  display: block;
+  width: 2.75rem;
+  height: 2.75rem;
+  object-fit: contain;
+  margin: 0 auto var(--space-3);
+}
+
+.selecta-feature__title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-body-md);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.selecta-feature__text {
+  margin: 0;
+  font-size: var(--font-size-body-sm);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-muted);
+}
+
+/* Annule le padding-block de `.category-archive-page` (categories-page.css). */
+.selecta-section--products.category-archive-page {
+  padding-block: var(--home-section-padding-y);
+}
+
+.selecta-section--products .product-related-header {
+  margin-bottom: var(--space-5);
+  text-align: center;
+}
+
+.selecta-section--products .product-related-header h2 {
+  margin: 0;
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-display-lg);
+  line-height: var(--line-height-tight);
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.selecta-section--products .category-products-grid {
+  margin: 0;
+}
+
+.selecta-products__all {
+  display: block;
+  margin: var(--space-10) auto 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-body-md);
+  font-weight: 700;
+  color: var(--color-text);
+  cursor: default;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.selecta-products__all:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+}
+
+.selecta-why {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  align-items: center;
+}
+
+.selecta-why__icon img {
+  width: min(10rem, 40vw);
+  height: auto;
+  margin-inline: auto;
+  display: block;
+}
+
+.selecta-why__title {
+  margin: 0;
+}
+
+@media (min-width: 1024px) {
+  .selecta-why {
+    grid-template-columns: auto minmax(14rem, 1fr) minmax(0, 1.35fr);
+    column-gap: clamp(2rem, 6vw, 5rem);
+    row-gap: var(--space-6);
+  }
+
+  .selecta-why__icon {
+    justify-self: start;
+  }
+
+  .selecta-why__icon img {
+    margin-inline: 0;
+    width: 8.5rem;
+  }
+
+  .selecta-why__title {
+    max-width: none;
+  }
+}
+
+.selecta-cta {
+  margin-top: auto;
+  background: var(--color-primary-dark);
+  color: #fff;
+}
+
+/* Gagne sur `.brand-detail p` (components.css) qui force #24384a. */
+.brand-detail .selecta-cta p,
+.brand-detail .selecta-cta__title,
+.brand-detail .selecta-cta__text {
+  color: #fff;
+}
+
+.selecta-cta__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-5);
+  padding-block: var(--home-section-padding-y);
+}
+
+@media (min-width: 768px) {
+  .selecta-cta__inner {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+@media (min-width: 1024px) {
+  .selecta-cta__inner,
+  .selecta-section--products.category-archive-page {
+    padding-block: var(--home-section-padding-y-lg);
+  }
+}
+
+.selecta-cta__icon {
+  flex: 0 0 auto;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: #fff;
+}
+
+.selecta-cta__icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.selecta-cta__copy {
+  flex: 1 1 auto;
+}
+
+.selecta-cta__title,
+.selecta-cta__text {
+  margin: 0;
+  font-family: var(--font-family-base);
+}
+
+.selecta-cta__title {
+  font-weight: 700;
+  font-size: var(--font-size-body-md);
+}
+
+.selecta-cta__text {
+  margin-top: var(--space-1);
+  font-size: var(--font-size-body-sm);
+}
+
+.selecta-cta__button {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem 1.5rem;
+  background: #27745d;
+  color: #fff;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-body-md);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.selecta-cta__button::after {
+  content: " ›";
+}
+
+.selecta-cta__button:hover,
+.selecta-cta__button:focus-visible {
+  background: #1f5c4a;
+  color: #fff;
+}
