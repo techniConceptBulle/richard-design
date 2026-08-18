@@ -3,7 +3,7 @@
  */
 import { test, expect } from "@playwright/test";
 
-const PRODUCT_URL = "/pages/product.html?slug=matelas-superba-elegance";
+const PRODUCT_URL = "/produit/matelas-superba-elegance.html";
 
 /**
  * Ajoute un produit puis ouvre le panier.

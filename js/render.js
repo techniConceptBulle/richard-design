@@ -21,7 +21,11 @@ import {
   getCategoryImageUrl,
   getBrandImageUrl,
   getCategoryUrl,
-  getCategorySlugFromLocation
+  getCategorySlugFromLocation,
+  getProductUrl,
+  getProductSlugFromLocation,
+  getBrandUrl,
+  getBrandSlugFromLocation
 } from "./utils.js";
 import { filterProductsBySearchTerm } from "./search.js";
 import { addToCart, getCartItems, getCartServiceOptions, saveCartItems, saveCartServiceOptions } from "./cart.js";
@@ -385,9 +389,7 @@ async function renderHomeBrandsRow() {
   container.innerHTML = brands
     .map(
       (brand) => `
-      <a href="/pages/brand.html?slug=${encodeURIComponent(
-        brand.slug
-      )}" class="brand-card">
+      <a href="${getBrandUrl(brand.slug)}" class="brand-card">
         <div class="brand-card-image">
           <img src="${brand.logo || getBrandImageUrl(brand)}" alt="${brand.name} logo" />
         </div>
@@ -417,9 +419,7 @@ async function renderHomeBrandsSlider() {
         ${brands
           .map(
             (brand) => `
-              <a href="/pages/brand.html?slug=${encodeURIComponent(
-                brand.slug
-              )}" class="brands-slider-item" aria-label="Voir la marque ${brand.name}">
+              <a href="${getBrandUrl(brand.slug)}" class="brands-slider-item" aria-label="Voir la marque ${brand.name}">
                 <img src="${brand.logo || getBrandImageUrl(brand)}" alt="${brand.name}" />
               </a>
             `
@@ -475,9 +475,7 @@ async function renderHomeLiquidation() {
       const brand = brands.find((b) => b.id === product.brandId);
       const discountPercent = getProductDiscountPercent(product);
       return `
-        <a href="/pages/product.html?slug=${encodeURIComponent(
-          product.slug
-        )}" class="bestseller-card">
+        <a href="${getProductUrl(product.slug)}" class="bestseller-card">
           <div class="bestseller-card-image">
             <img src="${productImage}" alt="${product.name}" />
             ${hasSale ? `<span class="bestseller-badge">-${discountPercent}%</span>` : ""}
@@ -839,7 +837,7 @@ function renderCategorySortSelect(value = "") {
 }
 
 function renderCategoryProductCard(product) {
-  const productUrl = `/pages/product.html?slug=${encodeURIComponent(product.slug)}`;
+  const productUrl = getProductUrl(product.slug);
   const productImage =
     product.images && product.images.length
       ? getProductImageUrl(product, product.images[0])
@@ -1284,7 +1282,7 @@ export async function initBrandsPage() {
 /* PAGE MARQUE DÉTAILLÉE */
 
 export async function initBrandPage() {
-  const { slug } = parseQueryParams();
+  const slug = getBrandSlugFromLocation(undefined, { readDocumentSlug: true });
   if (!slug) return;
 
   const titleEl = document.getElementById("brand-title");
@@ -2127,7 +2125,7 @@ function getRecommendedProducts(product, category, categoriesById, allProducts, 
 }
 
 export async function initProductPage() {
-  const { slug } = parseQueryParams();
+  const slug = getProductSlugFromLocation(undefined, { readDocumentSlug: true });
   if (!slug) return;
 
   const pageEl = document.getElementById("product-page");
@@ -2453,7 +2451,7 @@ export async function initProductPage() {
       <div class="product-summary-panel">
         ${
           brand
-            ? `<p class="product-brand__name-row"><a href="/pages/brands.html?slug=${encodeURIComponent(brand.slug)}" class="product-brand__name">${brand.name}</a></p>`
+            ? `<p class="product-brand__name-row"><a href="${getBrandUrl(brand.slug)}" class="product-brand__name">${brand.name}</a></p>`
             : ""
         }
         <div class="product-summary__header">
@@ -2461,7 +2459,7 @@ export async function initProductPage() {
           ${
             brand?.logo
               ? `<div class="product-brand">
-                  <a href="/pages/brands.html?slug=${encodeURIComponent(brand.slug)}" class="product-brand__link"><img src="${brand.logo}" alt="${brand.name}" class="product-brand__logo"></a>
+                  <a href="${getBrandUrl(brand.slug)}" class="product-brand__link"><img src="${brand.logo}" alt="${brand.name}" class="product-brand__logo"></a>
                 </div>`
               : ""
           }
@@ -2623,7 +2621,7 @@ export async function initCartPage() {
               <div class="cart-item-body">
                 <div class="cart-item-top">
                   <h3 class="cart-item-name">
-                    <a href="/pages/product.html?slug=${item.productSlug}">${item.productName}</a>
+                    <a href="${getProductUrl(item.productSlug)}">${item.productName}</a>
                   </h3>
                   <div class="cart-item-price">${formatPriceCHF(item.price)}</div>
                 </div>

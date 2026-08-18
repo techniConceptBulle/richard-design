@@ -1,9 +1,25 @@
 /**
- * Génération des pages HTML statiques /categorie/{slug}.html pour le build.
- * Permet à un hébergeur statique (Render) de servir les pretty URLs sans rewrite.
+ * Génération des pages HTML statiques pretty-URL au build
+ * (/categorie, /produit, /marque) pour Render et Huddlekit.
  */
 import { mkdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
 import { dirname, resolve } from "node:path";
+
+/**
+ * Construit les chemins relatifs dist pour chaque slug.
+ * @param {Array<{ slug?: string }>} entries
+ * @param {string} prefix
+ * @returns {string[]}
+ */
+export function getEntityStaticPagePaths(entries, prefix) {
+  if (!Array.isArray(entries) || !prefix) {
+    return [];
+  }
+  return entries
+    .map((entry) => (entry?.slug ? String(entry.slug).trim() : ""))
+    .filter(Boolean)
+    .map((slug) => `${prefix}/${slug}.html`);
+}
 
 /**
  * Construit les chemins relatifs dist pour chaque slug catégorie.
@@ -11,65 +27,130 @@ import { dirname, resolve } from "node:path";
  * @returns {string[]}
  */
 export function getCategoryStaticPagePaths(categories) {
-  if (!Array.isArray(categories)) {
-    return [];
-  }
-  return categories
-    .map((entry) => (entry?.slug ? String(entry.slug).trim() : ""))
-    .filter(Boolean)
-    .map((slug) => `categorie/${slug}.html`);
+  return getEntityStaticPagePaths(categories, "categorie");
 }
 
 /**
- * Injecte data-category-slug dans le body (fiable même derrière un proxy type Huddlekit).
+ * Injecte un attribut data-{entity}-slug dans le body (fiable derrière un proxy).
+ * @param {string} html
+ * @param {{ dataPage: string, attrName: string, slug: string }} config
+ * @returns {string}
+ */
+export function injectEntitySlugAttribute(html, { dataPage, attrName, slug }) {
+  if (!html || !slug || !attrName || !dataPage) {
+    return html || "";
+  }
+  const safeSlug = String(slug).replace(/"/g, "");
+  const attrPattern = new RegExp(`${attrName}="[^"]*"`);
+  if (attrPattern.test(html)) {
+    return html.replace(attrPattern, `${attrName}="${safeSlug}"`);
+  }
+  const pagePattern = new RegExp(`(<body\\b[^>]*\\bdata-page="${dataPage}")`);
+  return html.replace(pagePattern, `$1 ${attrName}="${safeSlug}"`);
+}
+
+/**
+ * Injecte data-category-slug dans le body.
  * @param {string} html
  * @param {string} slug
  * @returns {string}
  */
 export function injectCategorySlugAttribute(html, slug) {
-  if (!html || !slug) {
-    return html || "";
-  }
-  const safeSlug = String(slug).replace(/"/g, "");
-  if (/data-category-slug=/.test(html)) {
-    return html.replace(
-      /data-category-slug="[^"]*"/,
-      `data-category-slug="${safeSlug}"`
-    );
-  }
-  return html.replace(
-    /(<body\b[^>]*\bdata-page="category")/,
-    `$1 data-category-slug="${safeSlug}"`
-  );
+  return injectEntitySlugAttribute(html, {
+    dataPage: "category",
+    attrName: "data-category-slug",
+    slug
+  });
 }
 
 /**
- * Copie pages/category.html vers dist/categorie/{slug}.html pour chaque catégorie.
- * @param {string} outDir - Dossier de sortie Vite (dist)
- * @param {string} categoriesJsonPath - Chemin vers data/categories.json
- * @returns {string[]} Chemins écrits (relatifs à outDir)
+ * Copie un shell HTML vers dist/{prefix}/{slug}.html pour chaque entrée.
+ * @param {{ outDir: string, htmlRelPath: string, jsonPath: string, prefix: string, dataPage: string, attrName: string }} config
+ * @returns {string[]}
  */
-export function emitCategoryStaticPages(outDir, categoriesJsonPath) {
-  const categoryHtmlPath = resolve(outDir, "pages/category.html");
-  if (!existsSync(categoryHtmlPath) || !existsSync(categoriesJsonPath)) {
+export function emitEntityStaticPages({
+  outDir,
+  htmlRelPath,
+  jsonPath,
+  prefix,
+  dataPage,
+  attrName
+}) {
+  const htmlPath = resolve(outDir, htmlRelPath);
+  if (!existsSync(htmlPath) || !existsSync(jsonPath)) {
     return [];
   }
 
-  const html = readFileSync(categoryHtmlPath, "utf8");
-  const categories = JSON.parse(readFileSync(categoriesJsonPath, "utf8"));
+  const html = readFileSync(htmlPath, "utf8");
+  const entries = JSON.parse(readFileSync(jsonPath, "utf8"));
   const written = [];
 
-  for (const entry of categories) {
+  for (const entry of entries) {
     const slug = entry?.slug ? String(entry.slug).trim() : "";
     if (!slug) {
       continue;
     }
-    const relativePath = `categorie/${slug}.html`;
+    const relativePath = `${prefix}/${slug}.html`;
     const target = resolve(outDir, relativePath);
     mkdirSync(dirname(target), { recursive: true });
-    writeFileSync(target, injectCategorySlugAttribute(html, slug), "utf8");
+    writeFileSync(
+      target,
+      injectEntitySlugAttribute(html, { dataPage, attrName, slug }),
+      "utf8"
+    );
     written.push(relativePath);
   }
 
   return written;
+}
+
+/**
+ * Copie pages/category.html vers dist/categorie/{slug}.html.
+ * @param {string} outDir
+ * @param {string} categoriesJsonPath
+ * @returns {string[]}
+ */
+export function emitCategoryStaticPages(outDir, categoriesJsonPath) {
+  return emitEntityStaticPages({
+    outDir,
+    htmlRelPath: "pages/category.html",
+    jsonPath: categoriesJsonPath,
+    prefix: "categorie",
+    dataPage: "category",
+    attrName: "data-category-slug"
+  });
+}
+
+/**
+ * Copie pages/product.html vers dist/produit/{slug}.html.
+ * @param {string} outDir
+ * @param {string} productsJsonPath
+ * @returns {string[]}
+ */
+export function emitProductStaticPages(outDir, productsJsonPath) {
+  return emitEntityStaticPages({
+    outDir,
+    htmlRelPath: "pages/product.html",
+    jsonPath: productsJsonPath,
+    prefix: "produit",
+    dataPage: "product",
+    attrName: "data-product-slug"
+  });
+}
+
+/**
+ * Copie pages/brand.html vers dist/marque/{slug}.html.
+ * @param {string} outDir
+ * @param {string} brandsJsonPath
+ * @returns {string[]}
+ */
+export function emitBrandStaticPages(outDir, brandsJsonPath) {
+  return emitEntityStaticPages({
+    outDir,
+    htmlRelPath: "pages/brand.html",
+    jsonPath: brandsJsonPath,
+    prefix: "marque",
+    dataPage: "brand",
+    attrName: "data-brand-slug"
+  });
 }

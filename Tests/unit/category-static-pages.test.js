@@ -3,7 +3,9 @@
  */
 import { describe, expect, it } from "vitest";
 import {
+  emitBrandStaticPages,
   emitCategoryStaticPages,
+  emitProductStaticPages,
   getCategoryStaticPagePaths,
   injectCategorySlugAttribute
 } from "../../js/category-static-pages.js";
@@ -72,6 +74,54 @@ describe("emitCategoryStaticPages", () => {
     const root = mkdtempSync(join(tmpdir(), "rd-cat-pages-missing-"));
     const written = emitCategoryStaticPages(join(root, "dist"), join(root, "missing.json"));
     expect(written).toEqual([]);
+    rmSync(root, { recursive: true, force: true });
+  });
+});
+
+describe("emitProductStaticPages", () => {
+  it("writes product.html copies with data-product-slug", () => {
+    const root = mkdtempSync(join(tmpdir(), "rd-prod-pages-"));
+    const outDir = join(root, "dist");
+    mkdirSync(join(outDir, "pages"), { recursive: true });
+    writeFileSync(
+      join(outDir, "pages/product.html"),
+      '<html><body class="page" data-page="product"></body></html>',
+      "utf8"
+    );
+    const productsPath = join(root, "products.json");
+    writeFileSync(productsPath, JSON.stringify([{ slug: "matelas-superba-elegance" }]), "utf8");
+
+    const written = emitProductStaticPages(outDir, productsPath);
+
+    expect(written).toEqual(["produit/matelas-superba-elegance.html"]);
+    expect(
+      readFileSync(join(outDir, "produit/matelas-superba-elegance.html"), "utf8")
+    ).toContain('data-product-slug="matelas-superba-elegance"');
+
+    rmSync(root, { recursive: true, force: true });
+  });
+});
+
+describe("emitBrandStaticPages", () => {
+  it("writes brand.html copies with data-brand-slug", () => {
+    const root = mkdtempSync(join(tmpdir(), "rd-brand-pages-"));
+    const outDir = join(root, "dist");
+    mkdirSync(join(outDir, "pages"), { recursive: true });
+    writeFileSync(
+      join(outDir, "pages/brand.html"),
+      '<html><body class="page" data-page="brand"></body></html>',
+      "utf8"
+    );
+    const brandsPath = join(root, "brands.json");
+    writeFileSync(brandsPath, JSON.stringify([{ slug: "roviva" }]), "utf8");
+
+    const written = emitBrandStaticPages(outDir, brandsPath);
+
+    expect(written).toEqual(["marque/roviva.html"]);
+    expect(readFileSync(join(outDir, "marque/roviva.html"), "utf8")).toContain(
+      'data-brand-slug="roviva"'
+    );
+
     rmSync(root, { recursive: true, force: true });
   });
 });

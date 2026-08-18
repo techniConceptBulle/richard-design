@@ -20,21 +20,29 @@ describe("vite static copy dirs", () => {
     expect(source).not.toContain("'product'");
   });
 
-  it("rewrites /categorie/{slug} to category.html in dev and preview", () => {
+  it("rewrites pretty category, product and brand paths in dev and preview", () => {
     const source = readFileSync(viteConfigPath, "utf8");
 
-    expect(source).toContain("categoryPrettyUrlPlugin");
+    expect(source).toContain("prettyUrlPlugin");
     expect(source).toContain("configurePreviewServer");
     expect(source).toContain("/pages/category.html");
-    expect(source).toContain("/categorie/");
+    expect(source).toContain("/pages/product.html");
+    expect(source).toContain("/pages/brand.html");
+    expect(source).toContain("prefix: 'categorie'");
+    expect(source).toContain("prefix: 'produit'");
+    expect(source).toContain("prefix: 'marque'");
     expect(source).toContain("bareRoot");
   });
 
-  it("emits physical /categorie/{slug}.html files after build", () => {
+  it("emits physical pretty URL files after build", () => {
     const source = readFileSync(viteConfigPath, "utf8");
 
     expect(source).toContain("emitCategoryStaticPages");
+    expect(source).toContain("emitProductStaticPages");
+    expect(source).toContain("emitBrandStaticPages");
     expect(source).toContain("data/categories.json");
+    expect(source).toContain("data/products.json");
+    expect(source).toContain("data/brands.json");
   });
 
   it("skips missing directories during copy", () => {

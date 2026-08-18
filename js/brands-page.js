@@ -3,6 +3,8 @@
  * Contenu éditorial (texte, galerie, logo fabricant) — extensible via brands.json.
  */
 
+import { getBrandUrl } from "./utils.js";
+
 /**
  * Échappe le HTML pour l’injection sécurisée dans le DOM.
  * @param {unknown} value
@@ -43,10 +45,9 @@ export function getFeaturedBrands(brands) {
 export function buildBrandTileHtml(brand) {
   if (!brand || !brand.slug) return "";
   const name = escapeHtml(brand.name || "Marque");
-  const slug = encodeURIComponent(brand.slug);
   const cardImage = escapeHtml(brand.cardImage || brand.logo || "");
   return `
-    <a href="/pages/brand.html?slug=${slug}" class="brand-tile" aria-label="Découvrir ${name}">
+    <a href="${getBrandUrl(brand.slug)}" class="brand-tile" aria-label="Découvrir ${name}">
       <img src="${cardImage}" alt="${name}" class="brand-tile__image" loading="lazy" />
     </a>
   `.trim();

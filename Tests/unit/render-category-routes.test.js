@@ -11,14 +11,17 @@ const renderYamlPath = resolve(
   "../../render.yaml"
 );
 
-describe("render.yaml category pretty URLs", () => {
-  it("rewrites extensionless /categorie/* as fallback", () => {
+describe("render.yaml pretty URLs", () => {
+  it("rewrites extensionless category, product and brand paths as fallback", () => {
     const source = readFileSync(renderYamlPath, "utf8");
 
     expect(source).toContain("type: rewrite");
-    expect(source).toContain("source: /categorie");
     expect(source).toContain("source: /categorie/*");
     expect(source).toContain("destination: /pages/category.html");
+    expect(source).toContain("source: /produit/*");
+    expect(source).toContain("destination: /pages/product.html");
+    expect(source).toContain("source: /marque/*");
+    expect(source).toContain("destination: /pages/brand.html");
     expect(source).not.toContain("source: /categorie/*.html");
   });
 

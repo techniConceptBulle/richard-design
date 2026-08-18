@@ -294,8 +294,8 @@ test.describe("Home page", () => {
     const cards = page.locator(".univers__cards .ucard");
     await expect(cards).toHaveCount(2);
 
-    const matelasCard = page.locator('.ucard[href*="slug=matelas"]');
-    const sommiersCard = page.locator('.ucard[href*="slug=sommier"]');
+    const matelasCard = page.locator('.ucard[href="/categorie/matelas.html"]');
+    const sommiersCard = page.locator('.ucard[href="/categorie/sommier.html"]');
     await expect(matelasCard).toBeVisible();
     await expect(sommiersCard).toBeVisible();
     await expect(matelasCard.locator(".ucard__title")).toHaveText("Matelas");
@@ -359,7 +359,7 @@ test.describe("Home page", () => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto("/");
 
-    const matelasCard = page.locator('.ucard[href*="slug=matelas"]');
+    const matelasCard = page.locator('.ucard[href="/categorie/matelas.html"]');
     const sectionInner = page.locator(".univers__inner.layout-wide");
 
     const sectionPadding = await sectionInner.evaluate((el) => {
@@ -703,10 +703,10 @@ test.describe("Home page", () => {
     await expect(page.locator(".brands--static .brands__slider-wrap")).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Marques suivantes" })).toHaveCount(0);
 
-    await expect(brandRow.locator('a[href*="slug=roviva"]')).toBeVisible();
-    await expect(brandRow.locator('a[href*="slug=selecta"]')).toBeVisible();
-    await expect(brandRow.locator('a[href*="slug=rowa"]')).toBeVisible();
-    await expect(brandRow.locator('a[href*="slug=swissflex"]')).toBeVisible();
+    await expect(brandRow.locator('a[href="/marque/roviva.html"]')).toBeVisible();
+    await expect(brandRow.locator('a[href="/marque/selecta.html"]')).toBeVisible();
+    await expect(brandRow.locator('a[href="/marque/rowa.html"]')).toBeVisible();
+    await expect(brandRow.locator('a[href="/marque/swissflex.html"]')).toBeVisible();
 
     const sizes = await slides.evaluateAll((nodes) =>
       nodes.map((node) => {

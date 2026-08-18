@@ -331,7 +331,7 @@ test.describe("About page", () => {
     await page.goto("/");
 
     const homeLinkSize = await page
-      .locator('.univers .ucard[href*="slug=matelas"] .ucard__link')
+      .locator('.univers .ucard[href="/categorie/matelas.html"] .ucard__link')
       .evaluate((el) => getComputedStyle(el).fontSize);
 
     await page.goto("/pages/services-premium.html");

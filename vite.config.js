@@ -3,12 +3,23 @@ import { existsSync, readdirSync, statSync } from 'node:fs'
 import { cp } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { emitCategoryStaticPages } from './js/category-static-pages.js'
+import {
+  emitBrandStaticPages,
+  emitCategoryStaticPages,
+  emitProductStaticPages
+} from './js/category-static-pages.js'
 
 const rootDir = dirname(fileURLToPath(import.meta.url))
 
 /** Dossiers statiques copiés dans dist après le build Vite. */
 const STATIC_COPY_DIRS = ['data', 'assets']
+
+/** Pretty URLs servies par un shell HTML unique (dev + preview). */
+const PRETTY_URL_RULES = [
+  { prefix: 'categorie', html: '/pages/category.html' },
+  { prefix: 'produit', html: '/pages/product.html' },
+  { prefix: 'marque', html: '/pages/brand.html' }
+]
 
 /** Collecte index.html et pages/*.html pour le build multi-pages. */
 function collectHtmlInputs(dir) {
@@ -48,45 +59,52 @@ function copyStaticDirsPlugin() {
         }
         await cp(src, resolve(outDir, dir), { recursive: true })
       }
-      // Fichiers physiques /categorie/{slug}.html pour Render (pas de rewrite .html)
+      // Fichiers physiques pretty URLs pour Render (pas de rewrite .html)
       emitCategoryStaticPages(outDir, resolve(rootDir, 'data/categories.json'))
+      emitProductStaticPages(outDir, resolve(rootDir, 'data/products.json'))
+      emitBrandStaticPages(outDir, resolve(rootDir, 'data/brands.json'))
     }
   }
 }
 
 /**
- * Réécrit /categorie/{slug}.html (et variante sans .html) vers pages/category.html.
- * Inclut /categorie et /categorie/ (slug manquant -> shell vide).
- * L'URL navigateur reste /categorie/... ; le HTML servi contient data-page="category".
+ * Réécrit /categorie|produit|marque/{slug}.html vers le shell HTML correspondant.
+ * L'URL navigateur reste pretty ; le HTML servi contient data-page.
  */
-function categoryPrettyUrlPlugin() {
+function prettyUrlPlugin() {
   /** @param {import('http').IncomingMessage} req */
-  function rewriteCategoryPath(req, _res, next) {
+  function rewritePrettyPath(req, _res, next) {
     const rawUrl = req.url || ''
     const pathOnly = rawUrl.split('?')[0]
-    const withSlug = pathOnly.match(/^\/categorie\/([^/]+?)(?:\.html)?\/?$/)
-    const bareRoot = pathOnly === '/categorie' || pathOnly === '/categorie/'
-    if (withSlug || bareRoot) {
-      const queryIndex = rawUrl.indexOf('?')
-      const query = queryIndex >= 0 ? rawUrl.slice(queryIndex) : ''
-      req.url = `/pages/category.html${query}`
+    const queryIndex = rawUrl.indexOf('?')
+    const query = queryIndex >= 0 ? rawUrl.slice(queryIndex) : ''
+
+    for (const rule of PRETTY_URL_RULES) {
+      const withSlug = pathOnly.match(
+        new RegExp(`^/${rule.prefix}/([^/]+?)(?:\\.html)?/?$`)
+      )
+      const bareRoot = pathOnly === `/${rule.prefix}` || pathOnly === `/${rule.prefix}/`
+      if (withSlug || bareRoot) {
+        req.url = `${rule.html}${query}`
+        break
+      }
     }
     next()
   }
 
   return {
-    name: 'category-pretty-urls',
+    name: 'pretty-urls',
     configureServer(server) {
-      server.middlewares.use(rewriteCategoryPath)
+      server.middlewares.use(rewritePrettyPath)
     },
     configurePreviewServer(server) {
-      server.middlewares.use(rewriteCategoryPath)
+      server.middlewares.use(rewritePrettyPath)
     }
   }
 }
 
 export default defineConfig({
-  plugins: [copyStaticDirsPlugin(), categoryPrettyUrlPlugin()],
+  plugins: [copyStaticDirsPlugin(), prettyUrlPlugin()],
   server: {
     port: 3000,
     open: true

@@ -57,7 +57,7 @@ describe("brands-page helpers", () => {
 
   it("builds a brand tile linking to the detail page", () => {
     const html = buildBrandTileHtml(sampleBrands[1]);
-    expect(html).toContain('href="/pages/brand.html?slug=roviva"');
+    expect(html).toContain('href="/marque/roviva.html"');
     expect(html).toContain('src="/assets/images/brands/roviva/card.jpg"');
     expect(html).toContain("brand-tile");
   });

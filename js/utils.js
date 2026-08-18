@@ -23,41 +23,71 @@ export function parseQueryParams(search = window.location.search) {
 }
 
 /**
+ * Construit une URL publique /{prefix}/{slug}.html.
+ * @param {string} prefix - Segment de chemin (categorie, produit, marque)
+ * @param {string} slug - Identifiant URL
+ * @returns {string}
+ */
+export function getPrettyEntityUrl(prefix, slug) {
+  if (!slug) {
+    return `/${prefix}/`;
+  }
+  return `/${prefix}/${encodeURIComponent(String(slug))}.html`;
+}
+
+/**
  * Construit l'URL publique d'une catégorie (/categorie/{slug}.html).
  * @param {string} slug - Identifiant URL de la catégorie
  * @returns {string}
  */
 export function getCategoryUrl(slug) {
-  if (!slug) {
-    return "/categorie/";
-  }
-  return `/categorie/${encodeURIComponent(String(slug))}.html`;
+  return getPrettyEntityUrl("categorie", slug);
 }
 
 /**
- * Extrait le slug catégorie depuis le pathname /categorie/{slug}.html, ou ?slug=.
- * Optionnellement lit data-category-slug sur document.body (page générée / proxy).
- * @param {{ pathname?: string, search?: string }} [locationLike=window.location]
+ * Construit l'URL publique d'un produit (/produit/{slug}.html).
+ * @param {string} slug
+ * @returns {string}
+ */
+export function getProductUrl(slug) {
+  return getPrettyEntityUrl("produit", slug);
+}
+
+/**
+ * Construit l'URL publique d'une marque (/marque/{slug}.html).
+ * @param {string} slug
+ * @returns {string}
+ */
+export function getBrandUrl(slug) {
+  return getPrettyEntityUrl("marque", slug);
+}
+
+/**
+ * Extrait un slug pretty-URL depuis pathname, dataset body, ou ?slug= legacy.
+ * @param {{ prefix: string, legacyFile: string, datasetKey: string }} config
+ * @param {{ pathname?: string, search?: string }} [locationLike]
  * @param {{ readDocumentSlug?: boolean }} [options]
  * @returns {string|undefined}
  */
-export function getCategorySlugFromLocation(
+export function getPrettySlugFromLocation(
+  config,
   locationLike = typeof window !== "undefined" ? window.location : undefined,
   options = {}
 ) {
-  const { readDocumentSlug = false } = options;
+  const { prefix, legacyFile, datasetKey } = config;
+  const { readDocumentSlug = false } = options || {};
 
   // Uniquement pour la page courante — jamais pour parser un href du menu
   if (readDocumentSlug && typeof document !== "undefined") {
-    const fromDataset = document.body?.dataset?.categorySlug;
+    const fromDataset = document.body?.dataset?.[datasetKey];
     if (fromDataset) {
       return fromDataset;
     }
   }
 
   const pathname = locationLike?.pathname || "";
-  // Pas d'ancre ^ : accepte un préfixe de chemin (proxy)
-  const pathMatch = pathname.match(/\/categorie\/([^/]+?)(?:\.html)?\/?$/);
+  const escapedPrefix = prefix.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const pathMatch = pathname.match(new RegExp(`/${escapedPrefix}/([^/]+?)(?:\\.html)?/?$`));
   if (pathMatch?.[1]) {
     try {
       return decodeURIComponent(pathMatch[1]);
@@ -66,14 +96,56 @@ export function getCategorySlugFromLocation(
     }
   }
 
-  // Legacy : ?slug= uniquement sur la page catégorie (slash final toléré)
-  if (/\/category\.html\/?$/.test(pathname)) {
+  const escapedLegacy = legacyFile.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  if (new RegExp(`/${escapedLegacy}/?$`).test(pathname)) {
     const search = locationLike?.search || "";
     const params = new URLSearchParams(search);
     return params.get("slug") || undefined;
   }
 
   return undefined;
+}
+
+/**
+ * Extrait le slug catégorie depuis /categorie/{slug}.html, dataset, ou ?slug=.
+ * @param {{ pathname?: string, search?: string }} [locationLike]
+ * @param {{ readDocumentSlug?: boolean }} [options]
+ * @returns {string|undefined}
+ */
+export function getCategorySlugFromLocation(locationLike, options) {
+  return getPrettySlugFromLocation(
+    { prefix: "categorie", legacyFile: "category.html", datasetKey: "categorySlug" },
+    locationLike,
+    options || {}
+  );
+}
+
+/**
+ * Extrait le slug produit depuis /produit/{slug}.html, dataset, ou ?slug=.
+ * @param {{ pathname?: string, search?: string }} [locationLike]
+ * @param {{ readDocumentSlug?: boolean }} [options]
+ * @returns {string|undefined}
+ */
+export function getProductSlugFromLocation(locationLike, options) {
+  return getPrettySlugFromLocation(
+    { prefix: "produit", legacyFile: "product.html", datasetKey: "productSlug" },
+    locationLike,
+    options || {}
+  );
+}
+
+/**
+ * Extrait le slug marque depuis /marque/{slug}.html, dataset, ou ?slug=.
+ * @param {{ pathname?: string, search?: string }} [locationLike]
+ * @param {{ readDocumentSlug?: boolean }} [options]
+ * @returns {string|undefined}
+ */
+export function getBrandSlugFromLocation(locationLike, options) {
+  return getPrettySlugFromLocation(
+    { prefix: "marque", legacyFile: "brand.html", datasetKey: "brandSlug" },
+    locationLike,
+    options || {}
+  );
 }
 
 export function getProductImagePlaceholder(productName, color = "#007E9E") {

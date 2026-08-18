@@ -3,6 +3,7 @@
  */
 
 import { escapeHtml, getFeaturedBrands } from "./brands-page.js";
+import { getBrandUrl } from "./utils.js";
 
 const DEFAULT_SLIDE_COUNT = 9;
 
@@ -52,12 +53,11 @@ export function buildFeaturedBrandSlidesHtml(brands) {
   return featured
     .map((brand) => {
       const name = escapeHtml(brand.name || "Marque");
-      const slug = encodeURIComponent(brand.slug || "");
       const logo = escapeHtml(brand.logo || "");
       return `
       <a
         class="brand-row__slide"
-        href="/pages/brand.html?slug=${slug}"
+        href="${getBrandUrl(brand.slug)}"
         aria-label="${name}"
       >
         <img class="brand-row__logo" src="${logo}" alt="${name}" width="300" height="92" loading="lazy" decoding="async">
@@ -145,7 +145,7 @@ function initOneBrandCarousel(container, options = {}) {
     const slideCount =
       Number.parseInt(container.dataset.brandSlideCount || "", 10) || DEFAULT_SLIDE_COUNT;
     const logoSrc = container.dataset.brandLogo || "/assets/home/brand-roviva-ref.png";
-    const brandHref = container.dataset.brandHref || "/pages/brand.html?slug=roviva";
+    const brandHref = container.dataset.brandHref || getBrandUrl("roviva");
     const brandName = container.dataset.brandName || "Roviva";
     container.innerHTML = buildRepeatedBrandSlidesHtml(
       slideCount,

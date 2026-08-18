@@ -4,7 +4,7 @@
 import { test, expect } from "@playwright/test";
 
 const PRODUCT_SLUG = "matelas-superba-elegance";
-const PRODUCT_URL = `/pages/product.html?slug=${PRODUCT_SLUG}`;
+const PRODUCT_URL = `/produit/${PRODUCT_SLUG}.html`;
 
 test.describe("Product detail page", () => {
   test("renders breadcrumb, layout, title and CHF price", async ({ page }) => {
@@ -417,7 +417,7 @@ test.describe("Product detail page", () => {
 
 test.describe("Product page — error state", () => {
   test("shows not found message for unknown slug", async ({ page }) => {
-    await page.goto("/pages/product.html?slug=inexistant-produit-xyz");
+    await page.goto("/produit/inexistant-produit-xyz.html");
     await expect(page.locator("h1")).toHaveText("Produit introuvable");
   });
 });

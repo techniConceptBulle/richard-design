@@ -12,13 +12,13 @@ test.describe("Brands pages", () => {
     const tiles = page.locator(".brand-tile");
     await expect(tiles).toHaveCount(4);
 
-    await expect(page.locator('a.brand-tile[href*="slug=roviva"]')).toBeVisible();
-    await expect(page.locator('a.brand-tile[href*="slug=selecta"]')).toBeVisible();
-    await expect(page.locator('a.brand-tile[href*="slug=rowa"]')).toBeVisible();
-    await expect(page.locator('a.brand-tile[href*="slug=swissflex"]')).toBeVisible();
+    await expect(page.locator('a.brand-tile[href="/marque/roviva.html"]')).toBeVisible();
+    await expect(page.locator('a.brand-tile[href="/marque/selecta.html"]')).toBeVisible();
+    await expect(page.locator('a.brand-tile[href="/marque/rowa.html"]')).toBeVisible();
+    await expect(page.locator('a.brand-tile[href="/marque/swissflex.html"]')).toBeVisible();
 
-    await page.locator('a.brand-tile[href*="slug=roviva"]').click();
-    await expect(page).toHaveURL(/brand\.html\?slug=roviva/);
+    await page.locator('a.brand-tile[href="/marque/roviva.html"]').click();
+    await expect(page).toHaveURL(/\/marque\/roviva\.html/);
     await expect(page.getByRole("heading", { name: "Roviva", exact: true })).toBeHidden();
     await expect(page.locator(".brand-detail__logo")).toBeVisible();
     await expect(page.locator("h2.brand-detail__headline")).toContainText("1748");
@@ -27,7 +27,7 @@ test.describe("Brands pages", () => {
   });
 
   test("brand gallery opens a lightbox that can be navigated", async ({ page }) => {
-    await page.goto("/pages/brand.html?slug=roviva");
+    await page.goto("/marque/roviva.html");
     await page.locator('[data-brand-gallery-index="0"]').click();
     await expect(page.locator(".brand-lightbox")).toBeVisible();
     await expect(page.locator(".brand-lightbox__counter")).toHaveText("1 / 5");
@@ -36,7 +36,7 @@ test.describe("Brands pages", () => {
   });
 
   test("brand logo links to the manufacturer website", async ({ page }) => {
-    await page.goto("/pages/brand.html?slug=swissflex");
+    await page.goto("/marque/swissflex.html");
 
     const logoLink = page.locator(".brand-detail__logo-link");
     await expect(logoLink).toBeVisible();
@@ -45,10 +45,10 @@ test.describe("Brands pages", () => {
   });
 
   test("selecta and rowa share the same editorial headline", async ({ page }) => {
-    await page.goto("/pages/brand.html?slug=selecta");
+    await page.goto("/marque/selecta.html");
     const selectaHeadline = await page.locator(".brand-detail__headline").textContent();
 
-    await page.goto("/pages/brand.html?slug=rowa");
+    await page.goto("/marque/rowa.html");
     const rowaHeadline = await page.locator(".brand-detail__headline").textContent();
 
     expect(selectaHeadline?.trim()).toBe(rowaHeadline?.trim());

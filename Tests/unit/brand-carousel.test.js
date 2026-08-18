@@ -69,8 +69,8 @@ describe("brand-carousel", () => {
       { id: "bico", name: "Bico", slug: "bico", featured: false, logo: "/x.png" }
     ]);
 
-    expect(html).toContain('href="/pages/brand.html?slug=roviva"');
-    expect(html).toContain('href="/pages/brand.html?slug=swissflex"');
+    expect(html).toContain('href="/marque/roviva.html"');
+    expect(html).toContain('href="/marque/swissflex.html"');
     expect(html).toContain("/assets/images/brands/roviva/logo.jpg");
     expect(html).toContain("/assets/images/brands/swissflex/logo.png");
     expect(html).not.toContain("bico");
@@ -85,7 +85,7 @@ describe("brand-carousel", () => {
     const html = buildRepeatedBrandSlidesHtml(
       2,
       "/assets/home/brand-roviva-ref.png",
-      "/pages/brand.html?slug=roviva",
+      "/marque/roviva.html",
       "Roviva"
     );
     expect(html.match(/brand-row__slide/g)).toHaveLength(2);
