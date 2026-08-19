@@ -45,8 +45,9 @@ describe("personalized advice page", () => {
     expect(html).toContain("répondre à vos questions après installation");
   });
 
-  it("keeps the contact CTA band and removes the old products univers", () => {
-    expect(html).toContain('class="about-contact-cta"');
+  it("keeps the product advice mount and removes the old products univers", () => {
+    expect(html).toContain("data-product-advice-mount");
+    expect(html).not.toContain('class="about-contact-cta"');
     expect(html).not.toContain("Nos univers literie");
     expect(html).not.toContain("Nos produits de literie");
   });

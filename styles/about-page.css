@@ -708,19 +708,9 @@
   object-fit: contain;
 }
 
-/* Slider marques + CTA contact (page expert) */
-.about-page .about-brands-slider.brands {
+/* Grille marques featured (page expert, alignée accueil) */
+.about-page .about-brands-grid.brands {
   background: var(--color-bg);
-}
-
-.about-page .about-brands-slider .brands__inner.layout-wide {
-  padding-block: var(--home-section-padding-y);
-}
-
-@media (min-width: 1024px) {
-  .about-page .about-brands-slider .brands__inner.layout-wide {
-    padding-block: var(--home-section-padding-y-lg);
-  }
 }
 
 .about-brands-slider__cta {
@@ -1323,61 +1313,20 @@
 }
 
 /*
- * Bloc CTA contact (pages À propos) —
- * même containment que la fiche produit (.product-page-shell + .product-advice) :
- * bandeau vert dans le container, espace après avant le footer.
- * Pas de padding-top : l’espace amont vient du padding-bottom de la section précédente.
+ * Bloc conseil (pages À propos) —
+ * même containment que la fiche produit : bandeau dans le container layout-wide.
  */
-.about-page .about-contact-cta {
-  margin: 0;
-  background: transparent;
-}
-
-.about-page .about-contact-cta__shell.layout-wide {
+.about-page .about-page-advice-shell.layout-wide {
   padding-top: 0;
   padding-bottom: var(--space-10);
 }
 
 @media (min-width: 1024px) {
-  .about-page .about-contact-cta__shell.layout-wide {
+  .about-page .about-page-advice-shell.layout-wide {
     padding-bottom: var(--space-12);
   }
 }
 
-.about-page .about-contact-cta__band {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-  padding: var(--space-8) var(--space-8) var(--space-10);
-  background: linear-gradient(90deg, #dfe9df, #dfe9df);
-  text-align: center;
-}
-
-.about-page .about-contact-cta__button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: min(100%, 18.75rem);
-  margin: 0;
-  padding: 0.5625rem var(--space-4);
-  border: 1px solid var(--color-accent-strong);
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: var(--color-accent-strong);
-  text-decoration: none;
-  font-family: var(--font-family-base);
-  font-size: var(--font-size-label-caps);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  line-height: 1.2;
-  text-transform: uppercase;
-  text-align: center;
-  box-sizing: border-box;
-}
-
-.about-page .about-contact-cta__button:hover {
-  background: rgba(40, 125, 99, 0.08);
-  color: var(--color-accent-strong);
-  text-decoration: none;
+.about-page .about-page-advice-shell .product-advice {
+  margin-top: 0;
 }

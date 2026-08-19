@@ -150,12 +150,10 @@ describe("magasin-crissier page structure", () => {
     );
   });
 
-  it("includes the green contact CTA band with button only", () => {
-    expect(html).toContain('class="about-contact-cta"');
-    expect(html).toContain('class="about-contact-cta__shell layout-wide"');
-    expect(html).toContain('class="about-contact-cta__band"');
-    expect(html).toContain('class="about-contact-cta__button" href="/pages/contact.html"');
-    expect(html).toContain(">Contactez-nous</a>");
+  it("includes the product advice mount placeholder", () => {
+    expect(html).toContain('class="about-page-advice-shell layout-wide"');
+    expect(html).toContain("data-product-advice-mount");
+    expect(html).not.toContain('class="about-contact-cta"');
   });
 
   it("styles the products slider for five visible slides on desktop", () => {

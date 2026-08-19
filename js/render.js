@@ -42,10 +42,12 @@ import {
   buildBrandsGridHtml,
   buildSelectaBrandPageHtml,
   getFeaturedBrands,
+  getBrandLogoSrc,
   getSelectaPageProducts,
   isSelectaBrandPage
 } from "./brands-page.js";
 import { initBrandGalleryLightbox, normalizeBrandGalleryItems } from "./brand-gallery.js";
+import { renderProductAdviceSectionHtml } from "./product-advice-section.js";
 
 /* HEADER / FOOTER PARTAGÉS — structure alignée sur richard2026 (envelope) */
 
@@ -2014,49 +2016,6 @@ export function renderCartServiceOptionsBlock(selectedOptions = {}) {
   `;
 }
 
-/**
- * Bloc conseil fiche produit (téléphone / e-mail / magasin).
- * Pictogrammes PNG brandés — panier non concerné.
- */
-function renderProductAdviceSection() {
-  return `
-    <section class="product-advice advice" aria-label="Besoin d'un conseil">
-      <h3 class="product-advice__title">Besoin d'un conseil ?</h3>
-      <p class="product-advice__lead">Nous serions ravis de vous conseiller personnellement</p>
-      <div class="product-advice__grid contact-grid">
-        <div class="product-advice__card contact">
-          <span class="product-advice__icon" aria-hidden="true">
-            <img src="/assets/icons/appel.png" alt="" width="40" height="40" loading="lazy" decoding="async">
-          </span>
-          <div class="product-advice__content">
-            <strong class="product-advice__card-title">Appelez-nous</strong>
-            <span class="product-advice__card-text"><a href="tel:+41216340476">021 634 04 76</a></span>
-          </div>
-        </div>
-        <div class="product-advice__card contact">
-          <span class="product-advice__icon" aria-hidden="true">
-            <img src="/assets/icons/enveloppe.png" alt="" width="40" height="40" loading="lazy" decoding="async">
-          </span>
-          <div class="product-advice__content">
-            <strong class="product-advice__card-title">Écrivez-nous</strong>
-            <span class="product-advice__card-text"><a href="mailto:info@richard-decoration.ch">info@richard-decoration.ch</a></span>
-          </div>
-        </div>
-        <div class="product-advice__card contact">
-          <span class="product-advice__icon" aria-hidden="true">
-            <img src="/assets/icons/magasin.png" alt="" width="40" height="40" loading="lazy" decoding="async">
-          </span>
-          <div class="product-advice__content">
-            <strong class="product-advice__card-title">Venez-nous rencontrer</strong>
-            <span class="product-advice__card-text">Richard La Literie<br>Rue des Alpes 2<br>1023 Crissier</span>
-          </div>
-        </div>
-      </div>
-      <a class="product-advice__cta about-btn" href="/pages/contact.html">Contactez-nous</a>
-    </section>
-  `;
-}
-
 function getProductBadgeClass(badge, index) {
   const normalized = String(badge).toLowerCase();
   if (normalized.includes("nouve")) return "new";
@@ -2213,7 +2172,7 @@ export async function initProductPage() {
     <div id="product-lightbox-root" class="product-lightbox-root"></div>
     ${renderProductRelatedSection("Produits similaires", similarProducts)}
     ${renderProductRelatedSection("Nous vous recommandons aussi", recommendedProducts)}
-    ${renderProductAdviceSection()}
+    ${renderProductAdviceSectionHtml()}
   `;
 
   document.title = `${product.name} | Richard La Literie`;
@@ -2473,7 +2432,7 @@ export async function initProductPage() {
           ${
             brand?.logo
               ? `<div class="product-brand">
-                  <a href="${getBrandUrl(brand.slug)}" class="product-brand__link"><img src="${brand.logo}" alt="${brand.name}" class="product-brand__logo"></a>
+                  <a href="${getBrandUrl(brand.slug)}" class="product-brand__link"><img src="${getBrandLogoSrc(brand)}" alt="${brand.name}" class="product-brand__logo"></a>
                 </div>`
               : ""
           }

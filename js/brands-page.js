@@ -48,6 +48,17 @@ export function getFeaturedBrands(brands) {
 }
 
 /**
+ * Retourne l'URL du logo marque (accueil, fiche produit, pages marque).
+ * Une seule source : brands.json → logo.
+ * @param {object|null|undefined} brand
+ * @returns {string}
+ */
+export function getBrandLogoSrc(brand) {
+  if (!brand || !brand.logo) return "";
+  return String(brand.logo);
+}
+
+/**
  * Construit le HTML d’une tuile (encadré) pour la grille Marques.
  * @param {object} brand
  * @returns {string}
@@ -84,7 +95,7 @@ export function buildBrandsGridHtml(brands) {
 export function buildBrandLogoLinkHtml(brand) {
   if (!brand) return "";
   const name = escapeHtml(brand.name || "Marque");
-  const logo = escapeHtml(brand.logo || "");
+  const logo = escapeHtml(getBrandLogoSrc(brand));
   const website = String(brand.website || "").trim();
   const img = `<img src="${logo}" alt="Logo ${name}" class="brand-detail__logo" />`;
   if (!website) {

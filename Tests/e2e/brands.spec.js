@@ -87,7 +87,7 @@ test.describe("Brands pages", () => {
     await expect(page.locator(".selecta-cta__button")).toHaveCSS("background-color", "rgb(39, 116, 93)");
     await expect(page.locator(".footer-global")).toHaveCSS(
       "border-top",
-      "1px solid rgba(255, 255, 255, 0.2)"
+      "1px solid rgba(8, 43, 78, 0.12)"
     );
     const ctaBox = await page.locator(".selecta-cta").boundingBox();
     const footerBox = await page.locator("#site-footer").boundingBox();

@@ -100,12 +100,18 @@ test.describe("Global footer", () => {
     await expect(footer.locator(".footer-global__title").first()).toHaveCSS("font-weight", "700");
   });
 
-  test("uses product-style gradient background", async ({ page }) => {
+  test("uses white background and title-colored text", async ({ page }) => {
     await page.goto("/");
 
-    await expect(page.locator(".footer-global")).toHaveCSS(
-      "background-image",
-      /linear-gradient/
+    await expect(page.locator(".footer-global")).toHaveCSS("background-color", "rgb(255, 255, 255)");
+    await expect(page.locator(".footer-global")).toHaveCSS("box-shadow", /rgba\(8,\s*43,\s*78/);
+    await expect(page.locator(".footer-global__link").first()).toHaveCSS(
+      "color",
+      "rgb(8, 43, 78)"
+    );
+    await expect(page.locator(".footer-global__title").first()).toHaveCSS(
+      "color",
+      "rgb(8, 43, 78)"
     );
   });
 });

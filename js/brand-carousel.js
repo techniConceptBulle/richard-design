@@ -2,7 +2,7 @@
  * Carousel marques — bandeau logos (accueil / page expert).
  */
 
-import { escapeHtml, getFeaturedBrands } from "./brands-page.js";
+import { escapeHtml, getFeaturedBrands, getBrandLogoSrc } from "./brands-page.js";
 import { getBrandUrl } from "./utils.js";
 
 const DEFAULT_SLIDE_COUNT = 9;
@@ -53,7 +53,7 @@ export function buildFeaturedBrandSlidesHtml(brands) {
   return featured
     .map((brand) => {
       const name = escapeHtml(brand.name || "Marque");
-      const logo = escapeHtml(brand.logo || "");
+      const logo = escapeHtml(getBrandLogoSrc(brand));
       return `
       <a
         class="brand-row__slide"
@@ -137,11 +137,13 @@ function wireBrandCarouselControls(container) {
  */
 function initOneBrandCarousel(container, options = {}) {
   const useFeatured =
-    container.id === "home-brand-row" || container.dataset.brandSource === "featured";
+    container.dataset.brandSource === "featured" ||
+    container.id === "home-brand-row" ||
+    container.id === "about-brand-row";
 
   if (useFeatured && Array.isArray(options.featuredBrands)) {
     container.innerHTML = buildFeaturedBrandSlidesHtml(options.featuredBrands);
-  } else {
+  } else if (container.dataset.brandCarousel === "legacy") {
     const slideCount =
       Number.parseInt(container.dataset.brandSlideCount || "", 10) || DEFAULT_SLIDE_COUNT;
     const logoSrc = container.dataset.brandLogo || "/assets/home/brand-roviva-ref.png";
@@ -168,7 +170,9 @@ function initOneBrandCarousel(container, options = {}) {
  * @returns {number} nombre de carousels initialisés
  */
 export function initBrandCarousel(root = document, options = {}) {
-  const containers = root.querySelectorAll("#home-brand-row, [data-brand-carousel]");
+  const containers = root.querySelectorAll(
+    "#home-brand-row, #about-brand-row, [data-brand-source=\"featured\"]"
+  );
   const unique = [...new Set([...containers])];
   unique.forEach((container) => initOneBrandCarousel(container, options));
   return unique.length;

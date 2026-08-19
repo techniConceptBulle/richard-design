@@ -12,12 +12,12 @@ describe("services-premium page structure", () => {
     const premiumIdx = html.indexOf('class="about-premium"');
     const reviewsIdx = html.indexOf('class="about-reviews"');
     const universIdx = html.indexOf('class="univers about-univers"');
-    const contactIdx = html.indexOf('class="about-contact-cta"');
+    const adviceIdx = html.indexOf("data-product-advice-mount");
 
     expect(premiumIdx).toBeGreaterThan(-1);
     expect(reviewsIdx).toBeGreaterThan(premiumIdx);
     expect(universIdx).toBeGreaterThan(reviewsIdx);
-    expect(contactIdx).toBeGreaterThan(universIdx);
+    expect(adviceIdx).toBeGreaterThan(universIdx);
   });
 
   it("removes accompaniment title and uses branded fabricants icon", () => {

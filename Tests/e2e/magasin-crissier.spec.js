@@ -113,24 +113,25 @@ test.describe("Magasin Crissier page", () => {
     await expect(section.locator(".arrow.right")).toBeVisible();
   });
 
-  test("renders green contact CTA band with button only", async ({ page }) => {
-    const band = page.locator(".about-contact-cta");
-    const greenBox = band.locator(".about-contact-cta__band");
-    await expect(band).toBeVisible();
-    await expect(band.locator(".about-contact-cta__shell")).toBeVisible();
-    await expect(band.locator(".about-contact-cta__button")).toHaveText(/Contactez-nous/i);
-    await expect(band.locator(".about-contact-cta__button")).toHaveAttribute(
+  test("renders product advice block at end of page", async ({ page }) => {
+    const shell = page.locator(".about-page-advice-shell");
+    const advice = shell.locator(".product-advice");
+    await expect(shell).toBeVisible();
+    await expect(advice).toBeVisible();
+    await expect(advice.locator(".product-advice__title")).toHaveText("Besoin d'un conseil ?");
+    await expect(advice.locator(".product-advice__card")).toHaveCount(3);
+    await expect(advice.locator(".product-advice__cta")).toHaveText(/Contactez-nous/i);
+    await expect(advice.locator(".product-advice__cta")).toHaveAttribute(
       "href",
       "/pages/contact.html"
     );
-    await expect(band.getByText("Besoin d'un conseil")).toHaveCount(0);
+    await expect(advice.getByText("Appelez-nous")).toBeVisible();
 
-    const metrics = await band.evaluate((section) => {
-      const shell = section.querySelector(".about-contact-cta__shell");
-      const box = section.querySelector(".about-contact-cta__band");
+    const metrics = await shell.evaluate((section) => {
+      const box = section.querySelector(".product-advice");
       const footer = document.querySelector("footer");
-      if (!shell || !box || !footer) return null;
-      const shellCs = getComputedStyle(shell);
+      if (!box || !footer) return null;
+      const shellCs = getComputedStyle(section);
       const boxCs = getComputedStyle(box);
       return {
         boxBg: boxCs.backgroundImage,

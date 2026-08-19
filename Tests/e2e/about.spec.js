@@ -156,7 +156,7 @@ test.describe("About page", () => {
     ).toHaveClass(/is-active/);
   });
 
-  test("renders brands spotlight, carousel and contact CTA", async ({ page }) => {
+  test("renders brands spotlight, carousel and product advice block", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto("/pages/expert-literie-crissier.html");
 
@@ -170,17 +170,31 @@ test.describe("About page", () => {
     );
 
     const brandRow = page.locator("#about-brand-row");
-    await expect(brandRow.locator(".brand-row__slide")).toHaveCount(9);
+    const slides = brandRow.locator(".brand-row__slide");
+    await expect(slides).toHaveCount(4);
+    await expect(page.locator(".brands__slider-wrap")).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Marques précédentes" })).toHaveCount(0);
+
+    await expect(brandRow.locator('a[href="/marque/roviva.html"]')).toBeVisible();
+    await expect(brandRow.locator('a[href="/marque/selecta.html"]')).toBeVisible();
+    await expect(brandRow.locator('a[href="/marque/rowa.html"]')).toBeVisible();
+    await expect(brandRow.locator('a[href="/marque/swissflex.html"]')).toBeVisible();
 
     await expect(page.locator(".about-brands-slider__contact")).toHaveCount(0);
     await expect(page.locator("#about-brands-slider-title")).toHaveCount(0);
 
-    const contactBand = page.locator(".about-contact-cta");
-    await expect(contactBand.locator(".about-contact-cta__button")).toHaveText(/Contactez-nous/i);
-    await expect(contactBand.locator(".about-contact-cta__button")).toHaveAttribute(
+    const adviceBlock = page.locator(".about-page-advice-shell .product-advice");
+    await expect(adviceBlock).toBeVisible();
+    await expect(adviceBlock.locator(".product-advice__title")).toHaveText("Besoin d'un conseil ?");
+    await expect(adviceBlock.locator(".product-advice__card")).toHaveCount(3);
+    await expect(adviceBlock.locator(".product-advice__cta")).toHaveText("Contactez-nous");
+    await expect(adviceBlock.locator(".product-advice__cta")).toHaveAttribute(
       "href",
       "/pages/contact.html"
     );
+
+    const bandBg = await adviceBlock.evaluate((el) => getComputedStyle(el).backgroundImage);
+    expect(bandBg).toContain("223, 233, 223");
 
     const badgeLeft = await spotlight.locator(".about-brands-spotlight__badge").evaluate((el) =>
       getComputedStyle(el).left
@@ -192,11 +206,6 @@ test.describe("About page", () => {
     );
     expect(paraSize).toBe("16px");
 
-    const bandBg = await contactBand.locator(".about-contact-cta__band").evaluate((el) =>
-      getComputedStyle(el).backgroundImage
-    );
-    expect(bandBg).toContain("223, 233, 223");
-
     const logoSrc = await spotlight.locator(".about-brands-spotlight__brand-logo").getAttribute("src");
     expect(logoSrc).toContain("brand-roviva-ref.png");
 
@@ -204,21 +213,21 @@ test.describe("About page", () => {
       const showroom = document.querySelector("#about-showroom-slider");
       const brands = document.querySelector(".about-brands-spotlight");
       const slider = document.querySelector("#about-brand-row");
-      const contact = document.querySelector(".about-contact-cta");
-      if (!showroom || !brands || !slider || !contact) return null;
+      const advice = document.querySelector(".about-page-advice-shell .product-advice");
+      if (!showroom || !brands || !slider || !advice) return null;
       return {
         afterShowroom:
           (showroom.compareDocumentPosition(brands) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0,
         sliderAfterSpotlight:
           (brands.compareDocumentPosition(slider) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0,
-        contactAfterSlider:
-          (slider.compareDocumentPosition(contact) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0
+        adviceAfterSlider:
+          (slider.compareDocumentPosition(advice) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0
       };
     });
     expect(order).toEqual({
       afterShowroom: true,
       sliderAfterSpotlight: true,
-      contactAfterSlider: true
+      adviceAfterSlider: true
     });
   });
 
@@ -295,7 +304,7 @@ test.describe("About page", () => {
     await expect(page.locator('[data-mock="trustindex"]')).toHaveCount(0);
   });
 
-  test("services premium page hosts reviews and discovery block before contact CTA", async ({
+  test("services premium page hosts reviews and discovery block before product advice", async ({
     page
   }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
@@ -315,12 +324,12 @@ test.describe("About page", () => {
       const premium = document.querySelector(".about-premium");
       const reviews = document.querySelector(".about-reviews");
       const univers = document.querySelector(".about-univers");
-      const contact = document.querySelector(".about-contact-cta");
-      if (!premium || !reviews || !univers || !contact) return null;
+      const advice = document.querySelector(".about-page-advice-shell .product-advice");
+      if (!premium || !reviews || !univers || !advice) return null;
       return (
         (premium.compareDocumentPosition(reviews) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0 &&
         (reviews.compareDocumentPosition(univers) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0 &&
-        (univers.compareDocumentPosition(contact) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0
+        (univers.compareDocumentPosition(advice) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0
       );
     });
     expect(order).toBeTruthy();

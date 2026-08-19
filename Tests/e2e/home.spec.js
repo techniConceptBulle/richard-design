@@ -552,42 +552,111 @@ test.describe("Home page", () => {
     await expect(universH2).toHaveCSS("color", reference.color);
   });
 
-  test("brands section uses white background", async ({ page }) => {
+  test("brands section uses cream background from former univers section", async ({ page }) => {
     await page.goto("/");
-    await expect(page.locator(".brands")).toHaveCSS("background-color", "rgb(255, 255, 255)");
+    await expect(page.locator(".brands")).toHaveCSS("background-color", "rgb(251, 246, 237)");
+    await expect(page.locator(".univers")).toHaveCSS("background-color", "rgb(255, 255, 255)");
   });
 
-  test("renders product advice section at end of home", async ({ page }) => {
+  test("renders appointment and store section at end of home", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto("/");
 
-    await expect(page.locator(".appointment")).toHaveCount(0);
-
-    const section = page.locator("main .product-advice");
+    const section = page.locator(".appointment");
     await expect(section).toBeVisible();
-    await expect(section.locator(".product-advice__title")).toHaveText("Besoin d'un conseil ?");
-    await expect(section.locator(".product-advice__lead")).toContainText(
-      "Nous serions ravis de vous conseiller personnellement"
-    );
-    await expect(section.locator(".product-advice__card")).toHaveCount(3);
-    await expect(section.locator(".product-advice__cta")).toHaveText("Contactez-nous");
-    await expect(section.locator(".product-advice__cta")).toHaveAttribute(
-      "href",
-      "/pages/contact.html"
-    );
-    await expect(section).toHaveCSS("background-image", /223,\s*233,\s*223/);
-    await expect(section.locator(".product-advice__card-text").nth(2)).toContainText(
-      "Rue des Alpes 2"
-    );
+    await expect(section.locator(".appt-kicker")).toHaveText(/Prenez rendez-vous/i);
+    await expect(section.locator(".appt-kicker")).toHaveCSS("color", "rgb(255, 255, 255)");
+    await expect(section.locator(".cal-icon img")).toHaveAttribute("src", /calendrier\.png/);
+    await expect(section.locator("h2")).toContainText("Un conseil personnalisé");
+    await expect(section.locator(".btn-green")).toHaveAttribute("href", "/pages/contact.html");
+    await expect(section.locator(".btn-green")).toHaveCSS("background-color", "rgb(39, 116, 93)");
+    await expect(section).toHaveCSS("background-image", /linear-gradient/);
+    await expect(section.locator("h2")).toHaveCSS("color", "rgb(255, 255, 255)");
 
-    const lastMainSection = page.locator("main > section").last();
-    await expect(lastMainSection).toHaveClass(/product-advice/);
+    await expect(section.locator(".store-card h3")).toHaveText(/Notre magasin/i);
+    await expect(section.locator(".store-card")).toContainText("Rue des Alpes 2");
+    await expect(section.locator(".store-card a[href*='google.com/maps']")).toBeVisible();
+    await expect(section.locator(".store-img")).toHaveAttribute("src", /storefront/);
+
+    const storeCardLayout = await section.locator(".store-card").evaluate((card) => {
+      const actions = card.querySelector(".store-card__actions");
+      const address = card.querySelector(".store-card__address");
+      if (!actions || !address) return null;
+      const a = actions.getBoundingClientRect();
+      const b = address.getBoundingClientRect();
+      return {
+        actionsLeft: Math.round(a.left),
+        addressLeft: Math.round(b.left),
+        addressAlign: getComputedStyle(address).textAlign,
+      };
+    });
+    expect(storeCardLayout).not.toBeNull();
+    expect(storeCardLayout.addressLeft).toBeLessThan(storeCardLayout.actionsLeft);
+    expect(storeCardLayout.addressAlign).toBe("left");
+
+    const layout = await page.evaluate(() => {
+      const history = document.querySelector(".history__inner.layout-wide");
+      const section = document.querySelector(".appointment");
+      const appointment = document.querySelector(".appointment__inner.layout-wide");
+      const grid = document.querySelector(".appointment__grid");
+      const media = document.querySelector(".appointment .store-media");
+      const img = document.querySelector(".appointment .store-img");
+      const left = document.querySelector(".appointment .appt-left");
+      const cardWrap = document.querySelector(".appointment .store-card-wrap");
+      const card = document.querySelector(".store-card");
+      if (!history || !section || !appointment || !grid || !media || !img || !left || !cardWrap || !card) {
+        return null;
+      }
+      const h = history.getBoundingClientRect();
+      const a = appointment.getBoundingClientRect();
+      const s = section.getBoundingClientRect();
+      const m = media.getBoundingClientRect();
+      const i = img.getBoundingClientRect();
+      const l = left.getBoundingClientRect();
+      const c = card.getBoundingClientRect();
+      const leftStyle = getComputedStyle(left);
+      const wrapStyle = getComputedStyle(cardWrap);
+      const cols = getComputedStyle(grid).gridTemplateColumns.split(" ").map((v) => parseFloat(v));
+      return {
+        leftDiff: Math.abs(h.left - a.left),
+        widthDiff: Math.abs(h.width - a.width),
+        mediaH: m.height,
+        imgH: i.height,
+        leftH: l.height,
+        cardH: c.height,
+        col1: cols[0],
+        col2: cols[1],
+        col3: cols[2],
+        cardJustify: getComputedStyle(card).justifyContent,
+        flushTop: Math.abs(m.top - s.top),
+        flushBottom: Math.abs(s.bottom - m.bottom),
+        leftPadY: parseFloat(leftStyle.paddingTop) + parseFloat(leftStyle.paddingBottom),
+        wrapPadY: parseFloat(wrapStyle.paddingTop) + parseFloat(wrapStyle.paddingBottom),
+        innerPadY:
+          parseFloat(getComputedStyle(appointment).paddingTop) +
+          parseFloat(getComputedStyle(appointment).paddingBottom)
+      };
+    });
+    expect(layout).not.toBeNull();
+    expect(layout.leftDiff).toBeLessThan(2);
+    expect(layout.widthDiff).toBeLessThan(2);
+    expect(Math.abs(layout.col1 - layout.col2)).toBeLessThan(2);
+    expect(Math.abs(layout.col2 - layout.col3)).toBeLessThan(2);
+    expect(layout.mediaH).toBeCloseTo(layout.leftH, 0);
+    expect(layout.imgH).toBeCloseTo(layout.mediaH, 0);
+    expect(layout.cardH).toBeLessThan(layout.mediaH);
+    expect(layout.cardJustify).toBe("space-between");
+    expect(layout.innerPadY).toBe(0);
+    expect(layout.flushTop).toBeLessThan(2);
+    expect(layout.flushBottom).toBeLessThan(2);
+    expect(layout.leftPadY).toBeGreaterThanOrEqual(96);
+    expect(layout.wrapPadY).toBeGreaterThanOrEqual(96);
 
     const order = await page.evaluate(() => {
       const brands = document.querySelector(".brands");
-      const advice = document.querySelector("main .product-advice");
-      if (!brands || !advice) return null;
-      return brands.compareDocumentPosition(advice) & Node.DOCUMENT_POSITION_FOLLOWING
+      const appointment = document.querySelector(".appointment");
+      if (!brands || !appointment) return null;
+      return brands.compareDocumentPosition(appointment) & Node.DOCUMENT_POSITION_FOLLOWING
         ? "after"
         : "before";
     });

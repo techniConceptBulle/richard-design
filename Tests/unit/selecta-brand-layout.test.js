@@ -35,7 +35,7 @@ describe("selecta brand layout container", () => {
     );
     expect(css).toMatch(/\.page--selecta-brand\s+#site-footer\s*\{[^}]*margin-top:\s*0/s);
     expect(css).toMatch(
-      /\.page--selecta-brand\s+\.footer-global\s*\{[^}]*border-top:\s*1px solid rgba\(255,\s*255,\s*255,\s*0\.2\)/s
+      /\.page--selecta-brand\s+\.footer-global\s*\{[^}]*border-top:\s*1px solid rgba\(8,\s*43,\s*78,\s*0\.12\)/s
     );
     expect(css).toMatch(/\.selecta-cta\s*\{[^}]*margin-top:\s*auto/s);
   });
@@ -65,8 +65,19 @@ describe("selecta brand layout container", () => {
     const brands = JSON.parse(readFileSync(resolve(rootDir, "data/brands.json"), "utf8"));
     const selecta = brands.find((brand) => brand.slug === "selecta");
     expect(selecta.selectaPage.hero.image).toBe("/assets/marques/selecta.png");
+    expect(selecta.selectaPage.hero.logo).toBe("/assets/images/brands/selecta/logo.png?v=20260819b");
     expect(selecta.selectaPage.base.image).toBe("/assets/marques/sommier-rowa-radio-m4memory.jpg");
     expect(selecta.selectaPage.expertise.image).toBe("/assets/marques/matelas-rowa-3.jpg");
+  });
+
+  it("uses png logos with alpha for rowa, swissflex and selecta", () => {
+    const brands = JSON.parse(readFileSync(resolve(rootDir, "data/brands.json"), "utf8"));
+    const rowa = brands.find((brand) => brand.slug === "rowa");
+    const swissflex = brands.find((brand) => brand.slug === "swissflex");
+    const selecta = brands.find((brand) => brand.slug === "selecta");
+    expect(rowa.logo).toBe("/assets/images/brands/rowa/logo.png?v=20260819c");
+    expect(swissflex.logo).toBe("/assets/images/brands/swissflex/logo.png?v=20260819b");
+    expect(selecta.logo).toBe("/assets/images/brands/selecta/logo.png?v=20260819b");
   });
 
   it("spreads space between the why icon and title", () => {

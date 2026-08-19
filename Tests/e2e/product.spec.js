@@ -286,7 +286,7 @@ test.describe("Product detail page", () => {
     const brandName = page.locator(".product-brand__name");
     const title = page.locator(".product_title");
     await expect(logo).toBeVisible();
-    await expect(logo).toHaveCSS("max-height", "52px");
+    await expect(logo).toHaveCSS("max-height", "64px");
     await expect(brandName).toBeVisible();
 
     const positions = await page.evaluate(() => {
@@ -310,6 +310,7 @@ test.describe("Product detail page", () => {
       return {
         nameAboveTitle: nameRect.bottom <= titleRect.top + 2,
         logoRightOfTitle: logoRect.left >= titleRect.right - 4,
+        logoDoesNotOverlapTitle: logoRect.left >= titleRect.right - 4,
         logoInHeader: header.contains(brandLogo),
         logoInsideHeader: logoRect.right <= headerRect.right + 1,
         logoInsidePanel: logoRect.right <= panelRect.right + 1,
@@ -322,6 +323,7 @@ test.describe("Product detail page", () => {
     expect(positions).not.toBeNull();
     expect(positions.nameAboveTitle).toBe(true);
     expect(positions.logoRightOfTitle).toBe(true);
+    expect(positions.logoDoesNotOverlapTitle).toBe(true);
     expect(positions.logoInHeader).toBe(true);
     expect(positions.logoInsideHeader).toBe(true);
     expect(positions.logoInsidePanel).toBe(true);
@@ -329,6 +331,21 @@ test.describe("Product detail page", () => {
     expect(positions.brandToTitleGap).toBeLessThan(12);
     expect(positions.titleToPriceGap).toBeGreaterThanOrEqual(12);
     expect(positions.priceToOptionsGap).toBeGreaterThanOrEqual(20);
+  });
+
+  test("uses the same roviva logo URL as the home featured brands row", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+
+    await page.goto("/");
+    const homeLogoSrc = await page
+      .locator('#home-brand-row a[href="/marque/roviva.html"] img')
+      .getAttribute("src");
+
+    await page.goto(PRODUCT_URL);
+    const productLogoSrc = await page.locator(".product-brand__logo").getAttribute("src");
+
+    expect(homeLogoSrc).toBeTruthy();
+    expect(productLogoSrc).toBe(homeLogoSrc);
   });
 
   test("renders advice cards with bold titles and normal details", async ({ page }) => {

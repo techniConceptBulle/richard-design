@@ -16,11 +16,24 @@ import {
 import { initCartBadge } from "./cart.js";
 import { initStoreMaps } from "./store-map.js";
 import { initShowroomSlider } from "./showroom-slider.js";
+import { getBrands } from "./data.js";
+import { getFeaturedBrands } from "./brands-page.js";
 import { initBrandCarousel } from "./brand-carousel.js";
 import { initStoreProductsSlider } from "./store-products-slider.js";
+import { mountProductAdviceSection } from "./product-advice-section.js";
+
+/**
+ * Monte le bloc conseil sur les pages À propos (placeholder data-product-advice-mount).
+ */
+function initAboutProductAdviceMount() {
+  document.querySelectorAll("[data-product-advice-mount]").forEach((el) => {
+    mountProductAdviceSection(el);
+  });
+}
 
 async function initPage() {
   renderSharedLayout();
+  initAboutProductAdviceMount();
   initCartBadge();
 
   const page = getCurrentPageKey();
@@ -50,7 +63,10 @@ async function initPage() {
     case "about-expert":
       await initStoreMaps();
       initShowroomSlider();
-      initBrandCarousel();
+      {
+        const brands = await getBrands();
+        initBrandCarousel(document, { featuredBrands: getFeaturedBrands(brands) });
+      }
       break;
     case "about-store":
       initStoreProductsSlider();

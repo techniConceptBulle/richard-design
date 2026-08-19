@@ -21,11 +21,11 @@ describe("expert brands spotlight and slider", () => {
     const showroomIdx = html.indexOf('id="about-showroom-slider"');
     const spotlightIdx = html.indexOf('class="about-brands-spotlight"');
     const brandsIdx = html.indexOf('id="about-brand-row"');
-    const contactIdx = html.indexOf('class="about-contact-cta"');
+    const adviceIdx = html.indexOf("data-product-advice-mount");
     expect(showroomIdx).toBeGreaterThan(-1);
     expect(spotlightIdx).toBeGreaterThan(showroomIdx);
     expect(brandsIdx).toBeGreaterThan(spotlightIdx);
-    expect(contactIdx).toBeGreaterThan(brandsIdx);
+    expect(adviceIdx).toBeGreaterThan(brandsIdx);
   });
 
   it("no longer includes why-try, trial, premium or univers blocks", () => {
@@ -37,15 +37,20 @@ describe("expert brands spotlight and slider", () => {
     expect(html).not.toContain("Essayer son matelas, un indispensable");
   });
 
-  it("includes brand copy, Roviva badge and carousel", () => {
+  it("includes brand copy, Roviva badge and featured brands grid", () => {
     expect(html).toContain("retrouvez les plus grandes marques");
     expect(html).toContain("Swissflex, Roviva, Hasena");
     expect(html).toContain("La marque Roviva");
-    expect(html).toContain('data-brand-carousel');
+    expect(html).toContain('data-brand-source="featured"');
+    expect(html).toContain("brand-row--grid");
+    expect(html).toContain("/assets/home/expert-brands-spotlight-roviva.jpg");
+    expect(html).toMatch(/expert-brands-spotlight-roviva\.jpg"[\s\S]*?height="747"/);
     expect(html).toContain("/assets/home/brand-roviva-ref.png");
     expect(html).not.toContain("about-brands-slider__contact");
     expect(html).not.toContain("id=\"about-brands-slider-title\"");
     expect(html).not.toMatch(/<h2[^>]*>Les plus grandes marques de literie<\/h2>/);
+    expect(html).not.toContain("data-brand-carousel");
+    expect(html).not.toContain("brands__slider-wrap");
   });
 
   it("styles paragraphs at 16px and transparent badge", () => {
@@ -57,9 +62,11 @@ describe("expert brands spotlight and slider", () => {
     );
   });
 
-  it("initializes brand carousel on the about-expert page", () => {
-    expect(appJs).toMatch(/case "about-expert":[\s\S]*initBrandCarousel\(\)/);
-    expect(carouselJs).toContain("[data-brand-carousel]");
+  it("initializes featured brand grid on the about-expert page", () => {
+    expect(appJs).toMatch(/case "about-expert":[\s\S]*getFeaturedBrands\(brands\)/);
+    expect(appJs).toMatch(/case "about-expert":[\s\S]*initBrandCarousel\(document, \{ featuredBrands:/);
+    expect(carouselJs).toContain("#about-brand-row");
     expect(carouselJs).toContain("#home-brand-row");
+    expect(carouselJs).toContain("dataset.brandSource === \"featured\"");
   });
 });

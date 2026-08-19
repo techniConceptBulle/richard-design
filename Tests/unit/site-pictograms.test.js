@@ -1,6 +1,6 @@
 /**
  * Tests unitaires — mapping des pictogrammes PNG brandés sur le site.
- * Hors scope : panier, calendrier RDV.
+ * Hors scope : panier.
  */
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
@@ -38,7 +38,8 @@ describe("site pictograms", () => {
       "magasin.png",
       "broche-de-localisation.png",
       "appel.png",
-      "enveloppe.png"
+      "enveloppe.png",
+      "calendrier.png"
     ];
 
     for (const name of required) {
@@ -56,7 +57,9 @@ describe("site pictograms", () => {
     expect(html).toContain('src="/assets/icons/entreprise-familiale.png"');
     expect(html).toContain('src="/assets/icons/magasin.png"');
     expect(html).toContain('src="/assets/icons/broche-de-localisation.png"');
+    expect(html).toContain('src="/assets/icons/calendrier.png"');
     expect(html).not.toMatch(/history__fact-icon[^>]*>⌖</);
+    expect(html).not.toMatch(/class="cal-icon"[^>]*>[\s\S]*?<svg/);
   });
 
   it("wires premium service cards on the premium page", () => {
@@ -69,11 +72,13 @@ describe("site pictograms", () => {
   });
 
   it("wires product advice pictograms without touching cart service SVGs", () => {
+    const adviceSection = readFileSync(resolve(root, "js/product-advice-section.js"), "utf8");
     const render = readFileSync(resolve(root, "js/render.js"), "utf8");
 
-    expect(render).toContain('src="/assets/icons/appel.png"');
-    expect(render).toContain('src="/assets/icons/enveloppe.png"');
-    expect(render).toContain('src="/assets/icons/magasin.png"');
+    expect(adviceSection).toContain('src="/assets/icons/appel.png"');
+    expect(adviceSection).toContain('src="/assets/icons/enveloppe.png"');
+    expect(adviceSection).toContain('src="/assets/icons/magasin.png"');
+    expect(render).toContain('from "./product-advice-section.js"');
     // Panier inchangé
     expect(render).toContain('icon: "/assets/icons/services/truck.svg"');
     expect(render).toContain('icon: "/assets/icons/services/recycle.svg"');

@@ -1,5 +1,5 @@
 /**
- * Tests unitaires — menu catalogue, bandeau services, conseil accueil et image fondateur (home).
+ * Tests unitaires — menu catalogue, bandeau services, magasin et image fondateur (home).
  */
 import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
@@ -44,8 +44,8 @@ describe("home nav menu density", () => {
   it("bumps envelope fallback heights with the thicker nav", () => {
     expect(tokensCss).toContain("--envelope-height-mobile: 15.75rem");
     expect(tokensCss).toContain("--envelope-height-desktop: 12.25rem");
-    expect(tokensCss).not.toContain("--envelope-height-mobile: 14.75rem");
-    expect(tokensCss).not.toContain("--envelope-height-desktop: 11.25rem");
+    expect(tokensCss).not.toContain("--envelope-height-mobile: 16.05rem");
+    expect(tokensCss).not.toContain("--envelope-height-desktop: 12.55rem");
   });
 });
 
@@ -60,29 +60,63 @@ describe("home services band", () => {
   });
 });
 
-describe("home product advice section", () => {
-  const indexHtml = readFileSync(resolve(rootDir, "index.html"), "utf8");
-  const productCss = readFileSync(resolve(rootDir, "styles/product-page.css"), "utf8");
-
-  it("replaces the appointment block with the product advice markup", () => {
-    expect(indexHtml).toContain('class="product-advice advice"');
-    expect(indexHtml).toContain("Besoin d'un conseil ?");
-    expect(indexHtml).toContain("Contactez-nous");
-    expect(indexHtml).toContain("product-advice__inner layout-wide");
-    expect(indexHtml).not.toContain('class="appointment"');
-    expect(indexHtml).not.toContain("Prendre rendez-vous");
+describe("home store card", () => {
+  it("places address on the left, phone and directions on the right left-aligned", () => {
+    const indexHtml = readFileSync(resolve(rootDir, "index.html"), "utf8");
+    const actionsIndex = indexHtml.indexOf("store-card__actions");
+    const addressIndex = indexHtml.indexOf("store-card__address");
+    expect(addressIndex).toBeGreaterThan(-1);
+    expect(actionsIndex).toBeGreaterThan(addressIndex);
+    expect(richardCss).toMatch(/\.store-card__address\s*\{[^}]*text-align:\s*left/s);
+    expect(richardCss).toMatch(
+      /\.store-card__actions\s*\{[^}]*align-items:\s*flex-start/s
+    );
   });
 
-  it("scopes product-advice styles to .rd-page so home and product share them", () => {
-    expect(productCss).toMatch(/\.rd-page\s+\.product-advice\s*\{/);
-    expect(productCss).not.toMatch(/\.single-product-page\s+\.product-advice\s*\{/);
+  it("centers the store title and increases space below it", () => {
+    expect(richardCss).toMatch(
+      /\.rd-page\s+\.store-card__header\s*\{[^}]*justify-content:\s*center/s
+    );
+    expect(richardCss).toMatch(
+      /\.rd-page\s+\.store-card\s*\{[^}]*gap:\s*1\.75rem/s
+    );
   });
 
-  it("places the advice section after the brands block", () => {
+  it("matches store card icon size to history fact icons", () => {
+    expect(richardCss).toMatch(
+      /\.rd-page\s+\.store-card\s+\.icon-box\s+img\s*\{[^}]*width:\s*2\.25rem/s
+    );
+    expect(richardCss).toMatch(
+      /\.rd-page\s+\.history__fact-icon\s+img\s*\{[^}]*width:\s*2\.25rem/s
+    );
+  });
+
+  it("restores the appointment section after the brands block on home", () => {
+    const indexHtml = readFileSync(resolve(rootDir, "index.html"), "utf8");
+    expect(indexHtml).toContain('class="appointment"');
+    expect(indexHtml).toContain("Prendre rendez-vous");
+    expect(indexHtml).toContain('href="/pages/contact.html">Prendre rendez-vous</a>');
+    expect(indexHtml).toContain('src="/assets/icons/calendrier.png"');
+    expect(indexHtml).not.toContain('class="product-advice advice"');
     const brandsIdx = indexHtml.indexOf('class="brands brands--static"');
-    const adviceIdx = indexHtml.indexOf('class="product-advice advice"');
+    const appointmentIdx = indexHtml.indexOf('class="appointment"');
     expect(brandsIdx).toBeGreaterThan(-1);
-    expect(adviceIdx).toBeGreaterThan(brandsIdx);
+    expect(appointmentIdx).toBeGreaterThan(brandsIdx);
+  });
+});
+
+describe("home section backgrounds", () => {
+  it("uses white univers, cream brands, footer gradient on appointment and white footer", () => {
+    expect(richardCss).toMatch(/\.rd-page\s+\.univers\s*\{[^}]*background:\s*#fff/s);
+    expect(richardCss).toMatch(/\.rd-page\s+\.brands\s*\{[^}]*background:\s*#fbf6ed/s);
+    expect(richardCss).toMatch(
+      /\.rd-page\s+\.appointment\s*\{[^}]*background:\s*linear-gradient\(90deg,\s*var\(--color-topbar-start\),\s*var\(--color-topbar-end\)\)/s
+    );
+    expect(richardCss).toMatch(/\.footer-global\s*\{[^}]*background:\s*#fff/s);
+    expect(richardCss).toMatch(/\.footer-global\s*\{[^}]*box-shadow:\s*0 -2px 8px rgba\(8,\s*43,\s*78,\s*0\.04\)/s);
+    expect(richardCss).toMatch(/\.footer-global__link\s*\{[^}]*color:\s*var\(--color-text\)/s);
+    expect(richardCss).toMatch(/\.rd-page\s+\.appointment\s+\.appt-kicker\s*\{[^}]*color:\s*#fff/s);
+    expect(richardCss).toMatch(/\.rd-page\s+\.appointment\s+\.cal-icon img\s*\{[^}]*filter:\s*brightness\(0\) invert\(1\)/s);
   });
 });
 

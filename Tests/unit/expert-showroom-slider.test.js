@@ -32,6 +32,7 @@ describe("expert showroom slider markup", () => {
     expect(html).not.toContain("about-showroom-slider__mark");
     expect(html).not.toContain("about-showroom-slider__panel");
     expect(html).toContain("/assets/home/showroom-slide-1.jpg");
+    expect(html).toContain('/assets/home/hero-slide-wall.jpg');
   });
 
   it("styles active bullet in site green and constrains the slider in the container", () => {

@@ -230,6 +230,7 @@ describe("selecta brand page helpers", () => {
     const html = buildSelectaBrandPageHtml(selectaBrand, '<article class="category-product-card"></article>');
     expect(html).toContain("selecta-hero");
     expect(html).toMatch(/selecta-hero__inner[\s\S]*selecta-hero__image/);
+    expect(html).toContain("selecta-hero__logo");
     expect(html).toContain("La manufacture du sommeil");
     expect(html).toContain("Selecta by Röwa : la même expertise");
     expect(html).toContain("Le sommier Röwa");

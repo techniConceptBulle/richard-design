@@ -306,7 +306,7 @@ body.nav-open {
 .nav-primary__inner {
   max-width: var(--layout-max-width);
   margin: 0 auto;
-  /* Bandeau bleu plus épais (~+8px par côté vs 0.55rem) */
+  /* Bandeau bleu légèrement plus épais (~+8px par côté vs 0.55rem d'origine) */
   padding: 1.05rem var(--gutter);
   display: flex;
   align-items: stretch;
@@ -628,8 +628,10 @@ body.nav-open {
 
 /* Footer global — contact, liens regroupés et horaires */
 .footer-global {
-  background: linear-gradient(90deg, var(--color-topbar-start), var(--color-topbar-end));
-  color: #fff;
+  background: #fff;
+  color: var(--color-text);
+  /* Légère ombre haute pour séparer du contenu */
+  box-shadow: 0 -2px 8px rgba(8, 43, 78, 0.04);
 }
 
 .footer-global__inner {
@@ -672,10 +674,10 @@ body.nav-open {
 .footer-global__copyright {
   margin: 2rem 0 0;
   padding-top: 1.25rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-top: 1px solid rgba(8, 43, 78, 0.12);
   font-size: 0.75rem;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--color-text);
 }
 
 .footer-global__contact-line,
@@ -683,20 +685,20 @@ body.nav-open {
   display: block;
   font-size: 0.625rem;
   line-height: 1.6;
-  color: #fff;
+  color: var(--color-text);
 }
 
 .footer-global__contact-link {
   display: block;
   margin-top: 0.25rem;
-  color: #fff;
+  color: var(--color-text);
   text-decoration: none;
   font-size: 0.625rem;
   line-height: 1.6;
 }
 
 .footer-global__contact-link:hover {
-  color: #cfe2d4;
+  color: var(--color-accent-strong);
   text-decoration: none;
 }
 
@@ -714,7 +716,7 @@ body.nav-open {
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #fff;
+  color: var(--color-text);
 }
 
 .footer-global__links {
@@ -727,14 +729,14 @@ body.nav-open {
 }
 
 .footer-global__link {
-  color: #fff;
+  color: var(--color-text);
   text-decoration: none;
   font-size: 0.625rem;
   line-height: 1.6;
 }
 
 .footer-global__link:hover {
-  color: #cfe2d4;
+  color: var(--color-accent-strong);
   text-decoration: none;
 }
 
@@ -1371,7 +1373,7 @@ body.nav-open {
 
 /* Section univers literie */
 .rd-page .univers {
-  background: #fbf6ed;
+  background: #fff;
   margin: 0;
 }
 
@@ -1491,7 +1493,7 @@ body.nav-open {
 }
 
 .rd-page .brands {
-  background: #fff;
+  background: #fbf6ed;
   text-align: center;
   margin: 0;
 }
@@ -1640,11 +1642,10 @@ body.nav-open {
   right: 1.5rem;
 }
 
-/* Section rendez-vous + magasin — 3 blocs égaux (texte | image | carte) */
+/* Section rendez-vous + magasin — fond identique à l'ancien footer */
 .rd-page .appointment {
-  /* Même fond que fiche produit « Besoin d'un conseil » */
-  background-color: #dfe9df;
-  color: #082b4e;
+  background: linear-gradient(90deg, var(--color-topbar-start), var(--color-topbar-end));
+  color: #fff;
   margin: 0;
 }
 
@@ -1677,10 +1678,25 @@ body.nav-open {
   color: #082b4e;
 }
 
-.rd-page .cal-icon svg {
+.rd-page .appointment .cal-icon img {
   width: 100%;
   height: 100%;
   display: block;
+  object-fit: contain;
+  /* Icône calendrier blanche sur fond bleu */
+  filter: brightness(0) invert(1);
+}
+
+.rd-page .appointment .appt-kicker {
+  color: #fff;
+}
+
+.rd-page .appointment .appt-left h2 {
+  color: #fff;
+}
+
+.rd-page .appointment .appt-left p:not(.appt-kicker) {
+  color: rgba(255, 255, 255, 0.92);
 }
 
 .rd-page .appt-kicker {

@@ -361,10 +361,10 @@
             </div>
             <div class="about-brands-spotlight__media">
               <img
-                src="/assets/home/hero-slide-wall.jpg"
+                src="/assets/home/expert-brands-spotlight-roviva.jpg"
                 alt="Chambre literie marque Roviva"
                 width="1024"
-                height="576"
+                height="747"
                 loading="lazy"
                 decoding="async"
               />
@@ -383,34 +383,20 @@
         </div>
       </section>
 
-      <!-- Slider marques (même composant que l’accueil) -->
-      <section class="brands about-brands-slider" aria-label="Les plus grandes marques de literie">
+      <!-- Grille marques (même composant que l'accueil) -->
+      <section class="brands brands--static about-brands-grid" aria-label="Les plus grandes marques de literie">
         <div class="brands__inner layout-wide">
-          <div class="brands__slider-wrap">
-            <button type="button" class="arrow left" aria-label="Marques précédentes">‹</button>
-            <button type="button" class="arrow right" aria-label="Marques suivantes">›</button>
-            <div
-              id="about-brand-row"
-              class="brand-row"
-              data-brand-carousel
-              data-brand-slide-count="9"
-              data-brand-logo="/assets/home/brand-roviva-ref.png"
-              data-brand-href="/marque/roviva.html"
-              aria-roledescription="carousel"
-              aria-label="Les plus grandes marques de literie"
-            ></div>
-          </div>
+          <div
+            id="about-brand-row"
+            class="brand-row brand-row--grid"
+            data-brand-source="featured"
+            aria-label="Les plus grandes marques de literie"
+          ></div>
         </div>
       </section>
 
-      <!-- CTA contact — bandeau vert, bouton seul -->
-      <section class="about-contact-cta" aria-label="Contactez-nous">
-        <div class="about-contact-cta__shell layout-wide">
-          <div class="about-contact-cta__band">
-            <a class="about-contact-cta__button" href="/pages/contact.html">Contactez-nous</a>
-          </div>
-        </div>
-      </section>
+      <!-- Bloc conseil — aligné fiche produit (injecté via product-advice-section.js) -->
+      <div class="about-page-advice-shell layout-wide" data-product-advice-mount></div>
     </main>
 
     <footer id="site-footer"></footer>
